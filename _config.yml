@@ -23,22 +23,18 @@ repository               : "academicpages/academicpages.github.io"
 author:
   # Biographic information
   avatar           : "profile.png"
-  name             : "Your Sidebar Name"
-  pronouns         : # example: "she/her"  
+  name             : "Yechan Noh"
+  pronouns         :   
   bio              : "Short biography for the left-hand sidebar"
-  location         : "Earth"
-  employer         : "Red Brick University"
+  location         : "South Bend USA"
+  employer         : "University of Notre Dame"
   uri              : # URL
-  email            : "none@example.org" 
+  email            : "ynoh@nd.edu" 
 
   # Academic websites
-  academia         : # URL
-  arxiv            : # URL - Update with the correct link to your profile
-  googlescholar    : "https://scholar.google.com/citations?user=PS_CX0AAAAAJ"
-  impactstory      : # URL
-  orcid            : "http://orcid.org/yourorcidurl"
-  semantic         : # URL
-  pubmed           : "https://www.ncbi.nlm.nih.gov/pubmed/?term=john+snow"
+  googlescholar    : "https://scholar.google.co.kr/citations?user=0zdqbtIAAAAJ&hl=en"
+  orcid            : "https://orcid.org/my-orcid?orcid=0000-0003-1688-4907"
+  Linkedin         : "https://www.linkedin.com/in/yechan-noh-phd-421906155/"
   researchgate     : # URL
   scopus           : # URL
 
