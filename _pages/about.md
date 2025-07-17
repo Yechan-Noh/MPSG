@@ -7,20 +7,21 @@ redirect_from:
   - /about.html
 ---
 
+<style>
+#p5-canvas {
+  margin: 20px 0;
+  width: 100%;
+  height: 180px; /* You can adjust this */
+}
+</style>
+
+<div id="p5-canvas"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
+<script src="{{ '/assets/js/lj-sim.js' | relative_url }}"></script>
+
 Welcome to the **Multiphysics Modeling & Simulation Lab (MMSL)**, led by Dr. Yechan Noh. Our lab develops advanced computational and theoretical tools to explore **molecular transport phenomena**, with applications in **nanofluidics**, **iontronics**, and **neuromorphic computing**.
 
-<div id="viewer" style="width: 100%; height: 400px;"></div>
-<script src="https://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
-<script>
-  let element = document.getElementById("viewer");
-  let config = { backgroundColor: "white" };
-  let viewer = $3Dmol.createViewer(element, config);
-  $3Dmol.download("pdb:1BNA", viewer, {}, function () {
-    viewer.setStyle({}, { stick: {} });
-    viewer.zoomTo();
-    viewer.render();
-  });
-</script>
+
 
 Our research lies at the intersection of physics, chemistry, and engineering. We aim to understand how ions and molecules move through nanoscale environments—especially under confinement, voltage gating, and structural asymmetries—by integrating **molecular dynamics**, **statistical mechanics**, and **continuum models**. These insights are used to design **bio-inspired ionic devices**, such as memristors and artificial ion channels, that emulate the efficiency of biological systems.
 
