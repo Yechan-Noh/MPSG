@@ -28,10 +28,10 @@ const canvasPxY = (canvasPxX * boxHeight) / boxWidth;
 const displayScaleX = canvasPxX / boxWidth;
 const displayScaleY = canvasPxY / boxHeight;
 const atomDisplaySize = sigma * Math.min(displayScaleX, displayScaleY) * 0.95;
-const maxLocalTemp = 50 * Math.pow(4 * Math.sqrt(kb * T_target / mass), 2);
+const maxLocalTemp = 10 * Math.pow(4 * Math.sqrt(kb * T_target / mass), 2);
 
 // Mouse atom parameters
-const mousescale = 2.5
+const mousescale = 2.0
 const mouseRadius = mousescale * sigma;
 const springK = 200;  // spring constant for repulsion
 
@@ -71,10 +71,11 @@ function findSafeMouseStart() {
 
 function setup() {
     atoms = [];
+    paused = true;
     createCanvas(canvasPxX, canvasPxY).parent('p5-canvas');
     colorMode(HSB, 360, 100, 100, 255);
     frameRate(60);
-    setTimeout(() => paused = false, 5000);
+    setTimeout(() => paused = false, 3000);
 
     // Render MMSL into offscreen buffer
     let pg = createGraphics(boxWidth, boxHeight);
@@ -97,13 +98,20 @@ function setup() {
     while (atoms.length < N_init) addAtom();
 
     findSafeMouseStart();
+    // start the 30 s clock
+    lastRestartTime = millis();
 }
 
 function draw() {
+    if (millis() - lastRestartTime > 60000) {
+        setup();
+        return;  // skip one frame so we don’t immediately simulate/draw
+    }
+
     background(255);
 
     if (paused) {
-        push(); fill(60, 100, 100, 50); stroke(0); strokeWeight(3);
+        push(); fill(60, 100, 100, 100); stroke(0); strokeWeight(3);
         textAlign(CENTER, CENTER);
         textSize(boxHeight * displayScaleY * 0.8);
         text('MMSL', width / 2, height / 2 + displayScaleY * 0.05);
@@ -152,13 +160,18 @@ function draw() {
         }
     }
 
-    push(); noStroke(); fill(120, 80, 80, 100);
-    ellipse(
-        lastMouseSimX * displayScaleX,
-        lastMouseSimY * displayScaleY,
-        mouseRadius * 2 * displayScaleX
-    );
-    pop();
+    // only draw the green “mouse atom” when NOT paused
+    if (!paused) {
+        push();
+        noStroke();
+        fill(120, 80, 80, 100);
+        ellipse(
+            lastMouseSimX * displayScaleX,
+            lastMouseSimY * displayScaleY,
+            mouseRadius * 2 * displayScaleX
+        );
+        pop();
+    }
 }
 
 function simulateStep() {
