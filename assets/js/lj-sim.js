@@ -5,11 +5,11 @@
 let atoms = [];
 let lastMouseSimX, lastMouseSimY;
 
-const N_init = 350;
+const N_init = 400;
 const boxWidth = 48;
 const boxHeight = 18;
 const sigma = 1.0;
-const epsilon = 2.5;
+const epsilon = 5.0;
 const mass = 1.0;
 const kb = 1.0;
 const dt = 0.01;
@@ -19,21 +19,21 @@ const T_low = 1.5;
 const T_high = 4.0;
 const T_target = 2.5;
 
-let stepsPerFrame = 10;
+let stepsPerFrame = 5;
 let paused = true;
 let useThermostat = false;
 
-const canvasPxX = 400;
+const canvasPxX = 350;
 const canvasPxY = (canvasPxX * boxHeight) / boxWidth;
 const displayScaleX = canvasPxX / boxWidth;
 const displayScaleY = canvasPxY / boxHeight;
 const atomDisplaySize = sigma * Math.min(displayScaleX, displayScaleY) * 0.95;
-const maxLocalTemp = 10 * Math.pow(4 * Math.sqrt(kb * T_target / mass), 2);
+const maxLocalTemp = 500 * Math.pow(4 * Math.sqrt(kb * T_target / mass), 2);
 
 // Mouse atom parameters
-const mousescale = 2.0
+const mousescale = 2.5
 const mouseRadius = mousescale * sigma;
-const springK = 200;  // spring constant for repulsion
+const springK = 1000;  // spring constant for repulsion
 
 function addAtom(xArg = null, yArg = null, groupArg = null) {
     let tries = 5;
@@ -111,7 +111,7 @@ function draw() {
     background(255);
 
     if (paused) {
-        push(); fill(60, 100, 100, 100); stroke(0); strokeWeight(3);
+        push(); fill(60, 100, 100, 180); stroke(0); strokeWeight(3);
         textAlign(CENTER, CENTER);
         textSize(boxHeight * displayScaleY * 0.8);
         text('MMSL', width / 2, height / 2 + displayScaleY * 0.05);

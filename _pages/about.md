@@ -19,9 +19,7 @@ redirect_from:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
 <script src="{{ '/assets/js/lj-sim.js' | relative_url }}"></script>
 
-Welcome to the **Multiphysics Modeling & Simulation Lab (MMSL)**, led by Dr. Yechan Noh. Our lab develops advanced computational and theoretical tools to explore **molecular transport phenomena**, with applications in **nanofluidics**, **iontronics**, and **neuromorphic computing**.
-
-
+Welcome to the **Multiphysics Modeling & Simulation Lab (MMSL)** led by Dr. Yechan Noh. Our lab develops advanced computational and theoretical tools to explore **molecular transport phenomena**, with applications in **nanofluidics**, **iontronics**, and **neuromorphic computing**.
 
 Our research lies at the intersection of physics, chemistry, and engineering. We aim to understand how ions and molecules move through nanoscale environments—especially under confinement, voltage gating, and structural asymmetries—by integrating **molecular dynamics**, **statistical mechanics**, and **continuum models**. These insights are used to design **bio-inspired ionic devices**, such as memristors and artificial ion channels, that emulate the efficiency of biological systems.
 
