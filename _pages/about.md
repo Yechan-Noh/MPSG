@@ -21,8 +21,8 @@ author_profile: false
 
 /* hero canvas */
 #titleCanvas{
-  width: clamp(240px, 72vw, 400px);   /*  ← was 72vw 760px  */
-  height: 120px;
+  width: clamp(240px, 72vw, 420px);   /*  ← was 72vw 760px  */
+  height: 90px;
   display:block;
   margin:0 auto 1.6rem;
 }

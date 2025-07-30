@@ -11,7 +11,7 @@ canvas.addEventListener('mousemove', e => {
 canvas.addEventListener('mouseleave', () => { mouse.x = mouse.y = null; });
 
 /* ─── autonomous sweep circle (adds life) ───────── */
-let autoCircle = { x: 0, y: 0, radius: 34, vx: 1.2 };
+let autoCircle = { x: 0, y: 0, radius: 28, vx: 1.2 };
 
 /* ─── Particle class ────────────────────────────── */
 class Particle {
