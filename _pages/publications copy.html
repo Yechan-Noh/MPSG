@@ -1,0 +1,45 @@
+---
+layout: archive
+title: "Publications"
+permalink: /publications/
+author_profile: true
+---
+
+{% if site.author.googlescholar %}
+<div class="wordwrap"><a href="{{site.author.googlescholar}}">Google Scholar Profile</a>.
+</div>
+{% endif %}
+{% assign sorted_pubs = site.publications | sort: 'date' | reverse %}
+{% assign total = sorted_pubs | size %}
+{% assign counter = total %}
+
+{% assign pubs_by_year = sorted_pubs
+| group_by_exp:"post", "post.date | date: '%Y'" %}
+
+{% for year_group in pubs_by_year %}
+<h2><b>{{ year_group.name }}</b></h2>
+<ol reversed>
+  {% for post in year_group.items %}
+  <li value="{{ counter }}">
+    {% if post.status %}[{{ post.status }}] {% endif %}
+
+    {%- comment -%} ***BOLD YOUR NAME HERE*** {%- endcomment -%}
+    {% assign author_line = post.authors | replace: 'Yechan Noh', '<b>Yechan Noh</b>' %}
+    {{ author_line }}.
+
+    "{{ post.title }}."
+    <i>{{ post.venue }}</i>
+    {% if post.volume %}, {{ post.volume }}{% endif %}
+    {% if post.issue %}({{ post.issue }}){% endif %}
+    {% if post.pages %}, {{ post.pages }}{% endif %}.
+    {% if post.date %}{{ post.date | date: "%Y" }}.{% endif %}
+
+    {% comment %}Optional links{% endcomment %}
+    {% if post.paperurl %}[<a href="{{ post.paperurl }}">URL</a>]{% endif %}
+    {% if post.bibtexurl %}[<a href="{{ post.bibtexurl }}">BibTeX</a>]{% endif %}
+    {% if post.endnote %}[{{ post.endnote }}] {% endif %}
+  </li>
+  {% assign counter = counter | minus: 1 %}
+  {% endfor %}
+</ol>
+{% endfor %}

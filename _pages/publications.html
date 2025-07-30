@@ -5,32 +5,103 @@ permalink: /publications/
 author_profile: true
 ---
 
+<style>
+  /* ───── Publications Card Grid ─────────────────────────────────────── */
+  .pub-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1.2rem
+  }
+
+  .year-tag {
+    grid-column: 1/-1;
+    font: 700 1.4rem/1 "Helvetica Neue", sans-serif;
+    color: #6638b6;
+    margin: .5rem 0 .2rem
+  }
+
+  .pub-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
+    transition: .2s
+  }
+
+  .pub-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, .08)
+  }
+
+  .badge {
+    display: inline-block;
+    background: #ffd966;
+    color: #222;
+    font-size: .7rem;
+    padding: .1rem .45rem;
+    border-radius: 4px;
+    margin-right: .4rem;
+    text-transform: uppercase
+  }
+
+  .pub-authors {
+    margin: 0 0 .35rem;
+    font: .9rem/1.3 "Helvetica Neue", sans-serif
+  }
+
+  .pub-title {
+    margin: .1rem 0;
+    font: 400 .95rem/1.35 "Helvetica Neue", sans-serif
+  }
+
+  .pub-meta {
+    margin: 0;
+    font: .78rem/1.35 "Helvetica Neue", sans-serif;
+    color: #555
+  }
+
+  .journal {
+    font-weight: 700;
+    font-size: .87rem;
+    color: #3a7bd5
+  }
+
+  /* accent color */
+</style>
+
 {% if site.author.googlescholar %}
-  <div class="wordwrap">You can also find my articles on <a href="{{site.author.googlescholar}}">my Google Scholar profile</a>.</div>
+<div class="wordwrap"><a href="{{ site.author.googlescholar }}">Google Scholar Profile</a>.</div>
 {% endif %}
 
-{% include base_path %}
+{% assign sorted_pubs = site.publications | sort: 'date' | reverse %}
+{% assign pubs_by_year = sorted_pubs | group_by_exp:"post", "post.date | date: '%Y'" %}
 
-<!-- New style rendering if publication categories are defined -->
-{% if site.publication_category %}
-  {% for category in site.publication_category  %}
-    {% assign title_shown = false %}
-    {% for post in site.publications reversed %}
-      {% if post.category != category[0] %}
-        {% continue %}
+<div class="pub-grid">
+  {% for year_group in pubs_by_year %}
+  <div class="year-tag">{{ year_group.name }}</div>
+
+  {% for post in year_group.items %}
+  <div class="pub-card">
+    <p class="pub-authors">
+      {% if post.status %}
+      <span class="badge">{{ post.status }}</span><br>
       {% endif %}
-      {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
-        {% assign title_shown = true %}
-      {% endunless %}
-      {% include archive-single.html %}
-    {% endfor %}
+      {{ post.authors | replace: 'Yechan Noh', '<b>Yechan Noh</b>' }}
+    </p>
+
+    <p class="pub-title">{{ post.title }}</p>
+
+    <p class="pub-meta">
+      <span class="journal">{{ post.venue }}</span>{% if post.volume %}, {{ post.volume }}{% endif %}{% if post.issue %}
+      ({{ post.issue }}){% endif %}{% if post.pages %}, {{ post.pages }}{% endif %}, ({{ post.date | date: "%Y" }}){% if
+      post.paperurl %} <a href="{{ post.paperurl }}">URL</a>{% endif %}{% if post.endnote %}, {{ post.endnote }}{% endif
+      %}
+    </p>
+
+
+  </div>
   {% endfor %}
-{% else %}
-  {% for post in site.publications reversed %}
-    {% include archive-single.html %}
   {% endfor %}
-{% endif %}
-
-
-
+</div>
