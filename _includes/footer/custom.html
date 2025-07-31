@@ -1,8 +1,19 @@
 <!-- start custom footer snippets -->
 
-<a href="/sitemap/">Sitemap</a>
+<footer style="text-align: center; font-size: 0.9rem; margin-top: 2rem; color: #666;">
+    <p>
+        © 2025 <strong>Molecular Physics Simulation Group (MPSG)</strong> ·
+        <a href="mailto:yechan.noh@nist.gov">Contact</a> ·
+        <a href="https://scholar.google.com/citations?user=0zdqbtIAAAAJ" target="_blank" rel="noopener">Google
+            Scholar</a>
+    </p>
+    <p style="font-size: 0.8rem;">
+        Site powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener">Jekyll</a> &
+        <a href="https://academicpages.github.io/" target="_blank" rel="noopener">AcademicPages</a>.
+    </p>
+</footer>
 
-<!-- Support for MatJax -->
+<!-- Support for MathJax -->
 <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>
 
@@ -12,8 +23,8 @@
 <!-- Support for Mermaid -->
 <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({startOnLoad:true, theme:'default'});
-    await mermaid.run({querySelector:'code.language-mermaid'});
+    mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    await mermaid.run({ querySelector: 'code.language-mermaid' });
 </script>
 
 <!-- end custom footer snippets -->

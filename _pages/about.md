@@ -1,5 +1,5 @@
 ---
-layout: archive
+layout: default
 title: ""
 permalink: /
 author_profile: false
@@ -19,84 +19,112 @@ author_profile: false
   --gray-150:#e5e9f0;
 }
 
-/* hero canvas */
+/* ── HERO CANVAS ─────────────────────────────────────────────── */
 #titleCanvas{
-  width: clamp(240px, 72vw, 500px);   /*  ← was 72vw 760px  */
-  height: 90px;
-  display:block;
-  margin:0 auto 1.6rem;
+  /* never draw wider than its native 350 px … */
+  max-width: 500px;
+
+  /* …but shrink fluidly with the viewport */
+  width: 90vw;          /* take 90 % of the viewport width       */
+  height: auto;         /* keep aspect ratio (120 : 350 ≈ 0.34)  */
+
+  display: block;
+  margin: 0.25rem auto 0;   /* tighten gap above/below */
 }
 
-/* — Hero — (now white) */
+/* ── HERO BLOCK ──────────────────────────────────────────────── */
 .hero{
   text-align:center;
-  padding:4rem 1rem 3rem;
+  padding:1.5rem 1rem 1.5rem; /* (top | sides | bottom) */
   background:#fff;
 }
-.mission{font-size:1.04rem;margin-top:.9rem;max-width:740px;margin-inline:auto}
 
-.hero-heading {
-  font-size: clamp(1.6rem, 4vw, 2.4rem); 
-  font-weight: 700;
-  letter-spacing: -0.4px;
-  margin: 0 0 1.2rem;
-  color: var(--gray-750);
+.hero-heading{
+  font-size:clamp(1.6rem,4vw,2.4rem);
+  font-weight:700;
+  letter-spacing:-0.4px;
+  margin:0 0 0.25rem;  /* much tighter gap */
+  color:var(--gray-750);
 }
 
-/* — Research Cards — */
+.mission {
+  font-size: 1.2rem;        /* Slightly larger than body text */
+  line-height: 1.6;         /* Comfortable spacing */
+  color: var(--gray-500);   /* Softer than pure black */
+  max-width: 720px;         /* Restrict width for better readability */
+  margin: 0.0rem auto 2.5rem; /* Centered and spaced vertically */
+  text-align: center;
+  font-weight: 400;
+}
+
+/* ── RESEARCH CARDS ──────────────────────────────────────────── */
 .grid{
-  display:grid;gap:1.4rem;
+  display:grid;
+  gap:1.4rem;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  max-width:1100px;margin:0 auto 4rem;padding:0 1rem;
+  max-width:1100px;
+  margin:0 auto 4rem;
+  padding:0 1rem;
 }
 .card{
-  background:#fff;border:1px solid var(--gray-150);border-radius:12px;
+  background:#fff;
+  border:1px solid var(--gray-150);
+  border-radius:12px;
   padding:1.25rem 1.35rem;
   transition:transform .25s,border-color .25s;
-  transform-style:preserve-3d;perspective:600px;
+  transform-style:preserve-3d;
+  perspective:600px;
 }
 .card:hover{border-color:var(--accent1);transform:translateY(-4px) rotateX(3deg) rotateY(-3deg)}
 .card h3{font-size:1rem;margin-bottom:.6rem;color:var(--accent1)}
 .card p{margin:0;font-size:.88rem;color:var(--gray-500)}
 
-/* Footer */
-.footer{border-top:1px solid var(--gray-150);padding:1rem 0;text-align:center;font-size:.8rem;color:var(--gray-500)}
+/* ── FOOTER ──────────────────────────────────────────────────── */
+.footer{
+  border-top:1px solid var(--gray-150);
+  padding:1rem 0;
+  text-align:center;
+  font-size:.8rem;
+  color:var(--gray-500);
+}
 </style>
 
-<!-- — HERO — -->
+<!-- ── HERO ──────────────────────────────────────────────────── -->
 <section class="hero">
   <h1 class="hero-heading">Molecular Physics Simulation Group</h1>
 
   <canvas id="titleCanvas"></canvas>
 
   <p class="mission">
-    Through advance computater simulations, we engineer advanced devices in molecular-quntum level.
+    We harness cutting-edge computer simulations to engineer at the molecular and quantum levels, driving innovative solutions to industrial challenges.
   </p>
 </section>
 
-<!-- — RESEARCH PILLARS — -->
+<!-- ── RESEARCH PILLARS ──────────────────────────────────────── -->
 <div class="grid">
+  <!-- 1 › Multiscale simulation technique -->
   <div class="card">
-    <h3><i class="fa-solid fa-brain"></i> Iontronics &amp; Neuromorphic Interfaces</h3>
-    <p>Å-scale ion channels, memristors, and electrochemical logic that emulate synaptic computation with ultra-low energy budgets.</p>
+    <h3><i class="fa-solid fa-cubes"></i> Innovative Multiscale Simulation</h3>
+    <p>
+      We aim to develop computational simulation techniques that seamlessly bridge <strong>quantum ↔ atomistic ↔ continuum</strong> physics. Our current interests include machine-learning molecular dynamics and extended/generalized Lattice-Boltzmann methods, while we remain open to any innovative ideas for novel simulation approaches.
+    </p>
   </div>
 
+  <!-- 2 › Molecular–quantum biomimetic engineering -->
   <div class="card">
-    <h3><i class="fa-solid fa-dna"></i> Bio-inspired Nanofluidics</h3>
-    <p>Selectivity, gating, mechanosensing—translating biological transport principles into synthetic membranes for separations and sensing.</p>
+    <h3><i class="fa-solid fa-dna"></i> Molecular-Quantum Biomimetic Engineering</h3>
+    <p>
+      Biological systems perform intelligence, energy conversion, learning, and molecular separation with remarkable efficiency and sustainability. Our research seeks to implement the molecular–quantum principles of living systems in engineered devices.
+    </p>
   </div>
 
+  <!-- 3 › Foundational mathematical theory -->
   <div class="card">
-    <h3><i class="fa-solid fa-rocket"></i> Multiscale Simulation Engines</h3>
-    <p>Coupling <strong>DFT ↔ MD ↔ continuum</strong> with ML surrogates & HPC workflows to bridge electronic to device scales.</p>
+    <h3><i class="fa-solid fa-compass-drafting"></i> Foundational Transport Theory</h3>
+    <p>
+      Developing a foundational theory for atomistic physics has long been a dream in physical chemistry and statistical physics. By leveraging cutting-edge atomistic simulations, we aim to establish an advanced theoretical framework for atomistic phenomena, including nanoscale thermal–fluid transport and beyond.
+    </p>
   </div>
-</div>
-
-<!-- — FOOTER — -->
-<div class="footer">
-  © {{ site.time | date: "%Y" }} MPSG ·
-  <a href="mailto:ynoh@nd.edu">Contact</a> ·
-  <a href="{{ site.author.googlescholar }}">Google Scholar</a>
 </div>
 
 <!-- p5 hero graphic -->
@@ -106,9 +134,11 @@ author_profile: false
 <!-- Fade-in cards -->
 <script>
 document.addEventListener('DOMContentLoaded',()=>{
-  const cards=document.querySelectorAll('.card');
-  const io=new IntersectionObserver(e=>e.forEach(i=>i.isIntersecting&&i.target.classList.add('in')),
-                                    {threshold:.15});
-  cards.forEach(c=>io.observe(c));
+  const cards = document.querySelectorAll('.card');
+  const io = new IntersectionObserver(entries =>
+    entries.forEach(e=> e.isIntersecting && e.target.classList.add('in')),
+    { threshold: .15 }
+  );
+  cards.forEach(c=> io.observe(c));
 });
 </script>
