@@ -6,8 +6,8 @@ title             : "MPSG"
 title_separator   : "-"
 description       : "Computational theorist exploring molecular-scale transport for energy-efficient devices."
 url               : "https://yechan-noh.github.io"   # production URL
-baseurl           : "/MMSL"                          # GitHub Pages project repo
-repository        : "Yechan-Noh/MMSL.github.io"
+baseurl           : "/MPSG"                          # GitHub Pages project repo
+repository        : "Yechan-Noh/MPSG.github.io"
 remote_theme      : "mmistakes/minimal-mistakes"
 
 
