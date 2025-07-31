@@ -142,7 +142,7 @@ author_profile: false
 
 <!-- p5 hero graphic -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
-<script src="{{ '/assets/js/lj-hero.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/hero_graphic.js' | relative_url }}"></script>
 
 <!-- Fade-in cards -->
 <script>

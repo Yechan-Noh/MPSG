@@ -20,9 +20,9 @@
     /* ─── Fire-ball repeller (“autoCircle”) ──────────────────────────── */
     const autoCircle = {
         x: 0, y: 0,
-        radius: 24,          // physics radius for repulsion
-        vx: 2.4,             // horizontal speed
-        coreR: 10,           // size of bright head
+        radius: 32,          // physics radius for repulsion
+        vx: 1.5,             // horizontal speed
+        coreR: 12,           // size of bright head
         hueHead: 45,         // hot yellow-orange
         hueTail: 5,          // deep red tail
         theta: 0, dTheta: 0.04,
@@ -155,7 +155,7 @@
         canvas.width = canvas.clientWidth * dpr;
         canvas.height = canvas.clientHeight * dpr;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);      // scale all draws
-        autoCircle.y = (canvas.height / dpr) * 0.45;
+        autoCircle.y = (canvas.height / dpr) * 0.46;
         initParticles();
     }
 
