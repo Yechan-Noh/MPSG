@@ -157,14 +157,23 @@ function animate() {
 /* ===== resize handler =========================================== */
 function resizeCanvas() {
     const dpr = window.devicePixelRatio || 1;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);        /* reset */
-    canvas.width = canvas.clientWidth * dpr;
-    canvas.height = canvas.clientHeight * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);    /* Hi-DPI */
 
-    autoCircle.y = canvas.clientHeight / 2.0;
+    // 1) compute desired height from aspect ratio
+    const width = canvas.clientWidth;
+    const height = width * (DESIGN_H / DESIGN_W);  // maintain original aspect ratio
+
+    // 2) Set internal resolution for Hi-DPI screens
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+
+    // 3) Reset transform for Hi-DPI
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // 4) Position auto-circle in vertical center
+    autoCircle.y = height / 2;
     initParticles();
 }
+
 
 /* ===== boot ====================================================== */
 window.addEventListener('resize', resizeCanvas);

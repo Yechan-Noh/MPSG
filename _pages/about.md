@@ -22,10 +22,11 @@ author_profile: false
 /* ── HERO CANVAS ─────────────────────────────────────────────── */
 #titleCanvas {
   display: block;
-  margin: 0 auto;           /* Center it */
-  width: min(90vw, 400px);  /* Shrinks to viewport width, max 400px */
-  height: auto;             /* Keep aspect ratio */
-  max-width: 100%;          /* Never exceed parent */
+  margin: 0 auto;
+  width: min(90vw, 500px); /* scale to viewport width */
+  height: auto;           /* let browser auto-scale height */
+  max-width: 100%;        /* never overflow parent */
+  aspect-ratio: 5 / 2;    /* preserve proportions */
 }
 
 /* ── HERO BLOCK ──────────────────────────────────────────────── */
@@ -57,6 +58,16 @@ author_profile: false
   margin: 0.5rem auto 2.5rem; /* Centered and spaced vertically */
   text-align: center;
   font-weight: 400;
+}
+.mission::before {
+  content: "";
+  display: block;
+  width: 50px;
+  height: 3px;
+  background: var(--accent1);
+  margin: 0 auto 1rem;
+  border-radius: 2px;
+  opacity: 0.7;
 }
 
 /* ── RESEARCH CARDS ──────────────────────────────────────────── */
