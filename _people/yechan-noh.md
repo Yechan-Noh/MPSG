@@ -1,10 +1,7 @@
 ---
 name: Yechan Noh
-position: Provost's Postdoctoral Fellow
-bio: >
-  Computational Nanofluidic Expert.
-image: /assets/img/people/yechan-noh.jpg
-redirect_from:
-  - /people/yechan-noh
+position: Postdoctoral Associate
+start: 2023-06-01
+image: /assets/img/people/yechan-noh.png 
 permalink: /people/yechan-noh/
 ---
