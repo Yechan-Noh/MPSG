@@ -35,7 +35,7 @@
             this.baseX = x; this.baseY = y;
             this.x = x + (Math.random() - 0.5) * 20;
             this.y = y + (Math.random() - 0.5) * 20;
-            this.size = Math.random() * 0.4 + 1.5;
+            this.size = Math.random() * 0.2 + 1.8;
             this.density = Math.random() * 25 + 5;
             this.vx = this.vy = 0;
             this.hue = 180 + Math.random() * 60;
@@ -155,7 +155,7 @@
         canvas.width = canvas.clientWidth * dpr;
         canvas.height = canvas.clientHeight * dpr;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);      // scale all draws
-        autoCircle.y = (canvas.height / dpr) / 2.3;
+        autoCircle.y = (canvas.height / dpr) * 0.45;
         initParticles();
     }
 
