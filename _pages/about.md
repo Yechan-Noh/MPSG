@@ -20,16 +20,12 @@ author_profile: false
 }
 
 /* ── HERO CANVAS ─────────────────────────────────────────────── */
-#titleCanvas{
-  /* never draw wider than its native 350 px … */
-  max-width: 500px;
-
-  /* …but shrink fluidly with the viewport */
-  width: 90vw;          /* take 90 % of the viewport width       */
-  height: auto;         /* keep aspect ratio (120 : 350 ≈ 0.34)  */
-
+#titleCanvas {
   display: block;
-  margin: 0.25rem auto 0;   /* tighten gap above/below */
+  margin: 0 auto;           /* Center it */
+  width: min(90vw, 500px);  /* Shrinks to viewport width, max 500px */
+  height: auto;             /* Keep aspect ratio */
+  max-width: 100%;          /* Never exceed parent */
 }
 
 /* ── HERO BLOCK ──────────────────────────────────────────────── */
@@ -37,6 +33,12 @@ author_profile: false
   text-align:center;
   padding:1.5rem 1rem 1.5rem; /* (top | sides | bottom) */
   background:#fff;
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 1rem 0.5rem 1.5rem; /* reduce side padding on mobile */
+  }
 }
 
 .hero-heading{
@@ -52,7 +54,7 @@ author_profile: false
   line-height: 1.6;         /* Comfortable spacing */
   color: var(--gray-500);   /* Softer than pure black */
   max-width: 720px;         /* Restrict width for better readability */
-  margin: 0.0rem auto 2.5rem; /* Centered and spaced vertically */
+  margin: 0.5rem auto 2.5rem; /* Centered and spaced vertically */
   text-align: center;
   font-weight: 400;
 }
