@@ -23,7 +23,7 @@ author_profile: false
 #titleCanvas {
   display: block;
   margin: 0 auto;           /* Center it */
-  width: min(90vw, 500px);  /* Shrinks to viewport width, max 500px */
+  width: min(90vw, 400px);  /* Shrinks to viewport width, max 400px */
   height: auto;             /* Keep aspect ratio */
   max-width: 100%;          /* Never exceed parent */
 }
