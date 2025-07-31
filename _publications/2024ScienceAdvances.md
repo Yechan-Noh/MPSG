@@ -1,5 +1,5 @@
 ---
-title: "Synaptic-like plasticity in 2D nanofluidic memristor from competitive bicationic transport"
+title: "Synaptic-like Plasticity in 2D Nanofluidic Memristor from Competitive Bicationic Transport"
 authors: Yechan Noh, Alex Smolyanitsky
 collection: publications
 category: manuscripts
@@ -10,5 +10,8 @@ volume: 10
 issue: 45
 pages: eadr1531
 publisher: American Association for the Advancement of Science
-paperurl: 'https://www.science.org/doi/10.1126/sciadv.adr1531'
+paperurl: 'https://doi.org/10.1126/sciadv.adr1531'
+doi: '10.1126/sciadv.adr1531'
+endnote: "Dr. Noh's suggestion"
+status: New publication
 ---

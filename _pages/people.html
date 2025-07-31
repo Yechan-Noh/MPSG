@@ -1,11 +1,143 @@
 ---
 title: "People"
-layout: single
-author_profile: true # great spot to put your photo + bio
+layout: archive
 permalink: /people/
+author_profile: false
 ---
 
-🧑‍🔬 **Yechan Noh** — Postdoc, Notre Dame
-*Computational molecular physics; ion transport, neuromorphic devices.*
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<!-- Add students, collaborators, etc. -->
+<style>
+    /* —— Card Grid ——————————————————————————— */
+    .people-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.4rem;
+        justify-content: center;
+        margin-top: 1.5rem
+    }
+
+    .person-card {
+        flex: 1 1 calc(33.333% - 1.4rem);
+        max-width: 280px;
+        min-width: 220px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 6px rgb(0 0 0 / .07);
+        transition: .25s;
+        text-align: center;
+        cursor: pointer
+    }
+
+    .person-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 16px rgb(0 0 0 / .12)
+    }
+
+    .person-card img {
+        width: 100%;
+        height: 230px;
+        object-fit: cover;
+        display: block;
+        background: #f0f0f0
+    }
+
+    .person-card img.default {
+        filter: grayscale(1) contrast(.6);
+        background: #f0f0f0 url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3e%3ccircle cx='100' cy='80' r='45' fill='%23cfd8dc'/%3e%3cpath d='M20 190c10-40 50-60 80-60s70 20 80 60' fill='%23cfd8dc'/%3e%3c/svg%3e") no-repeat center/80px
+    }
+
+    .person-card h3 {
+        margin: .6rem 0 .2rem;
+        font: 700 1rem "Inter", sans-serif;
+        color: #333
+    }
+
+    .person-card .role {
+        margin: 0;
+        font-size: .82rem;
+        color: #555
+    }
+
+    .person-card .desc {
+        font-size: .78rem;
+        color: #555;
+        margin: .45rem .8rem 1rem;
+        line-height: 1.35
+    }
+
+    /* —— PI Hero ——————————————————————————— */
+    .pi-block {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+        flex-wrap: wrap
+    }
+
+    .pi-block img {
+        width: 170px;
+        height: 170px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 3px 12px rgb(0 0 0 / .15)
+    }
+
+    .pi-info h2 {
+        margin: 0;
+        font: 700 1.6rem/1.3 "Inter", sans-serif
+    }
+
+    .pi-info p {
+        margin: .35rem 0;
+        font-size: .9rem
+    }
+
+    .btn {
+        display: inline-block;
+        background: #6c757d;
+        color: #fff;
+        padding: .28rem .9rem;
+        font-size: .78rem;
+        border-radius: 4px;
+        text-decoration: none
+    }
+
+    .btn:hover {
+        background: #5a646d
+    }
+</style>
+
+{% comment --------- PI HERO ------------------------------------------------ %}
+{% endcomment %}
+<div class="pi-block">
+    <!-- change the src path to your real picture -->
+    <img src="{{ '/assets/img/people/yechan-noh.png' | relative_url }}" alt="Yechan Noh">
+    <div class="pi-info">
+        <h2>Yechan Noh, Ph.D.</h2>
+        <p>Postdoctoral Associate, National Institute of Standards and Technology<br>
+            Computational Nanofluidics, Ion Transport, Brain-inspired Computing, Two-dimentional Membrane</p>
+    </div>
+</div>
+
+{% comment --------- LOAD COLLECTION SAFELY -------------------------------- %}
+{% endcomment %}
+{% if site.collections['people'] %}
+{% assign team = site.people | sort: 'start' %}
+{% else %}
+{% assign team = '' | split: '' %}
+{% endif %}
+
+<div class="people-grid">
+    {% for p in team %}
+    <a href="{{ p.url }}" class="person-card">
+        {% assign imgsrc = p.image | default: '/assets/img/people/default.jpg' %}
+        <img src="{{ imgsrc }}" alt="{{ p.name }} portrait" class="{% unless p.image %}default{% endunless %}">
+        <h3>{{ p.name }}</h3>
+        {% if p.role %}<p class="role">{{ p.role }}</p>{% endif %}
+        {% if p.description %}<p class="desc">{{ p.description }}</p>{% endif %}
+    </a>
+    {% endfor %}
+</div>

@@ -1,5 +1,5 @@
 ---
-title: "Phonon-fluid coupling enhanced water desalination in flexible two-dimensional porous membranes"
+title: "Phonon-fluid Coupling Enhanced Water Desalination in Flexible Two-dimensional Porous Membranes"
 authors: Yechan Noh, Narayana R Aluru
 collection: publications
 category: manuscripts
@@ -10,5 +10,6 @@ volume: 22
 issue: 1
 pages: 419-425
 publisher: American Chemical Society
-paperurl: 'https://pubs.acs.org/doi/10.1021/acs.nanolett.1c04356'
+paperurl: 'https://doi.org/10.1021/acs.nanolett.1c04155'
+doi: '10.1021/acs.nanolett.1c04155'
 ---

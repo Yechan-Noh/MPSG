@@ -1,5 +1,5 @@
 ---
-title: "Ion transport in electrically imperfect nanopores"
+title: "Ion Transport in Electrically Imperfect Nanopores"
 authors: Yechan Noh, Narayana R Aluru
 collection: publications
 category: manuscripts
@@ -10,5 +10,6 @@ volume: 14
 issue: 8
 pages: 10518-10526
 publisher: American Chemical Society
-paperurl: 'https://pubs.acs.org/doi/10.1021/acsnano.0c04197'
+paperurl: 'https://doi.org/10.1021/acsnano.0c04453'
+doi: '10.1021/acsnano.0c04453'
 ---

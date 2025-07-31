@@ -1,5 +1,5 @@
 ---
-title: "Scaling of ionic conductance in a fluctuating single-layer nanoporous membrane"
+title: "Scaling of Ionic Conductance in a Fluctuating Single-layer Nanoporous Membrane"
 authors: Yechan Noh, Narayana R Aluru
 collection: publications
 category: manuscripts
@@ -10,5 +10,6 @@ volume: 13
 issue: 1
 pages: 19813
 publisher: Nature Publishing Group UK
-paperurl: 'https://www.nature.com/articles/s41598-023-46962-8'
+paperurl: 'https://doi.org/10.1038/s41598-023-46962-8'
+doi: '10.1038/s41598-023-46962-8'
 ---

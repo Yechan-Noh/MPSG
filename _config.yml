@@ -2,7 +2,7 @@
 #  SITE BASICS
 # ────────────────────────────────────────────────
 locale            : "en-US"
-title             : "Molecular Physics Simulation Group"
+title             : "MPSG"
 title_separator   : "-"
 description       : "Computational theorist exploring molecular-scale transport for energy-efficient devices."
 url               : "https://yechan-noh.github.io"   # production URL
@@ -17,9 +17,9 @@ remote_theme      : "mmistakes/minimal-mistakes"
 author:
   name        : "Yechan Noh"
   avatar      : "Yechan_photo.png"
-  bio         : "Postdoctoral Fellow · Notre Dame // Molecular transport, iontronics, neuromorphic AI."
-  location    : "South Bend, USA"
-  email       : "ynoh@nd.edu"
+  bio         : "."
+  location    : "Boulder Colorado, USA"
+  email       : "yechan.noh@nist.gov"
   googlescholar : "https://scholar.google.com/citations?user=0zdqbtIAAAAJ"
   orcid         : "https://orcid.org/0000-0003-1688-4907"
   linkedin      : "yechan-noh-phd-421906155"
@@ -34,12 +34,24 @@ publication_category:
 
 # ────────────────────────────────────────────────
 #  COLLECTIONS
+
 # ────────────────────────────────────────────────
 collections:
-  teaching   : { output: true, permalink: /:collection/:path/ }
-  publications: { output: true, permalink: /:collection/:path/ }
-  portfolio  : { output: true, permalink: /:collection/:path/ }
-  talks      : { output: true, permalink: /:collection/:path/ }
+  people:
+    output: true
+    permalink: /people/:path/
+  research:
+    output: true
+    permalink: /research/:path/
+  publications:
+    output: true
+    permalink: /publications/:path/
+  news:
+    output: true
+    permalink: /news/:path/
+  positions:
+    output: true
+    permalink: /positions/:path/
 
 # ────────────────────────────────────────────────
 #  DEFAULT FRONT-MATTER

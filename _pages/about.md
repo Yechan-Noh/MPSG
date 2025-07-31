@@ -1,7 +1,7 @@
 ---
-permalink: /
-layout: default
+layout: archive
 title: ""
+permalink: /
 author_profile: false
 ---
 
@@ -21,17 +21,11 @@ author_profile: false
 
 /* hero canvas */
 #titleCanvas{
-  width: clamp(240px, 72vw, 420px);   /*  ← was 72vw 760px  */
+  width: clamp(240px, 72vw, 500px);   /*  ← was 72vw 760px  */
   height: 90px;
   display:block;
   margin:0 auto 1.6rem;
 }
-
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;margin:0;color:var(--gray-750);line-height:1.55;font-size:15px;background:#fff}
-h1,h2,h3{margin:0;font-weight:700;color:var(--gray-750)}
-a{color:var(--accent1);text-decoration:none}
-a:hover{text-decoration:underline}
 
 /* — Hero — (now white) */
 .hero{

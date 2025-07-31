@@ -2,7 +2,7 @@
 layout: archive
 title: "Publications"
 permalink: /publications/
-author_profile: true
+author_profile: false
 ---
 
 <style>
@@ -65,14 +65,20 @@ author_profile: true
   .journal {
     font-weight: 700;
     font-size: .87rem;
-    color: #3a7bd5
+    color: #007ACC
+  }
+
+  .endnote-orange {
+    color: #E67300;
   }
 
   /* accent color */
 </style>
 
 {% if site.author.googlescholar %}
-<div class="wordwrap"><a href="{{ site.author.googlescholar }}">Google Scholar Profile</a>.</div>
+<div class="wordwrap">
+  <a href="{{ site.author.googlescholar }}" target="_blank" rel="noopener noreferrer">Google Scholar Profile</a>.
+</div>
 {% endif %}
 
 {% assign sorted_pubs = site.publications | sort: 'date' | reverse %}
@@ -95,9 +101,16 @@ author_profile: true
 
     <p class="pub-meta">
       <span class="journal">{{ post.venue }}</span>{% if post.volume %}, {{ post.volume }}{% endif %}{% if post.issue %}
-      ({{ post.issue }}){% endif %}{% if post.pages %}, {{ post.pages }}{% endif %}, ({{ post.date | date: "%Y" }}){% if
-      post.paperurl %} <a href="{{ post.paperurl }}">URL</a>{% endif %}{% if post.endnote %}, {{ post.endnote }}{% endif
-      %}
+      ({{ post.issue }}){% endif %}{% if post.pages %}, {{ post.pages }}{% endif %}, ({{ post.date | date: "%Y" }})
+      {% if post.paperurl %}
+      <a href="{{ post.paperurl }}" target="_blank" rel="noopener noreferrer">URL</a>
+      {% endif %}
+      {% if post.arxivurl %}
+      <a href="{{ post.arxivurl }}" target="_blank" rel="noopener noreferrer">arXiv URL</a>
+      {% endif %}
+      {% if post.endnote %}
+      , <span class="endnote-orange">{{ post.endnote }}</span>
+      {% endif %}
     </p>
 
 
