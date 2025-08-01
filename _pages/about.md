@@ -117,25 +117,25 @@ author_profile: false
 <div class="grid">
   <!-- 1 › Multiscale simulation technique -->
   <div class="card">
-    <h3><i class="fa-solid fa-cubes"></i> Innovative Multiscale Simulation</h3>
+    <h3><i class="fa-solid fa-cubes"></i> Development of Innovative Simulation Methods</h3>
     <p>
-      We aim to develop computational simulation techniques that seamlessly bridge <strong>quantum ↔ atomistic ↔ continuum</strong> physics. Our current interests include machine-learning molecular dynamics and extended/generalized Lattice-Boltzmann methods, while we remain open to any innovative ideas for novel simulation approaches.
+      We aim to innovate computer simulation techniques for all scales of physics, including quantum, atomistic, and continuum. Our current interests include machine-learning molecular dynamics and extended/generalized Lattice-Boltzmann methods. However, we are open to seeking any novel ideas to innovate simulation approaches.
     </p>
   </div>
 
   <!-- 2 › Molecular–quantum biomimetic engineering -->
   <div class="card">
-    <h3><i class="fa-solid fa-dna"></i> Molecular-Quantum Biomimetic Engineering</h3>
+    <h3><i class="fa-solid fa-dna"></i> Biomimetic Engineering from the Molecular Scale</h3>
     <p>
-      Biological systems perform intelligence, energy conversion, learning, and molecular separation with remarkable efficiency and sustainability. Our research seeks to implement the molecular–quantum principles of living systems in engineered devices.
+      Biological systems exhibit remarkable efficiency and sustainability in their essential processes, such as intelligence, energy conversion, learning, and molecular separation. Our research seeks to understand and implement the molecular–quantum principles of these living systems in engineered devices.
     </p>
   </div>
 
   <!-- 3 › Foundational mathematical theory -->
   <div class="card">
-    <h3><i class="fa-solid fa-compass-drafting"></i> Foundational Transport Theory</h3>
+    <h3><i class="fa-solid fa-compass-drafting"></i> Foundational Physical/Chemical Theory</h3>
     <p>
-      Developing a foundational theory for atomistic physics has long been a dream in physical chemistry and statistical physics. By leveraging cutting-edge atomistic simulations, we aim to establish an advanced theoretical framework for atomistic phenomena, including nanoscale thermal–fluid transport and beyond.
+      Developing a foundational theory for atomistic physics has long been a dream in Science and Engineering. By leveraging cutting-edge atomistic simulations, we aim to establish an advanced theoretical framework for atomistic phenomena, including nanoscale thermal–fluid transport and beyond.
     </p>
   </div>
 </div>

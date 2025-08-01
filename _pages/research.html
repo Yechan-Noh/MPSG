@@ -1,8 +1,215 @@
 ---
 layout: archive
-title: ""
+title: "Research"
 permalink: /research/
 author_profile: false
 ---
 
-Under Construction
+<!-- ——— Funding / supporter logos ——— -->
+<div class="sponsor-bar">
+    <div class="sponsor-item">
+        <img src="{{ '/assets/img/funding/nsf-logo.jpg' | relative_url }}" alt="NSF">
+    </div>
+    <div class="sponsor-item">
+        <img src="{{ '/assets/img/funding/access-logo.svg' | relative_url }}" alt="ACCESS">
+    </div>
+    <div class="sponsor-item">
+        <img src="{{ '/assets/img/funding/nist-logo.png' | relative_url }}" alt="NIST">
+    </div>
+    <div class="sponsor-item">
+        <img src="{{ '/assets/img/funding/UND-logo.png' | relative_url }}" alt="University of Notre Dame">
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    referrerpolicy="no-referrer">
+
+<style>
+    :root {
+        --accent1: #364f6b;
+        --content-bg: #ffffff;
+        --card-radius: 1.25rem;
+        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        --card-shadow-hover: 0 6px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    /* ===== sponsor logo strip ===== */
+    .sponsor-bar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+        margin: 1rem 0 3rem;
+    }
+
+    .sponsor-item {
+        width: 160px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sponsor-item img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        filter: grayscale(15%);
+    }
+
+    /* ===== research cards grid ===== */
+    .research-grid {
+        display: block;
+    }
+
+    @media (min-width: 800px) {
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+        }
+    }
+
+    /* Make wrapper fluid for 2-col comfortable stage */
+    @media (min-width:800px) and (max-width:1279px) {
+
+        .page,
+        .page__inner-wrap,
+        .page__content {
+            max-width: none !important;
+            padding-left: 2.5rem;
+            padding-right: 2.5rem;
+        }
+    }
+
+    /* Restore fixed wrapper at ≥1280px */
+    @media (min-width:1280px) {
+
+        .page,
+        .page__inner-wrap,
+        .page__content {
+            max-width: 1200px;
+            /* Slightly bigger for comfy 2-col */
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    /* ===== individual research card ===== */
+    .research-card {
+        background: var(--content-bg);
+        border-radius: var(--card-radius);
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        transition: transform .25s ease, box-shadow .25s ease;
+        max-width: 720px;
+        /* prevents overly wide cards */
+        width: 100%;
+        margin: 0 auto;
+        /* center single-column cards */
+    }
+
+    .research-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--card-shadow-hover);
+    }
+
+    /* header */
+    .research-header {
+        background: var(--accent1);
+        color: #fff;
+        padding: 1.25rem 2rem;
+        font: 600 1.2rem/1.4 "Inter", sans-serif;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        word-break: break-word;
+    }
+
+    .research-header i {
+        font-size: 1.3rem;
+    }
+
+    /* body */
+    .research-body {
+        padding: 1.5rem 2rem 2rem;
+        font-size: 1.05rem;
+        line-height: 1.65;
+    }
+
+    .research-body h4 {
+        margin-top: 1.2rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .research-body li {
+        margin: 0.4rem 0;
+    }
+</style>
+
+<div class="research-grid">
+
+    <!-- ── CARD 1 ───────────────────────────────────────────── -->
+    <article class="research-card">
+        <div class="research-header">
+            <i class="fa-solid fa-atom"></i>
+            <span>Development of Innovative Simulation Methods</span>
+        </div>
+        <div class="research-body">
+            <p>We create next-generation molecular- and quantum-level simulation algorithms that bridge time and length
+                scales impossible with conventional approaches.</p>
+            <h4>Highlighted sub-projects</h4>
+            <ul>
+                <li><strong>Machine-Learning Molecular Dynamics (ML-MD):</strong> Coupling graph-neural-network force
+                    fields with active-learning pipelines.</li>
+                <li><strong>Multiscale Ion Transport:</strong> Hybrid continuum–atomistic solvers for Å-scale nanopores.
+                </li>
+                <li><strong>Ultra-Fast Free-Energy Sampling:</strong> GPU-native adaptive-bias schemes that converge 10×
+                    faster.</li>
+            </ul>
+        </div>
+    </article>
+
+    <!-- ── CARD 2 ───────────────────────────────────────────── -->
+    <article class="research-card">
+        <div class="research-header">
+            <i class="fa-solid fa-microchip"></i>
+            <span>Ionic Neuromorphic Computing</span>
+        </div>
+        <div class="research-body">
+            <p>Inspired by biology, we design electrochemical circuit elements—ionic memristors, memcapacitors, and
+                synaptic transistors—that operate with sub-picojoule switching energies.</p>
+            <h4>Highlighted sub-projects</h4>
+            <ul>
+                <li><strong>Å-Scale Memristors:</strong> Voltage-gated nanopores exhibiting long-term plasticity.</li>
+                <li><strong>Ion-Electrode Intercalation:</strong> <em>Ab initio</em> simulations of redox-mediated
+                    learning rules.</li>
+                <li><strong>Circuit-to-Device Co-Design:</strong> Mapping spiking neural networks onto electrochemical
+                    hardware.</li>
+            </ul>
+        </div>
+    </article>
+
+    <!-- ── CARD 3 ───────────────────────────────────────────── -->
+    <article class="research-card">
+        <div class="research-header">
+            <i class="fa-solid fa-water"></i>
+            <span>Nanopore-Based Molecular Separation</span>
+        </div>
+        <div class="research-body">
+            <p>We leverage Å-precision pores and bio-inspired surface chemistry to selectively extract hydrogen and
+                critical rare-earth elements at dramatically lower energy cost.</p>
+            <h4>Highlighted sub-projects</h4>
+            <ul>
+                <li><strong>Selective Hydrogen Sieving:</strong> Free-energy-landscape engineering for
+                    H<sub>2</sub>/CO<sub>2</sub> separations.</li>
+                <li><strong>Rare-Earth Ion Capture:</strong> Tailored pore functionalization guided by DFT-derived
+                    descriptors.</li>
+                <li><strong><em>Operando</em> Spectroscopy:</strong> Combining in-situ Raman with MD to resolve
+                    transport pathways.</li>
+            </ul>
+        </div>
+    </article>
+
+</div>
