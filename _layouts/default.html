@@ -5,27 +5,40 @@ layout: compress
 {% include base_path %}
 
 <!doctype html>
-<html lang="{{ site.locale | slice: 0,2 }}" class="no-js"{% if site.site_theme == "dark" %} data-theme="dark"{% endif %}>
-  <head>
-    {% include head.html %}
-    {% include head/custom.html %}
-  </head>
+<html lang="{{ site.locale | slice: 0,2 }}" class="no-js" {% if site.site_theme=="dark" %} data-theme="dark" {% endif
+  %}>
 
-  <body>
+<head>
+  {% include head.html %}
+  {% include head/custom.html %}
+</head>
 
-    {% include browser-upgrade.html %}
-    {% include masthead.html %}
+<body>
 
-    {{ content }}
+  {% include browser-upgrade.html %}
+  {% include masthead.html %}
 
-    <div class="page__footer">
-      <footer>
-        {% include footer/custom.html %}
-        {% include footer.html %}
-      </footer>
-    </div>
+  {{ content }}
 
-    {% include scripts.html %}
+  <div class="page__footer">
+    <footer>
+      {% include footer/custom.html %}
+      {% include footer.html %}
+    </footer>
+  </div>
 
-  </body>
+  {% include scripts.html %}
+
+</body>
+
 </html>
+
+<!-- Google analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZM8MTZDBL3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZM8MTZDBL3');
+</script>
