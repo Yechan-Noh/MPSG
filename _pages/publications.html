@@ -1,83 +1,275 @@
 ---
-layout: archive
+layout: default
 title: "Publications"
 permalink: /publications/
 author_profile: false
 ---
 
 <style>
+  :root {
+    --accent1: #364f6b;
+    --content-bg: #ffffff;
+    --card-radius: 0.85rem;
+    --card-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    --card-shadow-hover: 0 5px 14px rgba(0, 0, 0, 0.12);
+  }
+
+  /* ——— Google Scholar Card ——— */
+  .scholar-card {
+    background: var(--content-bg);
+    border-radius: var(--card-radius);
+    /* box-shadow removed */
+    padding: 0.5rem 1.2rem;
+    margin: 1rem 0;
+    text-align: center;
+    transition: transform 0.2s ease;
+    /* only transform now */
+  }
+
+  .scholar-card:hover {
+    transform: translateY(-3px);
+    /* no shadow on hover */
+  }
+
+  .scholar-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent1);
+    font: 500 1rem/0.5 "Inter", sans-serif;
+    text-decoration: none;
+  }
+
+  .scholar-link i {
+    font-size: 1.4rem;
+  }
+
+  .scholar-link:hover {
+    text-decoration: underline;
+  }
+
+  .Journals {
+    text-align: center;
+    margin: 0.5rem auto;
+    max-width: 1000px;
+    /* keeps content nicely centered on large screens */
+  }
+
+  .journal-title {
+    font-size: 1.45rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 0.2rem;
+    color: #364f6b;
+  }
+
+  /* journal bar container */
+  .journal-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin: 0.25rem auto;
+
+    /* maximum of 5 items of 140px + 4 gaps of 1rem each */
+    max-width: calc((160px * 5) + (1rem * 4));
+  }
+
+  /* Generic journal container */
+  .journal-item {
+    /* allow wrapping, but don't shrink below 140px */
+    flex: 0 1 160px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Generic logo styling */
+  .journal-item img {
+    object-fit: contain;
+    filter: grayscale(15%);
+    display: block;
+  }
+
+  /* === Percentage-based logo sizing === */
+  .size70 img {
+    width: 70%;
+  }
+
+  .size80 img {
+    width: 80%;
+  }
+
+  .size90 img {
+    width: 90%;
+  }
+
+  .size100 img {
+    width: 100%;
+  }
+
+
   /* ───── Publications Card Grid ─────────────────────────────────────── */
   .pub-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
-    margin-top: 1.2rem
+    /* up to three columns, each ≥240px */
+    grid-template-columns: repeat(3, minmax(240px, 1fr));
+    gap: 0.1rem 1rem;
+    margin: 1rem 0;
+    padding: 0 0.75rem;
+  }
+
+  /* Two columns on medium screens */
+  @media (max-width: 800px) {
+    .pub-grid {
+      grid-template-columns: repeat(2, minmax(200px, 1fr));
+    }
+  }
+
+  /* One column on narrow screens */
+  @media (max-width: 500px) {
+    .pub-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* add fluid padding & gap at wider breakpoints */
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .pub-grid {
+      gap: 1.5rem;
+      /* match research grid at this size */
+      padding: 0 1.5rem;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .pub-grid {
+      max-width: 1080px;
+      margin: 1rem auto;
+      padding: 0 1.5rem;
+      gap: 1.5rem;
+    }
   }
 
   .year-tag {
-    grid-column: 1/-1;
-    font: 700 1.4rem/1 "Helvetica Neue", sans-serif;
-    color: #6638b6;
-    margin: .5rem 0 .2rem
+    grid-column: 1 / -1;
+    font: 700 1.3rem/0.1 "Inter", sans-serif;
+    /* match research-header font family + weight */
+    color: #364f6b;
+    margin: 1.0rem 0 0.0rem;
   }
 
   .pub-card {
-    background: #fff;
+    background: var(--content-bg);
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
-    transition: .2s
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 1rem 1.2rem;
+    /* same padding as research-body */
+    font-size: 0.9rem;
+    /* match research-card font sizing */
+    line-height: 1.45;
   }
 
   .pub-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, .08)
+    box-shadow: var(--card-shadow-hover);
   }
 
   .badge {
     display: inline-block;
     background: #ffd966;
     color: #222;
-    font-size: .7rem;
-    padding: .1rem .45rem;
+    font-size: 0.6rem;
+    padding: 0.1rem 0.35rem;
     border-radius: 4px;
-    margin-right: .4rem;
-    text-transform: uppercase
+    margin-right: 0.4rem;
+    text-transform: uppercase;
   }
 
   .pub-authors {
-    margin: 0 0 .35rem;
-    font: .9rem/1.3 "Helvetica Neue", sans-serif
+    margin: 0 0 0.3rem;
+    font: 0.8rem/1.3 "Helvetica Neue", sans-serif;
   }
 
   .pub-title {
-    margin: .1rem 0;
-    font: 400 .95rem/1.35 "Helvetica Neue", sans-serif
+    margin: 0.1rem 0;
+    font: 400 0.85rem/1.35 "Helvetica Neue", sans-serif;
   }
 
   .pub-meta {
     margin: 0;
-    font: .78rem/1.35 "Helvetica Neue", sans-serif;
-    color: #555
+    font: 0.7rem/1.35 "Helvetica Neue", sans-serif;
+    color: #555;
   }
 
   .journal {
     font-weight: 700;
-    font-size: .87rem;
-    color: #007ACC
+    font-size: 0.8rem;
+    color: #007ACC;
   }
-
-  .endnote-orange {
-    color: #E67300;
-  }
-
-  /* accent color */
 </style>
 
+
+<!-- ——— Funding / supporter logos ——— -->
+<section class="Journals">
+  <h2 class="journal-title">Journal Publications</h2>
+
+  <div class="journal-bar">
+    <div class="journal-item size70">
+      <img src="{{ '/assets/img/journals/ACS_Nano.svg' | relative_url }}">
+    </div>
+    <div class="journal-item size80">
+      <img src="{{ '/assets/img/journals/Nano_Letters.svg' | relative_url }}">
+    </div>
+    <div class="journal-item size80">
+      <img src="{{ '/assets/img/journals/Science_Advances.svg' | relative_url }}">
+    </div>
+    <div class="journal-item size70">
+      <img src="{{ '/assets/img/journals/JPCL.png' | relative_url }}">
+    </div>
+    <div class="journal-item size90">
+      <img src="{{ '/assets/img/journals/APL.png' | relative_url }}">
+    </div>
+    <div class="journal-item size90">
+      <img src="{{ '/assets/img/journals/PRE.png' | relative_url }}">
+    </div>
+    <div class="journal-item size90">
+      <img src="{{ '/assets/img/journals/PRM.png' | relative_url }}">
+    </div>
+    <div class="journal-item size70">
+      <img src="{{ '/assets/img/journals/JPCB.png' | relative_url }}">
+    </div>
+    <div class="journal-item size90">
+      <img src="{{ '/assets/img/journals/nanoscale.jpg' | relative_url }}">
+    </div>
+    <div class="journal-item size70">
+      <img src="{{ '/assets/img/journals/scientific_Reports.png' | relative_url }}">
+    </div>
+    <div class="journal-item size80">
+      <img src="{{ '/assets/img/journals/applied_science.png' | relative_url }}">
+    </div>
+    <div class="journal-item size90">
+      <img src="{{ '/assets/img/journals/JCP.png' | relative_url }}">
+    </div>
+    <div class="journal-item size100">
+      <img src="{{ '/assets/img/journals/Nature_Communications.png' | relative_url }}">
+    </div>
+  </div>
+</section>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  referrerpolicy="no-referrer">
+
 {% if site.author.googlescholar %}
-<div class="wordwrap">
-  <a href="{{ site.author.googlescholar }}" target="_blank" rel="noopener noreferrer">Google Scholar Profile</a>.
+<div class="scholar-card">
+  <a href="{{ site.author.googlescholar }}" class="scholar-link" target="_blank" rel="noopener noreferrer">
+    <i class="fa-solid fa-graduation-cap"></i>
+    <span>Google Scholar Profile</span>
+  </a>
 </div>
 {% endif %}
 

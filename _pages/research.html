@@ -5,25 +5,6 @@ permalink: /research/
 author_profile: false
 ---
 
-<!-- ——— Funding / supporter logos ——— -->
-<div class="sponsor-bar">
-    <div class="sponsor-item nsf-logo">
-        <img src="{{ '/assets/img/funding/nsf-logo.png' | relative_url }}" alt="NSF">
-    </div>
-    <div class="sponsor-item access-logo">
-        <img src="{{ '/assets/img/funding/access-logo.svg' | relative_url }}" alt="ACCESS">
-    </div>
-    <div class="sponsor-item nist-logo">
-        <img src="{{ '/assets/img/funding/nist-logo.png' | relative_url }}" alt="NIST">
-    </div>
-    <div class="sponsor-item und-logo">
-        <img src="{{ '/assets/img/funding/UND-logo.png' | relative_url }}" alt="University of Notre Dame">
-    </div>
-</div>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    referrerpolicy="no-referrer">
-
 <style>
     :root {
         --accent1: #364f6b;
@@ -31,66 +12,110 @@ author_profile: false
         --card-radius: 0.85rem;
         --card-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
         --card-shadow-hover: 0 5px 14px rgba(0, 0, 0, 0.12);
+
+        /* ─── sponsor slots ─── */
+        --sponsor-slot-width: 160px;
+        --sponsor-gap: 1rem;
     }
 
-    /* Sponsor bar container */
+    .funding {
+        text-align: center;
+        margin: 0.5rem auto;
+        max-width: 1000px;
+        /* keeps content nicely centered on large screens */
+    }
+
+    .funding-title {
+        font-size: 1.45rem;
+        font-weight: 600;
+        margin-top: 0;
+        margin-bottom: 0rem;
+        color: #364f6b;
+    }
+
+    /* ——— Base sponsor-bar ——— */
     .sponsor-bar {
         display: flex;
+        align-items: center;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 1rem;
-        margin: 0.5rem 0 0.5rem;
+        gap: var(--sponsor-gap);
+        margin: 0.25rem auto;
+
+        /* lock to 5 slots: 5×slot + 4×gap */
+        max-width: calc((var(--sponsor-slot-width) * 5) + (var(--sponsor-gap) * 4));
     }
 
-    /* Generic sponsor container */
+    /* ——— Inline titles occupy 1 slot ——— */
+    .sponsor-bar__title {
+        flex: 0 0 var(--sponsor-slot-width);
+        text-align: right;
+        font: 600 1rem/1.2 "Inter", sans-serif;
+        color: var(--accent1);
+        white-space: nowrap;
+        margin: 0;
+        /* no extra margin, slot spacing comes from gap */
+    }
+
+    /* ——— Sponsor items occupy 1 slot ——— */
     .sponsor-item {
-        width: 220px;
-        /* uniform bounding box width */
-        height: 70px;
-        /* uniform bounding box height */
+        flex: 0 0 var(--sponsor-slot-width);
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    /* Generic logo styling */
+    /* ——— Logo styling ——— */
     .sponsor-item img {
         object-fit: contain;
-        filter: grayscale(15%);
         display: block;
     }
 
-    /* === Percentage-based logo sizing === */
-    .nsf-logo img {
+    .funding {
+        margin-bottom: 1.2rem;
+        /* adjusts space between sponsors and cards */
+    }
+
+    .size70 img {
         width: 70%;
     }
 
-    /* largest logo */
-    .access-logo img {
-        width: 70%;
-    }
-
-    .nist-logo img {
-        width: 100%;
-    }
-
-    .und-logo img {
+    .size80 img {
         width: 80%;
     }
 
+    .size90 img {
+        width: 90%;
+    }
+
+    .size100 img {
+        width: 100%;
+    }
+
+    .sponsor-bar--current {
+        gap: 0.05rem var(--sponsor-gap);
+        margin-bottom: 1.5rem;
+    }
+
+    /* ——— Dimming previous funders ——— */
+    .sponsor-bar--previous .sponsor-item img {
+        filter: grayscale(0%) opacity(0.8);
+    }
 
     /* ===== Research grid ===== */
     .research-grid {
         display: block;
         width: 100%;
         margin: 0 auto;
-        padding: 0 0.75rem;
+        padding: 0.25 0.75rem;
         /* small side padding on mobile */
     }
 
     /* Compact research card */
     .research-card {
         background: var(--content-bg);
+        border: 1px solid #e2e8f0;
         border-radius: var(--card-radius);
         box-shadow: var(--card-shadow);
         overflow: hidden;
@@ -127,13 +152,13 @@ author_profile: false
 
     /* Card body */
     .research-body {
-        padding: 1rem 1.2rem 1.2rem;
+        padding: 0.05rem 1.2rem 1.2rem;
         font-size: 0.9rem;
         line-height: 1.45;
     }
 
     .research-body h4 {
-        margin-top: 0.8rem;
+        margin-top: 0.2rem;
         font-weight: 600;
         font-size: 0.95rem;
     }
@@ -150,7 +175,7 @@ author_profile: false
             gap: 1.5rem;
             width: 100%;
             max-width: none;
-            padding: 0 1.5rem;
+            padding: 0 1.0rem;
         }
 
         .research-card {
@@ -195,6 +220,52 @@ author_profile: false
         }
     }
 </style>
+
+<!-- ——— Funding Section ——— -->
+<section class="funding">
+    <h2 class="funding-title">Funding & Support</h2>
+
+    <!-- Current Sponsors -->
+    <div class="sponsor-bar sponsor-bar--current">
+        <span class="sponsor-bar__title">Current:</span>
+        <div class="sponsor-item size70">
+            <img src="{{ '/assets/img/funding/access-logo.svg' | relative_url }}" alt="ACCESS">
+        </div>
+        <div class="sponsor-item size100">
+            <img src="{{ '/assets/img/funding/nist-logo.png' | relative_url }}" alt="NIST">
+        </div>
+        <div class="sponsor-item size100">
+            <img src="{{ '/assets/img/funding/CU_Coulder.png' | relative_url }}" alt="University of Colorado Boulder">
+        </div>
+        <div class="sponsor-item size70">
+            <img src="{{ '/assets/img/funding/UND-logo.png' | relative_url }}" alt="University of Notre Dame">
+        </div>
+        <div class="sponsor-item size90">
+            <img src="{{ '/assets/img/funding/NCSA.png' | relative_url }}" alt="NCSA">
+        </div>
+        <div class="sponsor-item size70">
+            <img src="{{ '/assets/img/funding/TACC.jpg' | relative_url }}" alt="TACC">
+        </div>
+    </div>
+
+    <!-- Previous Sponsors -->
+    <div class="sponsor-bar sponsor-bar--previous">
+        <span class="sponsor-bar__title">Previous:</span>
+        <div class="sponsor-item size70">
+            <img src="{{ '/assets/img/funding/nsf-logo.png' | relative_url }}" alt="NSF">
+        </div>
+        <div class="sponsor-item size80">
+            <img src="{{ '/assets/img/funding/UIUC.png' | relative_url }}"
+                alt="University of Illinois Urbana-Champaign">
+        </div>
+        <div class="sponsor-item size80">
+            <img src="{{ '/assets/img/funding/UC_Berkeley.webp' | relative_url }}" alt="UC Berkeley">
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    referrerpolicy="no-referrer">
 
 <div class="research-grid">
 
