@@ -119,9 +119,9 @@ author_profile: false
     display: grid;
     /* up to three columns, each ≥240px */
     grid-template-columns: repeat(3, minmax(240px, 1fr));
-    gap: 0.1rem 1rem;
-    margin: 1rem 0;
-    padding: 0 0.75rem;
+    margin: 1.0rem auto;
+    padding: 0 1.5rem;
+    gap: 1.0rem;
   }
 
   /* Two columns on medium screens */
@@ -140,19 +140,12 @@ author_profile: false
 
   /* add fluid padding & gap at wider breakpoints */
   @media (min-width: 768px) and (max-width: 1199px) {
-    .pub-grid {
-      gap: 1.5rem;
-      /* match research grid at this size */
-      padding: 0 1.5rem;
-    }
+    .pub-grid {}
   }
 
   @media (min-width: 1200px) {
     .pub-grid {
       max-width: 1080px;
-      margin: 1rem auto;
-      padding: 0 1.5rem;
-      gap: 1.5rem;
     }
   }
 
