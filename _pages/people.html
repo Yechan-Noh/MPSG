@@ -1,6 +1,6 @@
 ---
 title: ""
-layout: archive
+layout: default
 permalink: /people/
 author_profile: false
 ---
@@ -72,6 +72,7 @@ author_profile: false
     .pi-block {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 1.5rem;
         margin-bottom: 2.5rem;
         flex-wrap: wrap
@@ -110,54 +111,57 @@ author_profile: false
     }
 </style>
 
-{% comment %} PI HERO {% endcomment %}
-<div class="pi-block" style="display:flex; align-items:flex-start; gap:1.5rem; margin:2rem 0;">
-    <img src="{{ '/assets/img/people/Yechan-noh.png' | relative_url }}" alt="Portrait of Yechan Noh"
-        style="width:160px; border-radius:12px;">
+<div class="content-wrap">
+    {% comment %} PI HERO {% endcomment %}
+    <div class="pi-block" style="display:flex; align-items:flex-start; gap:1.5rem; margin:2rem 0;">
+        <img src="{{ '/assets/img/people/Yechan-noh.png' | relative_url }}" alt="Portrait of Yechan Noh"
+            style="width:160px; border-radius:12px;">
 
-    <div class="pi-info" style="max-width:600px;">
-        <h2 style="margin-top:0;">Yechan Noh</h2>
+        <div class="pi-info" style="max-width:600px;">
+            <h2 style="margin-top:0;">Yechan Noh</h2>
 
-        <p>
-            <strong>PREP Postdoctoral Associate</strong><br>
-            National Institute of Standards and Technology<br>
-            Applied Chemicals and Materials Division<br>
-            & University of Colorado Boulder, Department of Physics <br>
-        </p>
+            <p>
+                <strong>PREP Postdoctoral Associate</strong><br>
+                National Institute of Standards and Technology<br>
+                Applied Chemicals and Materials Division<br>
+                & University of Colorado Boulder, Department of Physics <br>
+            </p>
 
-        <p> <strong>Education</strong><br> </p>
-        <p>
-            <strong>Postdoc</strong><br>
-            National Institute of Standards and Technology (2023–Present)<br>
-            & University of Colorado Boulder, Department of Physics (2024–Present)<br>
-            & University of California Berkeley, Materials Science and Engineering (2023–2024)<br>
+            <p> <strong>Education</strong><br> </p>
+            <p>
+                <strong>Postdoc</strong><br>
+                National Institute of Standards and Technology (2023–Present)<br>
+                & University of Colorado Boulder, Department of Physics (2024–Present)<br>
+                & University of California Berkeley, Materials Science and Engineering (2023–2024)<br>
 
-            <strong>Ph.D.</strong> University of Illinois at Urbana-Champaign, Mechanical Eng (2018–2023)<br>
+                <strong>Ph.D.</strong> University of Illinois at Urbana-Champaign, Mechanical Eng (2018–2023)<br>
 
-            <strong>M.S.</strong> University of Ulsan, Mechanical Eng (2016–2018)<br>
+                <strong>M.S.</strong> University of Ulsan, Mechanical Eng (2016–2018)<br>
 
-            <strong>B.S.</strong> University of Ulsan, Mechanical Eng, ranked 1 out of 258 (2011–2016)<br>
-        </p>
+                <strong>B.S.</strong> University of Ulsan, Mechanical Eng, ranked 1 out of 258 (2011–2016)<br>
+            </p>
 
+        </div>
     </div>
-</div>
 
-{% comment --------- LOAD COLLECTION SAFELY -------------------------------- %}
-{% endcomment %}
-{% if site.collections['people'] %}
-{% assign team = site.people | sort: 'start' %}
-{% else %}
-{% assign team = '' | split: '' %}
-{% endif %}
+    {% comment --------- LOAD COLLECTION SAFELY -------------------------------- %}
+    {% endcomment %}
+    {% if site.collections['people'] %}
+    {% assign team = site.people | sort: 'start' %}
+    {% else %}
+    {% assign team = '' | split: '' %}
+    {% endif %}
 
-<div class="people-grid">
-    {% for p in team %}
-    <a href="{{ p.url }}" class="person-card">
-        {% assign imgsrc = p.image | default: '/assets/img/people/default.jpg' %}
-        <img src="{{ imgsrc }}" alt="{{ p.name }} portrait" class="{% unless p.image %}default{% endunless %}">
-        <h3>{{ p.name }}</h3>
-        {% if p.role %}<p class="role">{{ p.role }}</p>{% endif %}
-        {% if p.description %}<p class="desc">{{ p.description }}</p>{% endif %}
-    </a>
-    {% endfor %}
+    <div class="people-grid">
+        {% for p in team %}
+        <a href="{{ p.url }}" class="person-card">
+            {% assign imgsrc = p.image | default: '/assets/img/people/default.jpg' %}
+            <img src="{{ imgsrc }}" alt="{{ p.name }} portrait" class="{% unless p.image %}default{% endunless %}">
+            <h3>{{ p.name }}</h3>
+            {% if p.role %}<p class="role">{{ p.role }}</p>{% endif %}
+            {% if p.description %}<p class="desc">{{ p.description }}</p>{% endif %}
+        </a>
+        {% endfor %}
+    </div>
+
 </div>
