@@ -51,14 +51,19 @@ author_profile: false
 }
 
 .mission {
-  font-size: 1.2rem;        /* Slightly larger than body text */
-  line-height: 1.6;         /* Comfortable spacing */
-  color: var(--gray-500);   /* Softer than pure black */
-  max-width: 720px;         /* Restrict width for better readability */
-  margin: 0.5rem auto 2.5rem; /* Centered and spaced vertically */
-  text-align: center;
-  font-weight: 400;
+  font-size: 1.15rem;              /* Clear, readable size */
+  line-height: 1.75;               /* Improved vertical rhythm */
+  color: var(--gray-600);          /* Slightly darker for better contrast */
+  max-width: 700px;                /* Optimal line length for readability */
+  margin: 2rem auto;               /* Balanced vertical spacing */
+  text-align: center;              /* Centered for emphasis */
+  font-weight: 500;                /* Slightly bolder for presence */
+  padding: 0 1rem;                 /* Padding for smaller screens */
+  font-family: 'Source Sans Pro', sans-serif; /* Modern, clean font */
+  letter-spacing: 0.015em;         /* Slight spacing for elegance */
 }
+
+
 .mission::before {
   content: "";
   display: block;
@@ -108,9 +113,10 @@ author_profile: false
 
   <canvas id="titleCanvas"></canvas>
 
-  <p class="mission">
-    We harness state-of-the-art computer simulations to engineer advanced devices from the molecular and quantum scales, driving innovative solutions to industrial challenges.
-  </p>
+<p class="mission">
+  We harness state-of-the-art computer simulations to <strong>engineer advanced devices from the molecular and quantum scales</strong> <br> in order to solve industrial challenges.
+</p>
+
 </section>
 
 <!-- ── RESEARCH PILLARS ──────────────────────────────────────── -->
