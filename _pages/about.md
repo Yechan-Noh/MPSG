@@ -109,7 +109,7 @@ author_profile: false
   <canvas id="titleCanvas"></canvas>
 
   <p class="mission">
-    We harness cutting-edge computer simulations to engineer at the molecular and quantum levels, driving innovative solutions to industrial challenges.
+    We harness state-of-the-art computer simulations to engineer advanced devices from the molecular and quantum scales, driving innovative solutions to industrial challenges.
   </p>
 </section>
 
