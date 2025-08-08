@@ -1,29 +1,32 @@
 /* ==========================================================================
-   Various functions that we want to use within the template
+   Utilities
    ========================================================================== */
 
-// Determine the expected state of the theme toggle, which can be "dark", "light", or
-// "system". Default is "system".
-let determineThemeSetting = () => {
-  let themeSetting = localStorage.getItem("theme");
-  return (themeSetting != "dark" && themeSetting != "light" && themeSetting != "system") ? "system" : themeSetting;
+// Determine the expected state of the theme toggle ("dark" | "light" | "system")
+const determineThemeSetting = () => {
+  const themeSetting = localStorage.getItem("theme");
+  return (themeSetting !== "dark" && themeSetting !== "light" && themeSetting !== "system")
+    ? "system"
+    : themeSetting;
 };
 
-// Determine the computed theme, which can be "dark" or "light". If the theme setting is
-// "system", the computed theme is determined based on the user's system preference.
-let determineComputedTheme = () => {
-  let themeSetting = determineThemeSetting();
-  if (themeSetting != "system") {
-    return themeSetting;
-  }
-  return (userPref && userPref("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+// Determine the computed theme ("dark" | "light")
+const determineComputedTheme = () => {
+  const themeSetting = determineThemeSetting();
+  if (themeSetting !== "system") return themeSetting;
+
+  // Use matchMedia directly (userPref was undefined before)
+  return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 };
 
-// detect OS/browser preference
-const browserPref = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+// detect OS/browser preference (fallback)
+const browserPref =
+  (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
 
 // Set the theme on page load or when explicitly called
-let setTheme = (theme) => {
+const setTheme = (theme) => {
   const use_theme =
     theme ||
     localStorage.getItem("theme") ||
@@ -33,110 +36,102 @@ let setTheme = (theme) => {
   if (use_theme === "dark") {
     $("html").attr("data-theme", "dark");
     $("#theme-icon").removeClass("fa-sun").addClass("fa-moon");
-  } else if (use_theme === "light") {
+  } else {
     $("html").removeAttr("data-theme");
     $("#theme-icon").removeClass("fa-moon").addClass("fa-sun");
   }
 };
 
 // Toggle the theme manually
-var toggleTheme = () => {
-  const current_theme = $("html").attr("data-theme");
-  const new_theme = current_theme === "dark" ? "light" : "dark";
-  localStorage.setItem("theme", new_theme);
-  setTheme(new_theme);
+const toggleTheme = () => {
+  const current = $("html").attr("data-theme");
+  const next = current === "dark" ? "light" : "dark";
+  localStorage.setItem("theme", next);
+  setTheme(next);
 };
 
 /* ==========================================================================
-   Plotly integration script so that Markdown codeblocks will be rendered
+   Plotly integration (safe with non-module scripts)
    ========================================================================== */
 
-// Read the Plotly data from the code block, hide it, and render the chart as new node. This allows for the 
-// JSON data to be retrieve when the theme is switched. The listener should only be added if the data is 
-// actually present on the page.
-import { plotlyDarkLayout, plotlyLightLayout } from './theme.js';
-let plotlyElements = document.querySelectorAll("pre>code.language-plotly");
-if (plotlyElements.length > 0) {
+const plotlyBlocks = document.querySelectorAll("pre>code.language-plotly");
+if (plotlyBlocks.length > 0) {
   document.addEventListener("readystatechange", () => {
-    if (document.readyState === "complete") {
-      plotlyElements.forEach((elem) => {
-        // Parse the Plotly JSON data and hide it
-        var jsonData = JSON.parse(elem.textContent);
-        elem.parentElement.classList.add("hidden");
+    if (document.readyState !== "complete") return;
 
-        // Add the Plotly node
-        let chartElement = document.createElement("div");
-        elem.parentElement.after(chartElement);
+    import("./theme.js")
+      .then(({ plotlyDarkLayout, plotlyLightLayout }) => {
+        plotlyBlocks.forEach((elem) => {
+          // If Plotly isn't loaded, skip gracefully
+          if (typeof window.Plotly === "undefined") return;
 
-        // Set the theme for the plot and render it
-        const theme = (determineComputedTheme() === "dark") ? plotlyDarkLayout : plotlyLightLayout;
-        if (jsonData.layout) {
-          jsonData.layout.template = (jsonData.layout.template) ? { ...theme, ...jsonData.layout.template } : theme;
-        } else {
-          jsonData.layout = { template: theme };
-        }
-        Plotly.react(chartElement, jsonData.data, jsonData.layout);
+          const jsonData = JSON.parse(elem.textContent);
+          elem.parentElement.classList.add("hidden");
+
+          const chartEl = document.createElement("div");
+          elem.parentElement.after(chartEl);
+
+          const theme = (determineComputedTheme() === "dark") ? plotlyDarkLayout : plotlyLightLayout;
+          if (jsonData.layout) {
+            jsonData.layout.template = jsonData.layout.template
+              ? { ...theme, ...jsonData.layout.template }
+              : theme;
+          } else {
+            jsonData.layout = { template: theme };
+          }
+
+          window.Plotly.react(chartEl, jsonData.data, jsonData.layout);
+        });
+      })
+      .catch((err) => {
+        console.warn("Plotly theme module failed to load:", err);
+        // Fallback rendering if Plotly is present
+        plotlyBlocks.forEach((elem) => {
+          if (typeof window.Plotly === "undefined") return;
+          const jsonData = JSON.parse(elem.textContent);
+          elem.parentElement.classList.add("hidden");
+          const chartEl = document.createElement("div");
+          elem.parentElement.after(chartEl);
+          window.Plotly.react(chartEl, jsonData.data, jsonData.layout || {});
+        });
       });
-    }
   });
 }
 
-/* ==========================================================================
-   Actions that should occur when the page has been fully loaded
-   ========================================================================== */
+// --- Minimal fallback for the hamburger (runs even if other code failed) ---
+document.addEventListener('DOMContentLoaded', function () {
+  var btn = document.getElementById('mpsg-nav-toggle');
+  var nav = document.getElementById('mpsg-site-nav');
+  if (!btn || !nav) return;
 
-$(document).ready(function () {
-  // SCSS SETTINGS - These should be the same as the settings in the relevant files 
-  const scssLarge = 925;          // pixels, from /_sass/_themes.scss
-  const scssMastheadHeight = 70;  // pixels, from the current theme (e.g., /_sass/theme/_default.scss)
+  // ensure button is clickable above other layers
+  btn.style.pointerEvents = 'auto';
 
-  // If the user hasn't chosen a theme, follow the OS preference
-  setTheme();
-  window.matchMedia('(prefers-color-scheme: dark)')
-        .addEventListener("change", (e) => {
-          if (!localStorage.getItem("theme")) {
-            setTheme(e.matches ? "dark" : "light");
-          }
-        });
-
-  // Enable the theme toggle
-  $('#theme-toggle').on('click', toggleTheme);
-
-  // Enable the sticky footer
-  var bumpIt = function () {
-    $("body").css("margin-bottom", $(".page__footer").outerHeight(true));
+  function setExpanded(on) {
+    document.body.classList.toggle('mpsg-nav-open', on);
+    btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+    btn.setAttribute('aria-label', on ? 'Close menu' : 'Open menu');
   }
-  $(window).resize(function () {
-    didResize = true;
-  });
-  setInterval(function () {
-    if (didResize) {
-      didResize = false;
-      bumpIt();
-    }}, 250);
-  var didResize = false;
-  bumpIt();
 
-  // FitVids init
-  fitvids();
-
-  // Follow menu drop down
-  $(".author__urls-wrapper button").on("click", function () {
-    $(".author__urls").fadeToggle("fast", function () { });
-    $(".author__urls-wrapper button").toggleClass("open");
+  btn.addEventListener('click', function (e) {
+    e.preventDefault();
+    setExpanded(!document.body.classList.contains('mpsg-nav-open'));
   });
 
-  // Restore the follow menu if toggled on a window resize
-  jQuery(window).on('resize', function () {
-    if ($('.author__urls.social-icons').css('display') == 'none' && $(window).width() >= scssLarge) {
-      $(".author__urls").css('display', 'block')
-    }
+  // close when clicking outside (mobile)
+  document.addEventListener('click', function (e) {
+    if (!document.body.classList.contains('mpsg-nav-open')) return;
+    var root = document.querySelector('[data-mpsg-masthead]');
+    if (root && !root.contains(e.target)) setExpanded(false);
   });
 
-  // Init smooth scroll, this needs to be slightly more than then fixed masthead height
-  $("a").smoothScroll({
-    offset: -scssMastheadHeight,
-    preventDefault: false,
+  // close on escape
+  window.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') setExpanded(false);
   });
 
+  // close when resizing up to desktop
+  window.addEventListener('resize', function () {
+    if (window.matchMedia('(min-width: 961px)').matches) setExpanded(false);
+  });
 });

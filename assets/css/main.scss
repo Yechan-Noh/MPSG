@@ -1,42 +1,49 @@
 ---
+
 ---
 
 /*
- * This file controls what is imported from /_sass
- *
- * Note that the files are processed in the order they are imported, so they are partly
-   sorted by the dependencies. Also, the first two lines of the file are required by Jekyll.
+ * Master stylesheet import list.
+ * Order matters — custom overrides go LAST.
  */
 
-@import
-    "vendor/breakpoint/breakpoint",
+/* Vendor dependencies */
+@import "vendor/breakpoint/breakpoint";
+@import "vendor/susy/susy";
 
-    "themes",
-    "theme/default",
-    "theme/dark",
+/* Theme core */
+@import "themes";
+@import "theme/default";
+@import "theme/dark";
 
-    "include/mixins",
-    "vendor/susy/susy",
+/* Mixins and utilities */
+@import "include/mixins";
+@import "include/utilities";
 
-    "layout/reset",
-    "layout/base",
+/* Base layout */
+@import "layout/reset";
+@import "layout/base";
 
-    "include/utilities",
-    "layout/tables",
-    "layout/buttons",
-    "layout/notices",
-    "layout/masthead",
-    "layout/navigation",
-    "layout/footer",
-    "syntax",
+/* Components */
+@import "layout/tables";
+@import "layout/buttons";
+@import "layout/notices";
+@import "layout/masthead";
+@import "layout/footer";
+@import "syntax";
+@import "layout/forms";
 
-    "layout/forms",
+/* Page structures */
+@import "layout/page";
+@import "layout/archive";
+@import "layout/sidebar";
 
-    "layout/page",
-    "layout/archive",
-    "layout/sidebar",
+/* Icons */
+@import "vendor/font-awesome/fontawesome";
+@import "vendor/font-awesome/solid";
+@import "vendor/font-awesome/brands";
 
-    "vendor/font-awesome/fontawesome",
-    "vendor/font-awesome/solid",
-    "vendor/font-awesome/brands"
-;
+/* -------------------------------
+   CUSTOM OVERRIDES (load last)
+   ------------------------------- */
+@import "layout/mpsg-nav";
