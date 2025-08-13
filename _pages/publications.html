@@ -56,10 +56,10 @@ author_profile: false
   }
 
   .journal-title {
-    font-size: 1.45rem;
+    font-size: 1.8rem;
     font-weight: 600;
     margin-top: 0;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.5rem;
     color: #364f6b;
   }
 
@@ -113,37 +113,25 @@ author_profile: false
     width: 100%;
   }
 
-
   /* ───── Publications Card Grid ─────────────────────────────────────── */
   .pub-grid {
     display: grid;
-    /* up to three columns, each ≥240px */
-    grid-template-columns: repeat(3, minmax(240px, 1fr));
+
+    /* This single line creates a fluid, responsive grid.
+    - 'auto-fit': Creates as many columns as will fit in the available space.
+    - 'minmax(240px, 1fr)': Each column will be at least 240px wide but can grow 
+      to fill any extra space equally ('1fr'). When a column can no longer
+      maintain the 240px minimum, it wraps to the next line automatically.
+  */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+
+    gap: 1.0rem;
     margin: 1.0rem auto;
     padding: 0 1.5rem;
-    gap: 1.0rem;
   }
 
-  /* Two columns on medium screens */
-  @media (max-width: 800px) {
-    .pub-grid {
-      grid-template-columns: repeat(2, minmax(200px, 1fr));
-    }
-  }
-
-  /* One column on narrow screens */
-  @media (max-width: 500px) {
-    .pub-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* add fluid padding & gap at wider breakpoints */
-  @media (min-width: 768px) and (max-width: 1199px) {
-    .pub-grid {}
-  }
-
-  @media (min-width: 1200px) {
+  /* Optional: Constrain the grid's width on very large screens for readability. */
+  @media (min-width: 1080px) {
     .pub-grid {
       max-width: 1080px;
     }

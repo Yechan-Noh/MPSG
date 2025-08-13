@@ -23,21 +23,37 @@ header.masthead:not(.mpsg-header),
 
 /* Header */
 .mpsg-header {
-  position: sticky; top: 0; z-index: 1000;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   background: var(--mpsg-bg);
   border-bottom: 1px solid var(--mpsg-border);
   box-shadow: var(--mpsg-shadow);
   height: var(--mpsg-h);
+
+  /* Default: stretch full width */
+  width: 100%;
 }
+
+/* When screen is less than 1080px wide, center the header with side padding */
+@media (max-width: 1080px) {
+  .mpsg-header {
+    max-width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+  }
+}
+
+
 .mpsg-inner {
-  max-width: 1200px; margin: 0 auto; height: 100%;
+  max-width: 1080px; margin: 0 auto; height: 100%;
   display: grid; grid-template-columns: auto 1fr auto;
   align-items: center; gap: .75rem; padding: 0 1rem;
   position: relative; /* anchor for the popover */
 }
 
 /* Brand */
-.mpsg-brand { display: inline-flex; align-items: center; gap: .5rem; color: var(--mpsg-fg); text-decoration: none; font-weight: 700; white-space: nowrap; }
+.mpsg-brand { display: inline-flex; align-items: center; gap: .5rem; color: var(--mpsg-fg); text-decoration: none; font-weight: 700; white-space: nowrap; font-size: 1.3rem; }
 .mpsg-brand img { height: 1.5rem; width: auto; }
 
 /* Toggle */
@@ -62,7 +78,7 @@ header.masthead:not(.mpsg-header),
 .mpsg-link, .mpsg-btn {
   display: inline-flex; align-items: center; gap: .35rem;
   height: calc(var(--mpsg-h) - 1rem); padding: 0 .55rem; border-radius: .5rem;
-  text-decoration: none; color: var(--mpsg-fg); font-weight: 500; white-space: nowrap;
+  text-decoration: none; color: var(--mpsg-fg); font-weight: 500; white-space: nowrap; font-size: 1.1rem;
 }
 .mpsg-link:hover, .mpsg-btn:hover { background: #f3f4f6; }
 .mpsg-link[aria-current="page"] { color: var(--mpsg-accent); }

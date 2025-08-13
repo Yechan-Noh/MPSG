@@ -26,10 +26,10 @@ author_profile: false
     }
 
     .funding-title {
-        font-size: 1.45rem;
+        font-size: 1.8rem;
         font-weight: 600;
         margin-top: 0;
-        margin-bottom: 0rem;
+        margin-bottom: 0.5rem;
         color: #364f6b;
     }
 
@@ -119,14 +119,13 @@ author_profile: false
         border-radius: var(--card-radius);
         box-shadow: var(--card-shadow);
         overflow: hidden;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, width 0.2s ease;
         width: 100%;
-        max-width: 600px;
-        /* narrower single column */
+        max-width: clamp(300px, 90%, 600px);
+        /* fluid min–preferred–max width */
         margin: 0 auto 1rem;
-        /* center in 1-col mode */
-        font-size: 0.9rem;
-        /* reduced font */
+        font-size: clamp(0.85rem, 1vw, 0.95rem);
+        /* scales text with viewport */
         line-height: 1.45;
     }
 
@@ -167,47 +166,22 @@ author_profile: false
         margin: 0.25rem 0;
     }
 
-    /* ===== 2 column fluid 768–1199px ===== */
-    @media (min-width: 768px) and (max-width: 1199px) {
+    /* Two-column fluid, auto-resizing from tablet to large desktop */
+    @media (min-width: 768px) {
         .research-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit,
+                    minmax(clamp(280px, 45%, 540px), 1fr));
             gap: 1.5rem;
             width: 100%;
-            max-width: none;
-            padding: 0 1.0rem;
-        }
-
-        .research-card {
-            max-width: none;
-            margin: 0;
-        }
-
-        /* wrapper fluid */
-        .page,
-        .page__inner-wrap,
-        .page__content {
-            max-width: none !important;
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 1.5rem !important;
-        }
-    }
-
-    /* ===== 2 column fixed >=1200px ===== */
-    @media (min-width: 1200px) {
-        .research-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
             max-width: 1080px;
-            /* compact fixed width */
+            /* keeps it from stretching too wide */
             margin: 0 auto;
             padding: 0 1.5rem;
         }
 
         .research-card {
-            max-width: none;
+            max-width: 100%;
             margin: 0;
         }
 
