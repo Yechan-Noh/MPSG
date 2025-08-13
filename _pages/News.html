@@ -1,8 +1,375 @@
 ---
-layout: archive
-title: ""
+layout: default
+title: "News"
 permalink: /news/
 author_profile: false
 ---
 
-Under Construction
+<style>
+    :root {
+        --accent1: #364f6b;
+        --muted: #64748b;
+        --muted-200: #e2e8f0;
+        --card-radius: .85rem;
+        --card-shadow: 0 3px 10px rgba(0, 0, 0, .05);
+        --card-shadow-hover: 0 5px 14px rgba(0, 0, 0, .12);
+    }
+
+    .news-wrap {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 1.5rem 4.5rem;
+    }
+
+    .news-hero {
+        margin: .25rem 0 1rem;
+    }
+
+    .news-hero h1 {
+        margin: 0 0 .35rem;
+        color: var(--accent1);
+        font-size: 2rem;
+        letter-spacing: .2px;
+    }
+
+    .news-hero p {
+        margin: 0;
+        color: var(--muted);
+    }
+
+    .news-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.1rem;
+    }
+
+    @media (min-width:768px) {
+        .news-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    .news-grid::after {
+        content: "";
+        display: block;
+        height: 3rem;
+    }
+
+    /* spacer before site footer */
+
+    .news-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: var(--card-radius);
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        transition: transform .2s, box-shadow .2s;
+    }
+
+    .news-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--card-shadow-hover);
+    }
+
+    .news-media {
+        position: relative;
+        background: linear-gradient(180deg, #f8fafc, #eef2f7);
+        /* This makes sure the background fills the entire container,
+          and the image is contained within it.
+        */
+        height: auto;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .news-media img {
+        /* These properties ensure the image scales to fit the container
+           without being cropped, maintaining its aspect ratio. */
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        display: block;
+    }
+
+    .badge-date {
+        position: absolute;
+        left: .75rem;
+        top: .75rem;
+        background: rgba(54, 79, 107, .92);
+        color: #fff;
+        padding: .35rem .55rem;
+        border-radius: .5rem;
+        font-size: .78rem;
+        font-weight: 600;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, .15);
+    }
+
+    .news-body {
+        padding: .85rem 1rem .75rem;
+    }
+
+    .date-inline {
+        display: inline-block;
+        background: #f1f5f9;
+        color: #334155;
+        border: 1px solid var(--muted-200);
+        border-radius: .4rem;
+        font-size: .75rem;
+        padding: .18rem .4rem;
+        margin: 0 0 .4rem;
+    }
+
+    .news-title {
+        margin: 0 0 .35rem;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1.25;
+    }
+
+    .news-summary {
+        margin: .2rem 0 .5rem;
+        color: #42536a;
+        font-size: .92rem;
+        line-height: 1.4;
+    }
+
+    .news-full {
+        margin: .25rem 0 .5rem;
+        color: #334155;
+        font-size: .92rem;
+        line-height: 1.5;
+    }
+
+    .posted-pill {
+        display: inline-block;
+        padding: .25rem .55rem;
+        border: 1px solid var(--muted-200);
+        border-radius: 999px;
+        background: #fff;
+        font-size: .82rem;
+        color: #475569;
+    }
+
+    .thumbs {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4px;
+        padding: 0 1rem .9rem;
+    }
+
+    .thumbs img {
+        width: 100%;
+        aspect-ratio: 4/3;
+        object-fit: cover;
+        border-radius: .4rem;
+        border: 1px solid var(--muted-200);
+    }
+
+    .news-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .6rem;
+        padding: 0 1rem .9rem;
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .35rem;
+    }
+
+    .tag {
+        background: #f8fafc;
+        color: #475569;
+        font-size: .78rem;
+        padding: .2rem .45rem;
+        border-radius: .5rem;
+        border: 1px solid var(--muted-200);
+    }
+
+    .expand-btn {
+        appearance: none;
+        border: 1px solid var(--muted-200);
+        background: #fff;
+        border-radius: .6rem;
+        padding: .4rem .7rem;
+        font-size: .82rem;
+        cursor: pointer;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, .02);
+    }
+
+    .expand-btn:hover {
+        box-shadow: 0 2px 6px rgba(0, 0, 0, .08);
+    }
+</style>
+
+<div class="news-wrap">
+    <div class="news-hero">
+        <h1>Lab News</h1>
+    </div>
+
+    {%- comment -%} Use `_news` collection by default; fallback to posts categorized/tagged as news. {%- endcomment -%}
+    {%- assign has_news = site.news | size -%}
+    {%- if has_news > 0 -%}
+    {%- assign items = site.news -%}
+    {%- else -%}
+    {%- assign items = site.posts | where_exp: "p", "p.category == 'news' or p.categories contains 'news'" -%}
+    {%- endif -%}
+
+    <div id="news-grid" class="news-grid">
+        {%- assign sorted = items | sort: 'date' | reverse -%}
+        {%- for post in sorted -%}
+        {%- assign y = post.date | date: '%Y' -%}
+        {%- assign date_str = post.date | date: '%b %d, %Y' -%}
+
+        {%- comment -%} Authors → array; displayed as “Posted by …”. {%- endcomment -%}
+        {%- if post.authors -%}
+        {%- assign authors_list = post.authors -%}
+        {%- elsif post.author -%}
+        {%- assign authors_str = post.author -%}
+        {%- assign authors_list = authors_str | split: '|' -%}
+        {%- if authors_list.size == 1 -%}{%- assign authors_list = authors_str | split: ',' -%}{%- endif -%}
+        {%- elsif site.author and site.author.name -%}
+        {%- assign authors_list = site.author.name | split: '|' -%}
+        {%- else -%}
+        {%- assign authors_list = 'Lab' | split: '|' -%}
+        {%- endif -%}
+        {%- assign posted_by = '' -%}
+        {%- assign authors_lc = '' -%}
+        {%- for a in authors_list -%}
+        {%- assign a_trim = a | strip -%}
+        {%- assign a_lc = a_trim | downcase -%}
+        {%- if forloop.first -%}
+        {%- assign posted_by = a_trim -%}
+        {%- assign authors_lc = a_lc -%}
+        {%- else -%}
+        {%- assign posted_by = posted_by | append: ', ' | append: a_trim -%}
+        {%- assign authors_lc = authors_lc | append: '|' | append: a_lc -%}
+        {%- endif -%}
+        {%- endfor -%}
+
+        {%- comment -%}
+        Consolidated logic to find ALL image files in the post's folder.
+        This will be the primary source for the cover image and thumbnails.
+        Added `.downcase` to ensure case-insensitive matching.
+        {%- endcomment -%}
+        {%- assign folder_rel = post.path | replace: 'text.md', '' | downcase -%}
+        {%- assign folder_abs = '/' | append: folder_rel -%}
+        {%- assign imgs_concat = '' -%}
+        {%- for f in site.static_files -%}
+        {%- assign fp = f.path | downcase -%}
+        {%- if fp contains folder_rel or fp contains folder_abs -%}
+        {%- if fp contains '.png' or fp contains '.jpg' or fp contains '.jpeg' or fp contains '.webp' or fp contains
+        '.gif' -%}
+        {%- if imgs_concat == '' -%}
+        {%- assign imgs_concat = f.path -%}
+        {%- else -%}
+        {%- assign imgs_concat = imgs_concat | append: '|' | append: f.path -%}
+        {%- endif -%}
+        {%- endif -%}
+        {%- endif -%}
+        {%- endfor -%}
+        {%- assign imgs = imgs_concat | split: '|' | uniq | sort_natural -%}
+
+        {%- assign cover_img = '' -%}
+        {%- if imgs.size > 0 -%}
+        {%- assign preferred = '' -%}
+        {%- for p in imgs -%}
+        {%- assign pl = p | downcase -%}
+        {%- if pl contains 'cover' or pl contains 'hero' -%}
+        {%- assign preferred = p -%}
+        {%- break -%}
+        {%- endif -%}
+        {%- endfor -%}
+        {%- assign cover_img = preferred | default: imgs[0] -%}
+        {%- endif -%}
+
+
+        <article class="news-card" data-year="{{ y }}" data-authors="{{ authors_lc }}">
+            {%- comment -%} Only render the image if a valid path was found {%- endcomment -%}
+            {%- if cover_img != nil and cover_img != '' -%}
+            <div class="news-media">
+                <img src="{{ cover_img | relative_url }}" alt="{{ post.title | escape }}" loading="lazy">
+                <span class="badge-date">{{ date_str }}</span>
+            </div>
+            {%- else -%}
+            {%- comment -%} If no image is found, a date badge is still shown {%- endcomment -%}
+            <div class="news-media">
+                <span class="badge-date">{{ date_str }}</span>
+            </div>
+            {%- endif -%}
+
+            <div class="news-body">
+                {%- if cover_img == nil or cover_img == '' -%}
+                <span class="date-inline" hidden>{{ date_str }}</span>
+                {%- endif -%}
+                <h3 class="news-title">{{ post.title }}</h3>
+                <p class="news-summary">
+                    {%- if post.summary -%}
+                    {{ post.summary }}
+                    {%- elsif post.excerpt -%}
+                    {{ post.excerpt | strip_html | truncate: 180 }}
+                    {%- else -%}
+                    {{ post.content | strip_html | truncate: 180 }}
+                    {%- endif -%}
+                </p>
+                <div class="news-full" hidden>
+                    {{ post.content }}
+                </div>
+                <div aria-label="Posted by"><span class="posted-pill">Posted by {{ posted_by }}</span></div>
+            </div>
+
+            {%- if imgs.size > 1 -%}
+            <div class="thumbs" aria-label="More images">
+                {%- assign shown = 0 -%}
+                {%- for img in imgs -%}
+                {%- if img != cover_img and shown < 4 -%} <img src="{{ img | relative_url }}"
+                    alt="{{ post.title | escape }} extra image" loading="lazy">
+                    {%- assign shown = shown | plus: 1 -%}
+                    {%- endif -%}
+                    {%- endfor -%}
+            </div>
+            {%- endif -%}
+
+            <div class="news-footer">
+                <div class="tags">
+                    {%- if post.tags -%}
+                    {%- for t in post.tags -%}<span class="tag">#{{ t }}</span>{%- endfor -%}
+                    {%- endif -%}
+                </div>
+                <button class="expand-btn" type="button">Read more</button>
+            </div>
+        </article>
+        {%- endfor -%}
+    </div>
+</div>
+
+<script>
+    (function () {
+        // Expand/collapse: hide summary when expanded to avoid duplicates
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.expand-btn');
+            if (!btn) return;
+            const card = btn.closest('.news-card');
+            const full = card.querySelector('.news-full');
+            const summary = card.querySelector('.news-summary');
+            if (!full) return;
+            const open = !full.hasAttribute('hidden');
+            if (open) {
+                full.setAttribute('hidden', '');
+                if (summary) summary.style.display = '';
+                btn.textContent = 'Read more';
+                btn.setAttribute('aria-expanded', 'false');
+            } else {
+                full.removeAttribute('hidden');
+                if (summary) summary.style.display = 'none';
+                btn.textContent = 'Show less';
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        });
+    })();
+</script>
