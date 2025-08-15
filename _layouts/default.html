@@ -11,42 +11,42 @@ layout: compress
 <head>
   {% include head.html %}
   {% include head/custom.html %}
+
   <style>
-    /* ---- Footer safety + layout sanity ---- */
-    :root {
-      --footer-gap: 72px;
-    }
-
-    /* space below content; adjust if your footer is taller */
-
+    /* ===== Page layout: simple, robust sticky footer ===== */
     html,
     body {
       height: 100%;
+      margin: 0;
     }
 
-    /* Ensure the page flows normally; prevent any “fixed footer” styles from theme/plugins */
-    .page__footer {
-      position: static !important;
-      /* back to normal flow */
-      bottom: auto !important;
-      left: 0;
-      right: 0;
-      margin-top: 2rem;
-      /* visible gap above footer */
-      z-index: auto;
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
     }
 
-    /* Give the main content breathing room at the bottom so it never sits under the footer */
+    /* Main content expands to fill space, pushes footer down on short pages */
     main.site-main {
+      flex: 1 0 auto;
       display: block;
-      padding-bottom: var(--footer-gap);
+      /* optional: give a little spacing under content so it doesn’t crowd footer */
+      padding-bottom: 0.75rem;
     }
 
-    /* If your theme wraps content differently, this helps too */
-    .page__content,
-    .initial-content,
-    .page {
-      padding-bottom: var(--footer-gap);
+    /* Neutral footer wrapper — let footer/custom.html control its own look */
+    .mpsg-footer-wrap {
+      flex-shrink: 0;
+      /* ensure footer stays visible at the bottom edge */
+      background: transparent;
+      border: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Optional: smooth scroll for “Top” button in the custom footer */
+    html {
+      scroll-behavior: smooth;
     }
   </style>
 </head>
@@ -55,28 +55,26 @@ layout: compress
   {% include browser-upgrade.html %}
   {% include masthead.html %}
 
-  <!-- Wrap content in <main> so the bottom padding applies consistently -->
-  <main class="site-main" role="main">
+  <!-- Main content -->
+  <main class="site-main" role="main" id="main-content">
     {{ content }}
   </main>
 
-  <div class="page__footer">
-    <footer>
-      {% include footer/custom.html %}
-      {% include footer.html %}
-    </footer>
+  <!-- Single source of footer truth: keep your modern footer ONLY in footer/custom.html -->
+  <div class="mpsg-footer-wrap" role="contentinfo">
+    {% include footer/custom.html %}
   </div>
 
   {% include scripts.html %}
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZM8MTZDBL3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-ZM8MTZDBL3');
+  </script>
 </body>
 
 </html>
-
-<!-- Google analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZM8MTZDBL3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
-  gtag('config', 'G-ZM8MTZDBL3');
-</script>

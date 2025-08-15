@@ -1,30 +1,287 @@
-<!-- start custom footer snippets -->
+<!-- ===== MPSG Modern Footer (drop-in for custom.html) ===== -->
 
-<footer style="text-align: center; font-size: 0.9rem; margin-top: 2rem; color: #666;">
-    <p>
-        © 2025 <strong>Molecular Physics Simulation Group (MPSG)</strong> ·
-        <a href="mailto:yechan.noh@nist.gov">Contact</a> ·
-        <a href="https://scholar.google.com/citations?user=0zdqbtIAAAAJ" target="_blank" rel="noopener">Google
-            Scholar</a>
-    </p>
-    <p style="font-size: 0.8rem; margin: 0;">
-        Site powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener noreferrer">Jekyll</a>.
-    </p>
+<style>
+    /* Sticky layout: footer sits at bottom when content is short */
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
 
+    main,
+    .page,
+    .page__content {
+        flex: 1 0 auto;
+    }
+
+    :root {
+        --ft-max: 880px;
+        --ft-fg: #444;
+        --ft-muted: #6b7280;
+        --ft-bg: #f6f7f9;
+        --ft-card: #ffffff;
+        --ft-border: #e5e7eb;
+        --ft-accent: #2563eb;
+        /* link hover underline */
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --ft-fg: #d1d5db;
+            --ft-muted: #9ca3af;
+            --ft-bg: #0f1115;
+            --ft-card: #111418;
+            --ft-border: #1f2937;
+            --ft-accent: #60a5fa;
+        }
+    }
+
+    /* Outer footer strip */
+    #mpsg-footer {
+        flex-shrink: 0;
+        width: 100%;
+        background: var(--ft-bg);
+        border-top: 1px solid var(--ft-border);
+        padding: 12px 0 28px;
+    }
+
+    /* Centered card */
+    .mpsg-footer__card {
+        box-sizing: border-box;
+        max-width: var(--ft-max);
+        margin: 0 auto;
+        background: var(--ft-card);
+        border: 1px solid var(--ft-border);
+        border-radius: 14px;
+        padding: 14px 18px;
+        color: var(--ft-fg);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, .06);
+    }
+
+    /* Top micro-divider with gradient */
+    .mpsg-footer__divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--ft-border), transparent);
+        margin: 2px 0 10px;
+        border: 0;
+    }
+
+    /* Row: left brand + right links */
+    .mpsg-footer__row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 12px;
+    }
+
+    @media (max-width: 640px) {
+        .mpsg-footer__row {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+    }
+
+    /* Brand */
+    .mpsg-footer__brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 600;
+        letter-spacing: .2px;
+        white-space: nowrap;
+    }
+
+    .mpsg-footer__brand small {
+        color: var(--ft-muted);
+        font-weight: 500;
+    }
+
+    /* Link pills container */
+    .mpsg-footer__links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        /* was 10px */
+        justify-content: flex-end;
+    }
+
+    @media (max-width: 640px) {
+        .mpsg-footer__links {
+            justify-content: flex-start;
+        }
+    }
+
+    /* Smaller pill buttons */
+    .mpsg-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        /* was 6px */
+        padding: 4px 8px;
+        /* was 6px 10px */
+        border: 1px solid var(--ft-border);
+        border-radius: 999px;
+        text-decoration: none;
+        color: var(--ft-fg);
+        font-size: .78rem;
+        /* was .88rem */
+        line-height: 1.1;
+        transition: transform .15s ease, border-color .15s ease;
+    }
+
+    .mpsg-pill:hover {
+        transform: translateY(-1px);
+        border-color: var(--ft-accent);
+    }
+
+    .mpsg-pill svg {
+        width: 14px;
+        /* was 16px */
+        height: 14px;
+    }
+
+    /* Bottom fine print */
+    .mpsg-footer__fine {
+        margin: 10px 2px 0;
+        color: var(--ft-muted);
+        font-size: .8rem;
+        text-align: center;
+    }
+
+    .mpsg-footer__fine a {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+
+    .mpsg-footer__fine a:hover {
+        text-decoration-color: var(--ft-accent);
+    }
+
+    /* Smaller "Top" button to match pills */
+    .mpsg-top {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        /* was 6px */
+        font-size: .78rem;
+        /* was .85rem */
+        color: var(--ft-muted);
+        border: 1px solid var(--ft-border);
+        border-radius: 999px;
+        padding: 4px 8px;
+        /* was 6px 10px */
+        text-decoration: none;
+        transition: transform .15s ease, border-color .15s ease;
+    }
+
+    .mpsg-top:hover {
+        transform: translateY(-1px);
+        border-color: var(--ft-accent);
+    }
+
+    .mpsg-top svg {
+        width: 14px;
+        /* was 16px */
+        height: 14px;
+    }
+
+    /* Remove outer footer background and padding */
+    .page__footer,
+    .mpsg-footer-wrap {
+        background: transparent !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    #mpsg-footer {
+        flex-shrink: 0;
+        width: 100%;
+        background: transparent !important;
+        /* was var(--ft-bg) */
+        border-top: 0 !important;
+        /* remove gray line */
+        padding: 12px 0 28px;
+        /* keep your spacing */
+    }
+
+    /* if Minimal Mistakes wrapper exists, make it transparent too */
+    .page__footer,
+    .mpsg-footer-wrap,
+    .site-footer {
+        background: transparent !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+</style>
+
+
+<footer id="mpsg-footer" role="contentinfo" aria-label="Site footer">
+    <div class="mpsg-footer__card">
+        <div class="mpsg-footer__row">
+            <!-- Brand -->
+            <div class="mpsg-footer__brand">
+                <span>MPSG</span>
+                <small>· Molecular Physics Simulation Group</small>
+            </div>
+
+            <!-- Action links (pills with icons) -->
+            <nav class="mpsg-footer__links" aria-label="Footer links">
+                <a class="mpsg-pill" href="mailto:ynoh@nd.edu" aria-label="Email">
+                    <!-- mail icon -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" />
+                        <path d="m22 8-10 6L2 8" />
+                    </svg>
+                    Contact
+                </a>
+
+                <a class="mpsg-pill" href="https://scholar.google.com/citations?user=0zdqbtIAAAAJ" target="_blank"
+                    rel="noopener" aria-label="Google Scholar">
+                    <!-- book icon -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                        <path d="M4 4v15.5" />
+                        <path d="M20 22V6a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 6.5" />
+                    </svg>
+                    Google Scholar
+                </a>
+
+                <a class="mpsg-pill" href="https://www.linkedin.com/in/yechan-noh-phd-421906155" target="_blank"
+                    rel="noopener" aria-label="LinkedIn">
+                    <!-- linkedin icon -->
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.5h4V24h-4V8.5zM8 8.5h3.8v2.1h.05c.53-1 1.82-2.1 3.76-2.1C19.8 8.5 22 10.5 22 14.4V24h-4v-8c0-1.9-.7-3.2-2.5-3.2-1.36 0-2.18.92-2.54 1.8-.13.32-.16.77-.16 1.22V24H8V8.5z" />
+                    </svg>
+                    LinkedIn
+                </a>
+
+                <a class="mpsg-top" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;"
+                    aria-label="Back to top">
+                    <!-- up chevron -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="m18 15-6-6-6 6" />
+                    </svg>
+                    Top
+                </a>
+            </nav>
+        </div>
+
+        <hr class="mpsg-footer__divider" />
+
+        <p class="mpsg-footer__fine">
+            © 2025 <strong>Molecular Physics Simulation Group (MPSG)</strong>. Site powered by
+            <a href="https://jekyllrb.com/" target="_blank" rel="noopener">Jekyll</a>.
+        </p>
+    </div>
 </footer>
-
-<!-- Support for MathJax -->
-<script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>
-
-<!-- Support for Plotly -->
-<script defer src='https://cdnjs.cloudflare.com/ajax/libs/plotly.js/3.0.1/plotly.min.js'></script>
-
-<!-- Support for Mermaid -->
-<script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({ startOnLoad: true, theme: 'default' });
-    await mermaid.run({ querySelector: 'code.language-mermaid' });
-</script>
-
-<!-- end custom footer snippets -->
+<!-- ===== /MPSG Modern Footer ===== -->
