@@ -53,7 +53,7 @@ header.masthead:not(.mpsg-header),
 }
 
 /* Brand */
-.mpsg-brand { display: inline-flex; align-items: center; gap: .5rem; color: var(--mpsg-fg); text-decoration: none; font-weight: 700; white-space: nowrap; font-size: 1.3rem; }
+.mpsg-brand { display: inline-flex; align-items: center; gap: .5rem; color: var(--mpsg-fg); text-decoration: none; font-weight: 700; white-space: nowrap; font-size: 1.1rem; }
 .mpsg-brand img { height: 1.5rem; width: auto; }
 
 /* Toggle */
@@ -78,7 +78,7 @@ header.masthead:not(.mpsg-header),
 .mpsg-link, .mpsg-btn {
   display: inline-flex; align-items: center; gap: .35rem;
   height: calc(var(--mpsg-h) - 1rem); padding: 0 .55rem; border-radius: .5rem;
-  text-decoration: none; color: var(--mpsg-fg); font-weight: 500; white-space: nowrap; font-size: 1.1rem;
+  text-decoration: none; color: var(--mpsg-fg); font-weight: 500; white-space: nowrap; font-size: 1.0rem;
 }
 .mpsg-link:hover, .mpsg-btn:hover { background: #f3f4f6; }
 .mpsg-link[aria-current="page"] { color: var(--mpsg-accent); }
