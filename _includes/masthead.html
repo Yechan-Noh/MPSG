@@ -2,7 +2,9 @@
 <header class="mpsg-header" role="banner" data-mpsg-masthead>
   <div class="mpsg-inner">
     <a class="mpsg-brand" href="{{ '/' | relative_url }}">
-      {% if site.logo %}<img src="{{ site.logo | relative_url }}" alt="{{ site.title }} logo">{% endif %}
+      {% if site.logo %}
+      <img src="{{ site.logo | relative_url }}" alt="{{ site.title }} logo">
+      {% endif %}
       <span>{{ site.title }}</span>
     </a>
 
@@ -12,22 +14,31 @@
         {% for link in links %}
         {% assign has_children = link.children and link.children.size > 0 %}
         <li class="mpsg-item{% if has_children %} mpsg-item--has-children{% endif %}" role="none">
+
           {% if has_children %}
-          <button class="mpsg-btn mpsg-submenu-toggle" type="button" aria-haspopup="true" aria-expanded="false"
-            aria-controls="mpsg-submenu-{{ forloop.index }}">
-            <span>{{ link.title }}</span><span class="mpsg-chevron" aria-hidden="true"></span>
-            <span class="mpsg-sr">Toggle {{ link.title }} submenu</span>
-          </button>
+          <a class="mpsg-link mpsg-submenu-toggle" href="{{ link.url | relative_url | default: '#' }}" role="menuitem"
+            aria-haspopup="true" aria-expanded="false" aria-controls="mpsg-submenu-{{ forloop.index }}">
+            <span>{{ link.title }}</span>
+            <span class="mpsg-chevron" aria-hidden="true"></span>
+          </a>
+
           <ul id="mpsg-submenu-{{ forloop.index }}" class="mpsg-submenu" role="menu">
             {% for child in link.children %}
-            <li role="none"><a class="mpsg-link" role="menuitem" href="{{ child.url | relative_url }}" {% if
-                child.url==page.url %}aria-current="page" {% endif %}>{{ child.title }}</a></li>
+            <li role="none">
+              <a class="mpsg-link" role="menuitem" href="{{ child.url | relative_url }}" {% if child.url==page.url
+                %}aria-current="page" {% endif %}>
+                {{ child.title }}
+              </a>
+            </li>
             {% endfor %}
           </ul>
           {% else %}
-          <a class="mpsg-link" href="{{ link.url | relative_url }}" {% if link.url==page.url %}aria-current="page" {%
-            endif %}>{{ link.title }}</a>
+          <a class="mpsg-link" href="{{ link.url | relative_url }}" role="menuitem" {% if link.url==page.url
+            %}aria-current="page" {% endif %}>
+            {{ link.title }}
+          </a>
           {% endif %}
+
         </li>
         {% endfor %}
       </ul>

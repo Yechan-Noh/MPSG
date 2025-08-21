@@ -17,7 +17,7 @@
     }
 
     :root {
-        --ft-max: 880px;
+        --ft-max: 780px;
         --ft-fg: #444;
         --ft-muted: #6b7280;
         --ft-bg: #f6f7f9;
@@ -44,7 +44,7 @@
         width: 100%;
         background: var(--ft-bg);
         border-top: 1px solid var(--ft-border);
-        padding: 12px 0 28px;
+        padding: 24px 0 32px;
     }
 
     /* Centered card */
@@ -55,7 +55,8 @@
         background: var(--ft-card);
         border: 1px solid var(--ft-border);
         border-radius: 14px;
-        padding: 14px 18px;
+        padding: 14px 24px;
+        /* REDUCED vertical padding from 20px */
         color: var(--ft-fg);
         box-shadow: 0 8px 24px rgba(0, 0, 0, .06);
     }
@@ -64,7 +65,8 @@
     .mpsg-footer__divider {
         height: 1px;
         background: linear-gradient(90deg, transparent, var(--ft-border), transparent);
-        margin: 2px 0 10px;
+        margin: 8px 0 8px;
+        /* REDUCED vertical margin from 12px */
         border: 0;
     }
 
@@ -73,13 +75,13 @@
         display: grid;
         grid-template-columns: 1fr auto;
         align-items: center;
-        gap: 12px;
+        gap: 20px;
     }
 
     @media (max-width: 640px) {
         .mpsg-footer__row {
             grid-template-columns: 1fr;
-            gap: 10px;
+            gap: 12px;
         }
     }
 
@@ -102,14 +104,16 @@
     .mpsg-footer__links {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
-        /* was 10px */
+        gap: 5px;
+        /* REDUCED horizontal gap from 8px */
         justify-content: flex-end;
     }
 
     @media (max-width: 640px) {
         .mpsg-footer__links {
             justify-content: flex-start;
+            gap: 8px;
+            /* REDUCED horizontal gap from 12px */
         }
     }
 
@@ -118,15 +122,12 @@
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        /* was 6px */
         padding: 4px 8px;
-        /* was 6px 10px */
         border: 1px solid var(--ft-border);
         border-radius: 999px;
         text-decoration: none;
         color: var(--ft-fg);
         font-size: .78rem;
-        /* was .88rem */
         line-height: 1.1;
         transition: transform .15s ease, border-color .15s ease;
     }
@@ -138,13 +139,13 @@
 
     .mpsg-pill svg {
         width: 14px;
-        /* was 16px */
         height: 14px;
     }
 
     /* Bottom fine print */
     .mpsg-footer__fine {
-        margin: 10px 2px 0;
+        margin: 8px 2px 0;
+        /* REDUCED top margin from 12px */
         color: var(--ft-muted);
         font-size: .8rem;
         text-align: center;
@@ -165,14 +166,11 @@
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        /* was 6px */
         font-size: .78rem;
-        /* was .85rem */
         color: var(--ft-muted);
         border: 1px solid var(--ft-border);
         border-radius: 999px;
         padding: 4px 8px;
-        /* was 6px 10px */
         text-decoration: none;
         transition: transform .15s ease, border-color .15s ease;
     }
@@ -184,7 +182,6 @@
 
     .mpsg-top svg {
         width: 14px;
-        /* was 16px */
         height: 14px;
     }
 
@@ -201,11 +198,8 @@
         flex-shrink: 0;
         width: 100%;
         background: transparent !important;
-        /* was var(--ft-bg) */
         border-top: 0 !important;
-        /* remove gray line */
-        padding: 12px 0 28px;
-        /* keep your spacing */
+        padding: 24px 0 32px;
     }
 
     /* if Minimal Mistakes wrapper exists, make it transparent too */
@@ -217,6 +211,11 @@
         box-shadow: none !important;
         padding: 0 !important;
         margin: 0 !important;
+    }
+
+    .mpsg-pill,
+    .mpsg-top {
+        transform: scale(0.9);
     }
 </style>
 
@@ -279,8 +278,7 @@
         <hr class="mpsg-footer__divider" />
 
         <p class="mpsg-footer__fine">
-            © 2025 <strong>Molecular Physics Simulation Group (MPSG)</strong>. Site powered by
-            <a href="https://jekyllrb.com/" target="_blank" rel="noopener">Jekyll</a>.
+            © 2025 <strong>Molecular Physics Simulation Group (MPSG)</strong>.
         </p>
     </div>
 </footer>

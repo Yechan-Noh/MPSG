@@ -1,77 +1,87 @@
 /* ==========================================================================
-   Utilities
+   Theme Management
    ========================================================================== */
 
-// Determine the expected state of the theme toggle ("dark" | "light" | "system")
-const determineThemeSetting = () => {
-  const themeSetting = localStorage.getItem("theme");
-  return (themeSetting !== "dark" && themeSetting !== "light" && themeSetting !== "system")
-    ? "system"
-    : themeSetting;
-};
-
-// Determine the computed theme ("dark" | "light")
-const determineComputedTheme = () => {
-  const themeSetting = determineThemeSetting();
-  if (themeSetting !== "system") return themeSetting;
-
-  // Use matchMedia directly (userPref was undefined before)
-  return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-};
-
-// detect OS/browser preference (fallback)
-const browserPref =
-  (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
-
-// Set the theme on page load or when explicitly called
-const setTheme = (theme) => {
-  const use_theme =
-    theme ||
-    localStorage.getItem("theme") ||
-    $("html").attr("data-theme") ||
-    browserPref;
-
-  if (use_theme === "dark") {
-    $("html").attr("data-theme", "dark");
-    $("#theme-icon").removeClass("fa-sun").addClass("fa-moon");
-  } else {
-    $("html").removeAttr("data-theme");
-    $("#theme-icon").removeClass("fa-moon").addClass("fa-sun");
+// Finds the user's saved theme setting from localStorage
+function getThemeSetting() {
+  const savedTheme = localStorage.getItem("theme");
+  // Ensure the saved value is valid, otherwise default to 'system'
+  if (["dark", "light", "system"].includes(savedTheme)) {
+    return savedTheme;
   }
-};
+  return "system";
+}
 
-// Toggle the theme manually
-const toggleTheme = () => {
-  const current = $("html").attr("data-theme");
-  const next = current === "dark" ? "light" : "dark";
-  localStorage.setItem("theme", next);
-  setTheme(next);
-};
+// Determines the final theme ('dark' or 'light') to apply
+function calculateTheme() {
+  const setting = getThemeSetting();
+  if (setting !== "system") {
+    return setting;
+  }
+  // If set to 'system', check the browser/OS preference
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  return prefersDark ? "dark" : "light";
+}
+
+// Applies the theme to the page
+function applyTheme() {
+  const theme = calculateTheme();
+  const themeIcon = document.getElementById("theme-icon");
+
+  if (theme === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+    if (themeIcon) {
+      themeIcon.classList.remove("fa-sun");
+      themeIcon.classList.add("fa-moon");
+    }
+  } else {
+    document.documentElement.removeAttribute("data-theme");
+    if (themeIcon) {
+      themeIcon.classList.remove("fa-moon");
+      themeIcon.classList.add("fa-sun");
+    }
+  }
+}
+
+// Toggles and saves the theme when the user clicks the button
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute("data-theme");
+  const nextTheme = currentTheme === "dark" ? "light" : "dark";
+
+  // Save the new preference and apply it
+  localStorage.setItem("theme", nextTheme);
+  applyTheme();
+}
+
+// Apply theme as soon as the page loads
+applyTheme();
+
 
 /* ==========================================================================
-   Plotly integration (safe with non-module scripts)
+   Plotly Integration
    ========================================================================== */
 
-const plotlyBlocks = document.querySelectorAll("pre>code.language-plotly");
+const plotlyBlocks = document.querySelectorAll("pre > code.language-plotly");
 if (plotlyBlocks.length > 0) {
   document.addEventListener("readystatechange", () => {
     if (document.readyState !== "complete") return;
 
+    // Dynamically load Plotly themes
     import("./theme.js")
       .then(({ plotlyDarkLayout, plotlyLightLayout }) => {
         plotlyBlocks.forEach((elem) => {
-          // If Plotly isn't loaded, skip gracefully
-          if (typeof window.Plotly === "undefined") return;
+          if (typeof window.Plotly === "undefined") return; // Skip if Plotly lib isn't loaded
 
           const jsonData = JSON.parse(elem.textContent);
-          elem.parentElement.classList.add("hidden");
+          elem.parentElement.classList.add("hidden"); // Hide the original code block
 
           const chartEl = document.createElement("div");
-          elem.parentElement.after(chartEl);
+          elem.parentElement.after(chartEl); // Insert a new div for the chart
 
-          const theme = (determineComputedTheme() === "dark") ? plotlyDarkLayout : plotlyLightLayout;
+          // Choose the correct Plotly theme based on the current website theme
+          const theme = (calculateTheme() === "dark") ? plotlyDarkLayout : plotlyLightLayout;
+
+          // Safely merge the theme template with the chart's existing layout
           if (jsonData.layout) {
             jsonData.layout.template = jsonData.layout.template
               ? { ...theme, ...jsonData.layout.template }
@@ -85,7 +95,7 @@ if (plotlyBlocks.length > 0) {
       })
       .catch((err) => {
         console.warn("Plotly theme module failed to load:", err);
-        // Fallback rendering if Plotly is present
+        // Fallback rendering if the theme import fails
         plotlyBlocks.forEach((elem) => {
           if (typeof window.Plotly === "undefined") return;
           const jsonData = JSON.parse(elem.textContent);
@@ -97,41 +107,3 @@ if (plotlyBlocks.length > 0) {
       });
   });
 }
-
-// --- Minimal fallback for the hamburger (runs even if other code failed) ---
-document.addEventListener('DOMContentLoaded', function () {
-  var btn = document.getElementById('mpsg-nav-toggle');
-  var nav = document.getElementById('mpsg-site-nav');
-  if (!btn || !nav) return;
-
-  // ensure button is clickable above other layers
-  btn.style.pointerEvents = 'auto';
-
-  function setExpanded(on) {
-    document.body.classList.toggle('mpsg-nav-open', on);
-    btn.setAttribute('aria-expanded', on ? 'true' : 'false');
-    btn.setAttribute('aria-label', on ? 'Close menu' : 'Open menu');
-  }
-
-  btn.addEventListener('click', function (e) {
-    e.preventDefault();
-    setExpanded(!document.body.classList.contains('mpsg-nav-open'));
-  });
-
-  // close when clicking outside (mobile)
-  document.addEventListener('click', function (e) {
-    if (!document.body.classList.contains('mpsg-nav-open')) return;
-    var root = document.querySelector('[data-mpsg-masthead]');
-    if (root && !root.contains(e.target)) setExpanded(false);
-  });
-
-  // close on escape
-  window.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') setExpanded(false);
-  });
-
-  // close when resizing up to desktop
-  window.addEventListener('resize', function () {
-    if (window.matchMedia('(min-width: 961px)').matches) setExpanded(false);
-  });
-});

@@ -12,45 +12,6 @@ layout: compress
   {% include head.html %}
   {% include head/custom.html %}
 
-  <style>
-    /* ===== Page layout: simple, robust sticky footer ===== */
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      min-height: 100%;
-    }
-
-    /* Main content expands to fill space, pushes footer down on short pages */
-    main.site-main {
-      flex: 1 0 auto;
-      display: block;
-      /* optional: give a little spacing under content so it doesn’t crowd footer */
-      padding-bottom: 0.75rem;
-    }
-
-    /* Neutral footer wrapper — let footer/custom.html control its own look */
-    .mpsg-footer-wrap {
-      flex-shrink: 0;
-      /* ensure footer stays visible at the bottom edge */
-      background: transparent;
-      border: 0;
-      margin: 0;
-      padding: 0;
-    }
-
-    /* Optional: smooth scroll for “Top” button in the custom footer */
-    html {
-      scroll-behavior: smooth;
-    }
-  </style>
-</head>
-
 <body>
   {% include browser-upgrade.html %}
   {% include masthead.html %}

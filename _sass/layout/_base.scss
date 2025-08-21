@@ -1,11 +1,6 @@
 /* ==========================================================================
-   BASE ELEMENTS
+   BASE ELEMENTS (Corrected)
    ========================================================================== */
-html {
-  /* sticky footer fix */
-  position: relative;
-  min-height: 100%;
-}
 
 body {
   /* Set via _themes.scss */
@@ -14,7 +9,6 @@ body {
 
   margin: 0;
   padding: $masthead-height 0 0;
-  padding-bottom: 9em;
   font-family: $global-font-family;
   line-height: 1.5;
 
@@ -283,12 +277,12 @@ svg:not(:root) {
  *
  * Example usage:
  * <nav>
- *    <ul>
- *      <li><a href="#link-1">Link 1</a></li>
- *      <li><a href="#link-2">Link 2</a></li>
- *      <li><a href="#link-3">Link 3</a></li>
- *    </ul>
- *  </nav>
+ * <ul>
+ * <li><a href="#link-1">Link 1</a></li>
+ * <li><a href="#link-2">Link 2</a></li>
+ * <li><a href="#link-3">Link 3</a></li>
+ * </ul>
+ * </nav>
  */
 
 nav {
