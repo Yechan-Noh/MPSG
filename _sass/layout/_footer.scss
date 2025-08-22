@@ -2,95 +2,156 @@
    FOOTER
    ========================================================================== */
 
-.page__footer {
-  @include clearfix;
-  background-color: #ffffff !important;
-  color: #212529 !important;
-
-  float: left;
-  margin-left: 0;
-  margin-right: 0;
+/* Outer footer strip */
+#mpsg-footer {
+  flex-shrink: 0;
   width: 100%;
-  clear: both;
+  background: var(--ft-bg);
+  border-top: 1px solid var(--ft-border);
+  padding: 24px 0 32px;
+}
 
-  /* sticky footer fix start */
-  position: absolute;
-  bottom: 0em;
-  height: auto;
-  /* sticky footer fix end */
+/* Centered card */
+.mpsg-footer__card {
+  box-sizing: border-box;
+  max-width: var(--ft-max);
+  margin: 0 auto;
+  background: var(--ft-card);
+  border: 1px solid var(--ft-border);
+  border-radius: 14px;
+  padding: 14px 24px;
+  color: var(--ft-fg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
 
-  margin-top: 3em;
+/* Top micro-divider with gradient */
+.mpsg-footer__divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ft-border), transparent);
+  margin: 8px 0 8px;
+  border: 0;
+}
 
-  -webkit-animation: intro 0.3s both;
-          animation: intro 0.3s both;
-  -webkit-animation-delay: 0.45s;
-          animation-delay: 0.45s;
-  border-top: 1px solid #e0e0e0 !important;
+/* Row: left brand + right links */
+.mpsg-footer__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 20px;
+}
 
-  footer {
-    @include clearfix;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 1em;
-    max-width: 100%;
-    padding: 0 1em 1em;
-
-    @include breakpoint($x-large) {
-      max-width: $x-large;
-    }
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  .fas,
-  .fab,
-  .far,
-  .fal {
-    color: var(--global-text-color-light);
+@media (max-width: 640px) {
+  .mpsg-footer__row {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
 
-.page__footer-copyright {
-  font-family: $global-font-family;
-  font-size: $type-size-7;
+/* Brand */
+.mpsg-footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
 }
 
-.page__footer-follow {
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-  }
+.mpsg-footer__brand small {
+  color: var(--ft-muted);
+  font-weight: 500;
+}
 
-  li {
-    display: inline-block;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    font-family: $sans-serif-narrow;
-    font-size: $type-size-6;
-    text-transform: uppercase;
-  }
+/* Link pills container */
+.mpsg-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: flex-end;
+}
 
-  li + li:before {
-    content: "";
-    padding-right: 5px;
+@media (max-width: 640px) {
+  .mpsg-footer__links {
+    justify-content: flex-start;
+    gap: 8px;
   }
+}
 
-  a {
-    padding-right: 10px;
-    font-weight: bold;
-  }
+/* Smaller pill buttons */
+.mpsg-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px 6px;
+  border: 1px solid var(--ft-border);
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--ft-fg);
+  font-size: 0.78rem;
+  line-height: 1.1;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
 
-  .social-icons {
-    a {
-      white-space: nowrap;
-    }
-  }
+.mpsg-pill:hover {
+  transform: translateY(-1px);
+  border-color: var(--ft-accent);
+}
+
+.mpsg-pill svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Bottom fine print */
+.mpsg-footer__fine {
+  margin: 8px 2px 0;
+  color: var(--ft-muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.mpsg-footer__fine a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.mpsg-footer__fine a:hover {
+  text-decoration-color: var(--ft-accent);
+}
+
+/* Smaller "Top" button to match pills */
+.mpsg-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.78rem;
+  color: var(--ft-muted);
+  border: 1px solid var(--ft-border);
+  border-radius: 999px;
+  padding: 3px 6px;
+  text-decoration: none;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.mpsg-top:hover {
+  transform: translateY(-1px);
+  border-color: var(--ft-accent);
+}
+
+.mpsg-top svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Fixes to prevent theme styles from conflicting with the modern footer */
+.page__footer,
+.mpsg-footer-wrap,
+.site-footer {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  float: none;
 }
