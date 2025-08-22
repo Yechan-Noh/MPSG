@@ -1,5 +1,4 @@
 <!-- ===== MPSG Modern Footer (drop-in for custom.html) ===== -->
-
 <style>
     /* Sticky layout: footer sits at bottom when content is short */
     html,
@@ -16,6 +15,7 @@
         flex: 1 0 auto;
     }
 
+    /* Light theme variables (now used everywhere) */
     :root {
         --ft-max: 780px;
         --ft-fg: #444;
@@ -24,31 +24,6 @@
         --ft-card: #ffffff;
         --ft-border: #e5e7eb;
         --ft-accent: #2563eb;
-        /* link hover underline */
-    }
-
-    @media (prefers-color-scheme: dark) {
-        :root {
-            --ft-fg: #d1d5db;
-            --ft-muted: #9ca3af;
-            --ft-bg: #0f1115;
-            --ft-card: #111418;
-            --ft-border: #1f2937;
-            --ft-accent: #60a5fa;
-        }
-    }
-
-    /* Force light colors on dark mode */
-    [data-theme="dark"] #mpsg-footer,
-    [data-theme="dark"] .mpsg-footer__card {
-        background: #ffffff !important;
-        border-color: #e5e7eb !important;
-        color: #212529 !important;
-    }
-
-    [data-theme="dark"] .mpsg-footer__brand small,
-    [data-theme="dark"] .mpsg-footer__fine {
-        color: #6b7280 !important;
     }
 
     /* Outer footer strip */
@@ -115,7 +90,7 @@
     .mpsg-footer__links {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.5px;
+        gap: 1.5px;
         justify-content: flex-end;
     }
 
@@ -132,13 +107,11 @@
         align-items: center;
         gap: 2px;
         padding: 2px 6px;
-        /* REDUCED from 3px 6px */
         border: 1px solid var(--ft-border);
         border-radius: 999px;
         text-decoration: none;
         color: var(--ft-fg);
         font-size: 0.7rem;
-        /* REDUCED from .78rem */
         line-height: 1.1;
         transition: transform .15s ease, border-color .15s ease;
     }
@@ -150,9 +123,7 @@
 
     .mpsg-pill svg {
         width: 12px;
-        /* REDUCED from 14px */
         height: 12px;
-        /* REDUCED from 14px */
     }
 
     /* Bottom fine print */
@@ -179,12 +150,10 @@
         align-items: center;
         gap: 2px;
         font-size: 0.7rem;
-        /* REDUCED from .78rem */
         color: var(--ft-muted);
         border: 1px solid var(--ft-border);
         border-radius: 999px;
         padding: 2px 6px;
-        /* REDUCED from 3px 6px */
         text-decoration: none;
         transition: transform .15s ease, border-color .15s ease;
     }
@@ -196,9 +165,7 @@
 
     .mpsg-top svg {
         width: 12px;
-        /* REDUCED from 14px */
         height: 12px;
-        /* REDUCED from 14px */
     }
 
     /* Remove outer footer background and padding */
@@ -228,8 +195,6 @@
         padding: 0 !important;
         margin: 0 !important;
     }
-
-    /* REMOVED the transform: scale() rule */
 </style>
 
 
