@@ -114,7 +114,7 @@ author_profile: false
   <canvas id="titleCanvas"></canvas>
 
 <p class="mission">
-  We harness state-of-the-art computer simulations to <strong>solve scientific and egineering challenges</strong>
+  We harness state-of-the-art computer simulations to engineer innovative devices that address scientific and industrial challenges. 
 </p>
 
 </section>
