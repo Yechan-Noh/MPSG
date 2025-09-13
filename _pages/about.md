@@ -114,7 +114,7 @@ author_profile: false
   <canvas id="titleCanvas"></canvas>
 
 <p class="mission">
-  We harness state-of-the-art computer simulations to <strong>engineer advanced devices from the molecular and quantum scales</strong> <br> in order to solve industrial challenges.
+  We harness state-of-the-art computer simulations to <strong>solve scientific and egineering challenges</strong>
 </p>
 
 </section>
