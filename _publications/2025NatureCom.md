@@ -4,7 +4,7 @@ authors: Dhal Biswabhusan, Yechan Noh, Sanat Nalini Paltasingh, Chandrakar Naman
 collection: publications
 category: manuscripts
 permalink: /publication/2025-11-29-giant-electrostatic-modulation
-date: 2025-11-29
+date: 2025-09-29
 venue: 'Nature Communications'
 paperurl: 'https://www.nature.com/articles/s41467-025-62737-3'
 #arxivurl: 'https://arxiv.org/abs/2507.00536'
