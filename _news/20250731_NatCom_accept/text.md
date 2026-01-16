@@ -1,5 +1,5 @@
 ---
-title: Our paper accepted to Nature Communications
+title: Our collaboration paper accepted to Nature Communications
 date: 2025-07-31
 authors: ["Yechan"] # Posted by whom?
 ---
