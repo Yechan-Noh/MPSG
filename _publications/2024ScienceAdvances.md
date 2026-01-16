@@ -12,5 +12,5 @@ pages: eadr1531
 publisher: American Association for the Advancement of Science
 paperurl: 'https://doi.org/10.1126/sciadv.adr1531'
 doi: '10.1126/sciadv.adr1531'
-endnote: "Dr. Noh's suggestion"
+status: "Dr. Noh's suggestion"
 ---
