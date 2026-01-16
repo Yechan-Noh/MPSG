@@ -49,6 +49,9 @@ collections:
   news:
     output: true
     permalink: /news/:path/
+  gallery:
+    output: true
+    permalink: /gallery/:path/
   positions:
     output: true
     permalink: /positions/:path/
@@ -128,7 +131,7 @@ markdown        : kramdown
 highlighter     : rouge
 permalink       : /:categories/:title/
 timezone        : America/Indiana/Indianapolis   # ⚑ adjust if needed
-include         : [".htaccess", "_pages", "files", "_news"]
+include: [".htaccess", "_pages", "files", "_news", "_gallery"]
 exclude         :
   - node_modules
   - vendor
