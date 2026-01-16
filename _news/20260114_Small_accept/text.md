@@ -1,6 +1,6 @@
 ---
 title: Our recent paper on leveraging ionic diversity in iontronics accepted to Small
-date: 2025-07-31
+date: 2026-01-16
 authors: ["Yechan"] # Posted by whom?
 ---
 
