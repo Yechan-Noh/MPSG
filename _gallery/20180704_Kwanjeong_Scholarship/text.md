@@ -1,5 +1,5 @@
 ---
-title: MML Postdoctoral Accolade
+title: Kwanjeong study abroad scholarship
 date: 2018-07-04
 authors: ["Yechan"] # Posted by whom?
 ---
