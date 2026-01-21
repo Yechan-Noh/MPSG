@@ -8,5 +8,5 @@ date: 2025-09-29
 venue: 'Nature Communications'
 paperurl: 'https://www.nature.com/articles/s41467-025-62737-3'
 #arxivurl: 'https://arxiv.org/abs/2507.00536'
-status: New publication
+status: New (<1 year)
 ---
