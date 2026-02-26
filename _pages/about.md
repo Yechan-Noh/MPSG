@@ -137,7 +137,15 @@ author_profile: false
     </p>
   </div>
 
-  <!-- 3 › Foundational mathematical theory -->
+  <!-- 3 › Bio-inspired chemical sensing -->
+  <div class="card">
+    <h3><i class="fa-solid fa-vial"></i> Biomimetic Chemical Sensors</h3>
+    <p>
+      We accelerate electrochemical biosensor development by integrating molecular dynamics simulations with deep learning to build interface-aware prediction models. Our computational screening tools enable rapid evaluation of aptamer–target combinations under realistic electrode-interface conditions, broadening detectable biomarkers for point-of-care diagnostics.
+    </p>
+  </div>
+
+  <!-- 4 › Foundational mathematical theory -->
   <div class="card">
     <h3><i class="fa-solid fa-compass-drafting"></i> Foundational Physical/Chemical Theory</h3>
     <p>
