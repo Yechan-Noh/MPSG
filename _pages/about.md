@@ -97,6 +97,48 @@ author_profile: false
 .card h3{font-size:1rem;margin-bottom:.6rem;color:var(--accent1)}
 .card p{margin:0;font-size:.88rem;color:var(--gray-500)}
 
+/* ── LATEST NEWS ────────────────────────────────────────────── */
+.news-section{
+  max-width:1100px;
+  margin:0 auto 3rem;
+  padding:0 1rem;
+}
+.news-section h2{
+  font-size:1.3rem;
+  font-weight:700;
+  color:var(--accent1);
+  margin-bottom:1rem;
+}
+.news-list{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+.news-item{
+  display:flex;
+  align-items:baseline;
+  gap:1rem;
+  padding:0.65rem 0;
+  border-bottom:1px solid var(--gray-150);
+}
+.news-item:last-child{border-bottom:none}
+.news-date{
+  flex-shrink:0;
+  font-size:0.78rem;
+  color:var(--gray-500);
+  min-width:5.5rem;
+}
+.news-text{
+  font-size:0.9rem;
+  color:var(--gray-750);
+  line-height:1.45;
+}
+.news-text a{
+  color:var(--accent1);
+  text-decoration:none;
+}
+.news-text a:hover{text-decoration:underline}
+
 /* ── FOOTER ──────────────────────────────────────────────────── */
 .footer{
   border-top:1px solid var(--gray-150);
@@ -131,21 +173,13 @@ author_profile: false
 
   <!-- 2 › Molecular–quantum biomimetic engineering -->
   <div class="card">
-    <h3><i class="fa-solid fa-dna"></i> Biomimetic Engineering from the Molecular Scale</h3>
+    <h3><i class="fa-solid fa-dna"></i> Molecular Biomimetic Engineering</h3>
     <p>
       Biological systems exhibit remarkable efficiency and sustainability in their essential processes, such as intelligence, energy conversion, learning, and molecular separation. Our research seeks to understand and implement the molecular–quantum principles of these living systems in engineered devices.
     </p>
   </div>
 
-  <!-- 3 › Bio-inspired chemical sensing -->
-  <div class="card">
-    <h3><i class="fa-solid fa-vial"></i> Biomimetic Chemical Sensors</h3>
-    <p>
-      We accelerate electrochemical biosensor development by integrating molecular dynamics simulations with deep learning to build interface-aware prediction models. Our computational screening tools enable rapid evaluation of aptamer–target combinations under realistic electrode-interface conditions, broadening detectable biomarkers for point-of-care diagnostics.
-    </p>
-  </div>
-
-  <!-- 4 › Foundational mathematical theory -->
+  <!-- 3 › Foundational mathematical theory -->
   <div class="card">
     <h3><i class="fa-solid fa-compass-drafting"></i> Foundational Physical/Chemical Theory</h3>
     <p>
@@ -153,6 +187,20 @@ author_profile: false
     </p>
   </div>
 </div>
+
+<!-- ── LATEST NEWS ──────────────────────────────────────────── -->
+<section class="news-section">
+  <h2><i class="fa-solid fa-newspaper"></i> Latest News</h2>
+  <ul class="news-list">
+    {% assign sorted_news = site.news | sort: 'date' | reverse %}
+    {% for post in sorted_news limit:4 %}
+    <li class="news-item">
+      <span class="news-date">{{ post.date | date: "%b %d, %Y" }}</span>
+      <span class="news-text">{{ post.title }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
 
 <!-- p5 hero graphic -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
