@@ -1,0 +1,13 @@
+{% assign post = include.paper %}
+{% assign publication_year = post.date | date: '%Y' %}
+<article class="pub-card{% if include.submitted %} pub-card--submitted{% elsif publication_year == '2026' %} pub-card--published-current{% endif %}">
+ <p class="pub-authors">
+ {% if post.reading_recommendation %}<span class="badge">{{ post.reading_recommendation }}</span><br>{% endif %}
+ {% if include.submitted %}<span class="badge badge--submitted">{{ post.status }}</span><br>{% endif %}
+ {% if post.status and include.submitted != true %}<span class="badge">{{ post.status }}</span><br>{% endif %}
+ {{ post.authors | replace: 'Yechan Noh', '<strong>Yechan Noh</strong>' | replace: '*', '<sup>*</sup>' | replace: '†', '<sup>†</sup>' }}
+ </p>
+ <p class="pub-title">{{ post.title }}</p>
+ <p class="pub-meta">{% if include.submitted %}{% if post.milestone_month %}{{ post.milestone_month | append: '-01' | date: '%b %Y' }}{% else %}{{ post.year }}{% endif %}{% else %}<span class="journal">{{ post.venue }}</span>{% if post.volume %}, {{ post.volume }}{% endif %}{% if post.issue %} ({{ post.issue }}){% endif %}{% if post.pages %}, {{ post.pages }}{% endif %}, ({{ post.date | date: '%Y' }}){% endif %}
+ {% if post.paperurl %}<a href="{{ post.paperurl }}">DOI / Article</a>{% endif %}{% if post.arxivurl %} · <a href="{{ post.arxivurl }}">Preprint</a>{% endif %}{% if post.preprint %} · <a href="{{ post.preprint }}">bioRxiv</a>{% endif %}{% if post.endnote %}<br><span class="endnote-orange">{{ post.endnote }}</span>{% endif %}</p>
+</article>

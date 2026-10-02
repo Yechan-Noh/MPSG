@@ -1,31 +1,31 @@
 <!-- /_includes/masthead.html -->
-<header class="mpsg-header" role="banner" data-mpsg-masthead>
-  <div class="mpsg-inner">
-    <a class="mpsg-brand" href="{{ '/' | relative_url }}">
+<header class="mtsg-header" role="banner" data-mtsg-masthead>
+  <div class="mtsg-inner">
+    <a class="mtsg-brand" href="{{ '/' | relative_url }}">
       {% if site.logo %}
       <img src="{{ site.logo | relative_url }}" alt="{{ site.title }} logo">
       {% endif %}
       <span>{{ site.title }}</span>
     </a>
 
-    <nav id="mpsg-site-nav" class="mpsg-nav" aria-label="Main navigation">
-      <ul class="mpsg-menu" data-mpsg-menu role="menubar">
+    <nav id="mtsg-site-nav" class="mtsg-nav" aria-label="Main navigation">
+      <ul class="mtsg-menu" data-mtsg-menu role="menubar">
         {% assign links = site.data.navigation.main | default: site.navigation %}
         {% for link in links %}
         {% assign has_children = link.children and link.children.size > 0 %}
-        <li class="mpsg-item{% if has_children %} mpsg-item--has-children{% endif %}" role="none">
+        <li class="mtsg-item{% if has_children %} mtsg-item--has-children{% endif %}" role="none">
 
           {% if has_children %}
-          <a class="mpsg-link mpsg-submenu-toggle" href="{{ link.url | relative_url | default: '#' }}" role="menuitem"
-            aria-haspopup="true" aria-expanded="false" aria-controls="mpsg-submenu-{{ forloop.index }}">
+          <a class="mtsg-link mtsg-submenu-toggle" href="{{ link.url | relative_url | default: '#' }}" role="menuitem"
+            aria-haspopup="true" aria-expanded="false" aria-controls="mtsg-submenu-{{ forloop.index }}">
             <span>{{ link.title }}</span>
-            <span class="mpsg-chevron" aria-hidden="true"></span>
+            <span class="mtsg-chevron" aria-hidden="true"></span>
           </a>
 
-          <ul id="mpsg-submenu-{{ forloop.index }}" class="mpsg-submenu" role="menu">
+          <ul id="mtsg-submenu-{{ forloop.index }}" class="mtsg-submenu" role="menu">
             {% for child in link.children %}
             <li role="none">
-              <a class="mpsg-link" role="menuitem" href="{{ child.url | relative_url }}" {% if child.url==page.url
+              <a class="mtsg-link" role="menuitem" href="{{ child.url | relative_url }}" {% if child.url==page.url
                 %}aria-current="page" {% endif %}>
                 {{ child.title }}
               </a>
@@ -33,7 +33,7 @@
             {% endfor %}
           </ul>
           {% else %}
-          <a class="mpsg-link" href="{{ link.url | relative_url }}" role="menuitem" {% if link.url==page.url
+          <a class="mtsg-link" href="{{ link.url | relative_url }}" role="menuitem" {% if link.url==page.url
             %}aria-current="page" {% endif %}>
             {{ link.title }}
           </a>
@@ -44,10 +44,10 @@
       </ul>
     </nav>
 
-    <button class="mpsg-toggle" id="mpsg-nav-toggle" type="button" aria-controls="mpsg-site-nav" aria-expanded="false"
+    <button class="mtsg-toggle" id="mtsg-nav-toggle" type="button" aria-controls="mtsg-site-nav" aria-expanded="false"
       aria-label="Open menu">
-      <span class="mpsg-toggle-bar" aria-hidden="true"></span>
-      <span class="mpsg-sr">Menu</span>
+      <span class="mtsg-toggle-bar" aria-hidden="true"></span>
+      <span class="mtsg-sr">Menu</span>
     </button>
   </div>
 </header>

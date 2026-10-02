@@ -1,6 +1,6 @@
 /*  lj-hero.js  ──────────────────────────────────────────────────────────
-    Animated “MPSG” particle logo + fire-ball style repeller
-    © 2025 Molecular Physics Simulation Group
+    Animated “MTSG” particle logo + fire-ball style repeller
+    © 2025 Molecular Transport Simulation Group
 ------------------------------------------------------------------------ */
 
 (() => {
@@ -38,10 +38,10 @@
             this.size = Math.random() * 0.2 + 1.8;
             this.density = Math.random() * 25 + 5;
             this.vx = this.vy = 0;
-            this.hue = 180 + Math.random() * 60;
+            this.hue = 185 + Math.random() * 25;
         }
         draw() {
-            ctx.fillStyle = `hsla(${this.hue},80%,60%,.85)`;
+            ctx.fillStyle = `hsla(${this.hue},58%,40%,.85)`;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
@@ -74,26 +74,27 @@
             this.vy += (this.baseY - this.y) / (this.density * 10);
             this.vx *= 0.9; this.vy *= 0.9;
             this.x += this.vx; this.y += this.vy;
-            this.hue = (this.hue + 0.4) % 360;
+            // Keep the animation within the site’s blue–teal palette.
         }
     }
 
-    /* ─── Build “MPSG” particle mask ────────────────────────────────── */
+    /* ─── Build “MTSG” particle mask ────────────────────────────────── */
     const particles = [];
     function initParticles() {
         particles.length = 0;
 
-        const TEXT = 'MPSG';
+        const TEXT = 'MTSG';
+        const fontSize = Math.min(100, canvas.clientWidth / 3.6);
         const temp = document.createElement('canvas');
         const tctx = temp.getContext('2d');
-        tctx.font = 'bold 100px Inter, Helvetica, sans-serif';
+        tctx.font = `bold ${fontSize}px Inter, Helvetica, sans-serif`;
         temp.width = Math.ceil(tctx.measureText(TEXT).width) + 20;
-        temp.height = 140;
+        temp.height = Math.ceil(fontSize + 40);
 
         tctx.fillStyle = '#000';
         tctx.textAlign = 'center';
         tctx.textBaseline = 'middle';
-        tctx.font = 'bold 100px Inter, Helvetica, sans-serif';
+        tctx.font = `bold ${fontSize}px Inter, Helvetica, sans-serif`;
         tctx.fillText(TEXT, temp.width / 2, temp.height / 2);
 
         const img = tctx.getImageData(0, 0, temp.width, temp.height).data;
@@ -120,7 +121,7 @@
                     d = Math.hypot(dx, dy);
                 if (d < 15) {
                     ctx.strokeStyle =
-                        `hsla(${particles[i].hue},80%,60%,${0.5 - 0.5 * (d / 15)})`;
+                        `hsla(${particles[i].hue},58%,40%,${0.5 - 0.5 * (d / 15)})`;
                     ctx.lineWidth = 1.2;
                     ctx.beginPath();
                     ctx.moveTo(particles[i].x, particles[i].y);
@@ -145,7 +146,7 @@
         for (const p of particles) { p.update(); p.draw(); }
         connect();
 
-        requestAnimationFrame(animate);
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) requestAnimationFrame(animate);
     }
 
     /* ─── Responsive / Hi-DPI handling ──────────────────────────────── */

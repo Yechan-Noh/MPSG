@@ -1,0 +1,43 @@
+/* Homepage only: shared alignment, quiet color, and a clear reading order. */
+.home-page{--home-ink:#183347;--home-accent:#176c78}
+.home-page .mt-home{max-width:1120px;padding:42px 28px 26px}
+.home-page .home-intro{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:center;gap:16px;padding:0 0 26px}
+.home-page .home-intro h1{font-size:clamp(34px,3.6vw,46px);font-weight:650;line-height:1.14;letter-spacing:-1.6px;color:var(--home-ink);margin:0 0 22px}
+.home-page .home-phrase{max-width:520px;margin:0;text-align:left;font-size:24px;line-height:1.45;font-weight:400;color:#596975}
+.home-page .home-phrase span{color:var(--home-accent)}
+.home-page .home-animation{min-width:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#edf6f7 0%,#fff 70%);min-height:220px}
+.home-page #titleCanvas{width:100%;height:180px;max-width:420px;margin:0}
+.home-page .home-pi{display:grid;grid-template-columns:80px minmax(0,1fr) auto;gap:18px;max-width:none;margin:0;padding:20px 0;border-top:1px solid #d5e0e5;border-bottom:1px solid #d5e0e5}
+.home-page .home-pi img{width:80px;height:auto;border-radius:4px}
+.home-page .home-pi h2{font-size:22px;font-weight:600;letter-spacing:-.35px;margin:0 0 7px;color:var(--home-ink)}
+.home-page .home-pi p{font-size:15px;color:#596975;line-height:1.6;margin:0}
+.home-page .home-profile-link{font-size:14px;font-weight:600;padding:12px 0 12px 16px;color:var(--home-accent);white-space:nowrap}
+.home-page .home-profile-link span{margin-left:10px}
+.home-page .home-news{display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding-top:40px}
+.home-page .home-news h2{font-size:25px;font-weight:600;letter-spacing:-.5px;margin:0 0 14px;color:var(--home-ink)}
+.home-page .home-news-heading>a{font-size:14px;color:var(--home-accent)}
+.home-page .home-news-list{list-style:none;margin:0;padding:0}
+.home-page .home-news-list li{display:grid;grid-template-columns:106px minmax(0,1fr);gap:20px;align-items:baseline;padding:19px 0;border-bottom:1px solid #e3e9ed}
+.home-page .home-news-list li:first-child{padding-top:2px}
+.home-page .home-news-list time{font-size:12px;letter-spacing:.02em;color:#61707c;white-space:nowrap;font-variant-numeric:tabular-nums}
+.home-page .home-news-list a{position:relative;padding-right:24px;font-size:16px;line-height:1.5;color:var(--home-ink)}
+.home-page .news-arrow{position:absolute;right:0;top:0;color:#64828e;font-size:16px}
+.home-page #mtsg-footer .mtsg-footer__card{max-width:1064px;margin:0 auto;border:0;border-radius:0;box-shadow:none;padding:24px 0 8px;border-top:1px solid #d5e0e5}
+.home-page #mtsg-footer{padding:16px 28px 24px}
+.home-page #mtsg-footer .mtsg-pill,.home-page #mtsg-footer .mtsg-top{border:0;border-radius:0;font-size:12px;padding:7px}
+.home-page #mtsg-footer .mtsg-footer__fine{text-align:left;font-size:11px;margin-top:12px}
+.home-page #mtsg-footer .mtsg-footer__divider{display:none}
+.home-page #mtsg-footer .mtsg-footer__brand{font-size:14px;white-space:normal;flex-wrap:wrap}
+.home-page #mtsg-footer .mtsg-footer__brand small{font-size:12px}
+@media(max-width:950px){.home-page .home-intro{gap:18px}.home-page .home-phrase{font-size:21px}.home-page .pi-separator{display:none}.home-page .pi-institution{display:block}.home-page .home-news{grid-template-columns:170px minmax(0,1fr);gap:24px}.home-page .home-news-list li{grid-template-columns:1fr;gap:6px}.home-page #mtsg-footer .mtsg-footer__row{grid-template-columns:1fr;gap:10px}.home-page #mtsg-footer .mtsg-footer__links{justify-content:flex-start}}
+@media(max-width:650px){.home-page .mt-home{padding:32px 20px 22px}.home-page .home-intro{grid-template-columns:1fr;gap:0;padding-bottom:20px}.home-page .home-intro h1{font-size:34px;letter-spacing:-1.1px;margin-bottom:18px}.home-page .home-phrase{font-size:21px;max-width:400px}.home-page .home-animation{min-height:140px;margin-top:10px}.home-page #titleCanvas{height:130px;max-width:340px}.home-page .home-pi{grid-template-columns:66px minmax(0,1fr);column-gap:18px;row-gap:0;padding:22px 0}.home-page .home-pi img{width:66px;grid-row:1/3;align-self:center}.home-page .home-pi h2{font-size:20px}.home-page .home-pi p{font-size:13px}.home-page .home-profile-link{grid-column:2;font-size:13px;padding:8px 0 0}.home-page .home-news{grid-template-columns:1fr;gap:24px;padding-top:28px}.home-page .home-news-heading{display:flex;align-items:baseline;justify-content:space-between;gap:16px}.home-page .home-news h2{font-size:23px;margin:0}.home-page .home-news-list li{padding:18px 0}.home-page .home-news-list a{font-size:15px}.home-page #mtsg-footer{padding:12px 20px 24px}}
+@media(prefers-reduced-motion:reduce){.home-page *{scroll-behavior:auto!important}}
+
+/* The homepage introduces the principal investigator below the group identity. */
+.home-page .home-pi{grid-template-columns:150px minmax(0,1fr);column-gap:28px;row-gap:10px;padding:28px 0;align-items:start}
+.home-page .home-pi img{width:150px;grid-row:1/4;border-radius:6px}
+.home-page .home-pi .home-pi-role{font-size:13px;font-weight:600;letter-spacing:.03em;color:var(--home-accent);margin:0 0 7px}
+.home-page .home-pi h2{font-size:26px;margin-bottom:8px}
+.home-page .home-pi .home-pi-bio{grid-column:2;max-width:730px;font-size:15px;line-height:1.65;margin:0}
+.home-page .home-profile-link{grid-column:2;padding:2px 0 0;justify-self:start}
+@media(max-width:650px){.home-page .home-pi{grid-template-columns:96px minmax(0,1fr);column-gap:18px;row-gap:16px;padding:24px 0}.home-page .home-pi img{width:96px;grid-row:1;align-self:start}.home-page .home-pi h2{font-size:21px}.home-page .home-pi .home-pi-role{font-size:12px}.home-page .home-pi .home-pi-bio{grid-column:1/-1;font-size:14px}.home-page .home-profile-link{grid-column:1/-1;padding:0}}

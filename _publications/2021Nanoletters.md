@@ -12,4 +12,6 @@ pages: 419-425
 publisher: American Chemical Society
 paperurl: 'https://doi.org/10.1021/acs.nanolett.1c04155'
 doi: '10.1021/acs.nanolett.1c04155'
+selected: true
+finding: "Membrane vibrations couple to confined fluid motion and influence water desalination."
 ---

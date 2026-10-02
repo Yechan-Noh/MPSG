@@ -1,4 +1,4 @@
-<!-- ===== MPSG Modern Footer (drop-in for custom.html) ===== -->
+<!-- ===== MTSG Modern Footer (drop-in for custom.html) ===== -->
 <style>
     /* Sticky layout: footer sits at bottom when content is short */
     html,
@@ -27,7 +27,7 @@
     }
 
     /* Outer footer strip */
-    #mpsg-footer {
+    #mtsg-footer {
         flex-shrink: 0;
         width: 100%;
         background: var(--ft-bg);
@@ -36,7 +36,7 @@
     }
 
     /* Centered card */
-    .mpsg-footer__card {
+    .mtsg-footer__card {
         box-sizing: border-box;
         max-width: var(--ft-max);
         margin: 0 auto;
@@ -49,7 +49,7 @@
     }
 
     /* Top micro-divider with gradient */
-    .mpsg-footer__divider {
+    .mtsg-footer__divider {
         height: 1px;
         background: linear-gradient(90deg, transparent, var(--ft-border), transparent);
         margin: 8px 0 8px;
@@ -57,7 +57,7 @@
     }
 
     /* Row: left brand + right links */
-    .mpsg-footer__row {
+    .mtsg-footer__row {
         display: grid;
         grid-template-columns: 1fr auto;
         align-items: center;
@@ -65,14 +65,14 @@
     }
 
     @media (max-width: 640px) {
-        .mpsg-footer__row {
+        .mtsg-footer__row {
             grid-template-columns: 1fr;
             gap: 12px;
         }
     }
 
     /* Brand */
-    .mpsg-footer__brand {
+    .mtsg-footer__brand {
         display: flex;
         align-items: center;
         gap: 10px;
@@ -81,13 +81,13 @@
         white-space: nowrap;
     }
 
-    .mpsg-footer__brand small {
+    .mtsg-footer__brand small {
         color: var(--ft-muted);
         font-weight: 500;
     }
 
     /* Link pills container */
-    .mpsg-footer__links {
+    .mtsg-footer__links {
         display: flex;
         flex-wrap: wrap;
         gap: 1.5px;
@@ -95,14 +95,14 @@
     }
 
     @media (max-width: 640px) {
-        .mpsg-footer__links {
+        .mtsg-footer__links {
             justify-content: flex-start;
             gap: 8px;
         }
     }
 
     /* Smaller pill buttons */
-    .mpsg-pill {
+    .mtsg-pill {
         display: inline-flex;
         align-items: center;
         gap: 2px;
@@ -116,36 +116,36 @@
         transition: transform .15s ease, border-color .15s ease;
     }
 
-    .mpsg-pill:hover {
+    .mtsg-pill:hover {
         transform: translateY(-1px);
         border-color: var(--ft-accent);
     }
 
-    .mpsg-pill svg {
+    .mtsg-pill svg {
         width: 12px;
         height: 12px;
     }
 
     /* Bottom fine print */
-    .mpsg-footer__fine {
+    .mtsg-footer__fine {
         margin: 8px 2px 0;
         color: var(--ft-muted);
         font-size: .8rem;
         text-align: center;
     }
 
-    .mpsg-footer__fine a {
+    .mtsg-footer__fine a {
         color: inherit;
         text-decoration: underline;
         text-underline-offset: 2px;
     }
 
-    .mpsg-footer__fine a:hover {
+    .mtsg-footer__fine a:hover {
         text-decoration-color: var(--ft-accent);
     }
 
     /* Smaller "Top" button to match pills */
-    .mpsg-top {
+    .mtsg-top {
         display: inline-flex;
         align-items: center;
         gap: 2px;
@@ -158,26 +158,26 @@
         transition: transform .15s ease, border-color .15s ease;
     }
 
-    .mpsg-top:hover {
+    .mtsg-top:hover {
         transform: translateY(-1px);
         border-color: var(--ft-accent);
     }
 
-    .mpsg-top svg {
+    .mtsg-top svg {
         width: 12px;
         height: 12px;
     }
 
     /* Remove outer footer background and padding */
     .page__footer,
-    .mpsg-footer-wrap {
+    .mtsg-footer-wrap {
         background: transparent !important;
         padding: 0 !important;
         border: none !important;
         box-shadow: none !important;
     }
 
-    #mpsg-footer {
+    #mtsg-footer {
         flex-shrink: 0;
         width: 100%;
         background: transparent !important;
@@ -187,7 +187,7 @@
 
     /* if Minimal Mistakes wrapper exists, make it transparent too */
     .page__footer,
-    .mpsg-footer-wrap,
+    .mtsg-footer-wrap,
     .site-footer {
         background: transparent !important;
         border: 0 !important;
@@ -198,18 +198,18 @@
 </style>
 
 
-<footer id="mpsg-footer" role="contentinfo" aria-label="Site footer">
-    <div class="mpsg-footer__card">
-        <div class="mpsg-footer__row">
+<footer id="mtsg-footer" role="contentinfo" aria-label="Site footer">
+    <div class="mtsg-footer__card">
+        <div class="mtsg-footer__row">
             <!-- Brand -->
-            <div class="mpsg-footer__brand">
-                <span>MPSG</span>
-                <small>· Molecular Physics Simulation Group</small>
+            <div class="mtsg-footer__brand">
+                <span>MTSG</span>
+                <small>· Molecular Transport Simulation Group</small>
             </div>
 
             <!-- Action links (pills with icons) -->
-            <nav class="mpsg-footer__links" aria-label="Footer links">
-                <a class="mpsg-pill" href="mailto:ynoh@nd.edu" aria-label="Email">
+            <nav class="mtsg-footer__links" aria-label="Footer links">
+                <a class="mtsg-pill" href="mailto:ynoh@nd.edu" aria-label="Email">
                     <!-- mail icon -->
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -219,7 +219,7 @@
                     Contact
                 </a>
 
-                <a class="mpsg-pill" href="https://scholar.google.com/citations?user=0zdqbtIAAAAJ" target="_blank"
+                <a class="mtsg-pill" href="https://scholar.google.com/citations?user=0zdqbtIAAAAJ" target="_blank"
                     rel="noopener" aria-label="Google Scholar">
                     <!-- book icon -->
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
@@ -231,7 +231,7 @@
                     Google Scholar
                 </a>
 
-                <a class="mpsg-pill" href="https://www.linkedin.com/in/yechan-noh-phd-421906155" target="_blank"
+                <a class="mtsg-pill" href="https://www.linkedin.com/in/yechan-noh-phd-421906155" target="_blank"
                     rel="noopener" aria-label="LinkedIn">
                     <!-- linkedin icon -->
                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -241,7 +241,7 @@
                     LinkedIn
                 </a>
 
-                <a class="mpsg-top" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;"
+                <a class="mtsg-top" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;"
                     aria-label="Back to top">
                     <!-- up chevron -->
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
@@ -253,11 +253,11 @@
             </nav>
         </div>
 
-        <hr class="mpsg-footer__divider" />
+        <hr class="mtsg-footer__divider" />
 
-        <p class="mpsg-footer__fine">
-            © 2026 <strong>Molecular Physics Simulation Group (MPSG)</strong>.
+        <p class="mtsg-footer__fine">
+            © 2026 <strong>Molecular Transport Simulation Group (MTSG)</strong>.
         </p>
     </div>
 </footer>
-<!-- ===== /MPSG Modern Footer ===== -->
+<!-- ===== /MTSG Footer ===== -->

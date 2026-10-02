@@ -1,219 +1,29 @@
 ---
 layout: default
-title: ""
+title: "Molecular Transport Simulation Group"
 permalink: /
 author_profile: false
+body_class: home-page
 ---
-
-<!-- Fonts & Icons -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
-<style>
-:root{
-  --accent1:#364f6b;   /* deep slate */
-  --accent2:#809bce;   /* soft steel */
-  --gray-750:#2e3440;
-  --gray-500:#4f5b66;
-  --gray-150:#e5e9f0;
-}
-
-/* ── HERO CANVAS ─────────────────────────────────────────────── */
-#titleCanvas {
-  display: block;
-  margin: 0 auto;
-  width: min(90vw, 500px); /* scale to viewport width */
-  height: auto;           /* let browser auto-scale height */
-  max-width: 100%;        /* never overflow parent */
-  aspect-ratio: 5 / 2;    /* preserve proportions */
-}
-
-/* ── HERO BLOCK ──────────────────────────────────────────────── */
-.hero{
-  text-align:center;
-  padding:1.5rem 1rem 1.5rem; /* (top | sides | bottom) */
-  background:#fff;
-}
-
-@media (max-width: 480px) {
-  .hero {
-    padding: 1rem 0.5rem 1.5rem; /* reduce side padding on mobile */
-  }
-}
-
-.hero-heading{
-  font-size:clamp(1.6rem,4vw,2.4rem);
-  font-weight:700;
-  letter-spacing:-0.4px;
-  margin:0 0 0.25rem;  /* much tighter gap */
-  color:var(--gray-750);
-}
-
-.mission {
-  font-size: 1.15rem;              /* Clear, readable size */
-  line-height: 1.75;               /* Improved vertical rhythm */
-  color: var(--gray-600);          /* Slightly darker for better contrast */
-  max-width: 700px;                /* Optimal line length for readability */
-  margin: 2rem auto;               /* Balanced vertical spacing */
-  text-align: center;              /* Centered for emphasis */
-  font-weight: 500;                /* Slightly bolder for presence */
-  padding: 0 1rem;                 /* Padding for smaller screens */
-  font-family: 'Source Sans Pro', sans-serif; /* Modern, clean font */
-  letter-spacing: 0.015em;         /* Slight spacing for elegance */
-}
-
-
-.mission::before {
-  content: "";
-  display: block;
-  width: 50px;
-  height: 3px;
-  background: var(--accent1);
-  margin: 0 auto 1rem;
-  border-radius: 2px;
-  opacity: 0.7;
-}
-
-/* ── RESEARCH CARDS ──────────────────────────────────────────── */
-.grid{
-  display:grid;
-  gap:1.4rem;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  max-width:1100px;
-  margin:0 auto 4rem;
-  padding:0 1rem;
-}
-.card{
-  background:#fff;
-  border:1px solid var(--gray-150);
-  border-radius:12px;
-  padding:1.25rem 1.35rem;
-  transition:transform .25s,border-color .25s;
-  transform-style:preserve-3d;
-  perspective:600px;
-}
-.card:hover{border-color:var(--accent1);transform:translateY(-4px) rotateX(3deg) rotateY(-3deg)}
-.card h3{font-size:1rem;margin-bottom:.6rem;color:var(--accent1)}
-.card p{margin:0;font-size:.88rem;color:var(--gray-500)}
-
-/* ── LATEST NEWS ────────────────────────────────────────────── */
-.news-section{
-  max-width:1100px;
-  margin:0 auto 3rem;
-  padding:0 1rem;
-}
-.news-section h2{
-  font-size:1.3rem;
-  font-weight:700;
-  color:var(--accent1);
-  margin-bottom:1rem;
-}
-.news-list{
-  list-style:none;
-  padding:0;
-  margin:0;
-}
-.news-item{
-  display:flex;
-  align-items:baseline;
-  gap:1rem;
-  padding:0.65rem 0;
-  border-bottom:1px solid var(--gray-150);
-}
-.news-item:last-child{border-bottom:none}
-.news-date{
-  flex-shrink:0;
-  font-size:0.78rem;
-  color:var(--gray-500);
-  min-width:5.5rem;
-}
-.news-text{
-  font-size:0.9rem;
-  color:var(--gray-750);
-  line-height:1.45;
-}
-.news-text a{
-  color:var(--accent1);
-  text-decoration:none;
-}
-.news-text a:hover{text-decoration:underline}
-
-/* ── FOOTER ──────────────────────────────────────────────────── */
-.footer{
-  border-top:1px solid var(--gray-150);
-  padding:1rem 0;
-  text-align:center;
-  font-size:.8rem;
-  color:var(--gray-500);
-}
-</style>
-
-<!-- ── HERO ──────────────────────────────────────────────────── -->
-<section class="hero">
-  <h1 class="hero-heading">Molecular Physics Simulation Group</h1>
-
-  <canvas id="titleCanvas"></canvas>
-
-<p class="mission">
-  We harness state-of-the-art computer simulations to engineer innovative devices that address scientific and industrial challenges. 
-</p>
-
+<div class="mt-page mt-home">
+<section class="home-intro" aria-labelledby="group-title">
+  <div class="home-intro-copy">
+    <h1 id="group-title">Molecular Transport<br>Simulation Group</h1>
+    <p class="home-phrase">At the intersection of <span>chemistry and transport.</span></p>
+  </div>
+  <div class="home-animation"><canvas id="titleCanvas" aria-label="Animated MTSG particle logo">MTSG</canvas></div>
 </section>
-
-<!-- ── RESEARCH PILLARS ──────────────────────────────────────── -->
-<div class="grid">
-  <!-- 1 › Multiscale simulation technique -->
-  <div class="card">
-    <h3><i class="fa-solid fa-cubes"></i> Development of Innovative Simulation Methods</h3>
-    <p>
-      We aim to innovate computer simulation techniques for all scales of physics, including quantum, atomistic, and continuum. Our current interests include machine-learning molecular dynamics and extended/generalized Lattice-Boltzmann methods. However, we are open to seeking any novel ideas to innovate simulation approaches.
-    </p>
-  </div>
-
-  <!-- 2 › Molecular–quantum biomimetic engineering -->
-  <div class="card">
-    <h3><i class="fa-solid fa-dna"></i> Molecular Biomimetic Engineering</h3>
-    <p>
-      Biological systems exhibit remarkable efficiency and sustainability in their essential processes, such as intelligence, energy conversion, learning, and molecular separation. Our research seeks to understand and implement the molecular–quantum principles of these living systems in engineered devices.
-    </p>
-  </div>
-
-  <!-- 3 › Foundational mathematical theory -->
-  <div class="card">
-    <h3><i class="fa-solid fa-compass-drafting"></i> Foundational Physical/Chemical Theory</h3>
-    <p>
-      Developing a foundational theory for atomistic physics has long been a dream in Science and Engineering. By leveraging cutting-edge atomistic simulations, we aim to establish an advanced theoretical framework for atomistic phenomena, including nanoscale thermal–fluid transport and beyond.
-    </p>
-  </div>
-</div>
-
-<!-- ── LATEST NEWS ──────────────────────────────────────────── -->
-<section class="news-section">
-  <h2><i class="fa-solid fa-newspaper"></i> Latest News</h2>
-  <ul class="news-list">
-    {% assign sorted_news = site.news | sort: 'date' | reverse %}
-    {% for post in sorted_news limit:4 %}
-    <li class="news-item">
-      <span class="news-date">{{ post.date | date: "%b %d, %Y" }}</span>
-      <span class="news-text">{{ post.title }}</span>
-    </li>
-    {% endfor %}
+<section class="home-pi" aria-labelledby="pi-name">
+  <img src="{{ '/assets/img/people/yechan-noh-2026.jpg' | relative_url }}" alt="Portrait of Yechan Noh" width="1114" height="1412">
+  <div class="home-pi-details"><p class="home-pi-role">Principal Investigator</p><h2 id="pi-name">Yechan Noh, Ph.D.</h2><p>Provost’s Postdoctoral Fellow<br>University of Notre Dame</p></div>
+  <p class="home-pi-bio">Before joining Notre Dame, Yechan was a postdoctoral researcher at the National Institute of Standards and Technology. He received his Ph.D. in Mechanical Engineering from the University of Illinois Urbana-Champaign.</p>
+  <a class="home-profile-link" href="{{ '/people/' | relative_url }}">Full profile <span aria-hidden="true">↗</span></a>
+</section>
+<section class="home-news" aria-labelledby="latest-news">
+  <div class="home-news-heading"><h2 id="latest-news">Latest News</h2><a href="{{ '/news/' | relative_url }}">All news <span aria-hidden="true">→</span></a></div>
+  <ul class="home-news-list">{% assign sorted_news = site.news | sort: 'date' | reverse %}{% for post in sorted_news limit:4 %}
+    <li>{% if post.date_precision == 'month' %}<time datetime="{{ post.date | date: '%Y-%m' }}">{{ post.date | date: '%b %Y' }}</time>{% else %}<time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%b %d, %Y' }}</time>{% endif %}<a href="{{ post.url | relative_url }}">{{ post.title }}<span class="news-arrow" aria-hidden="true">↗</span></a></li>{% endfor %}
   </ul>
 </section>
-
-<!-- p5 hero graphic -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.5.0/p5.min.js"></script>
-<script src="{{ '/assets/js/hero_graphic.js' | relative_url }}"></script>
-
-<!-- Fade-in cards -->
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
-  const cards = document.querySelectorAll('.card');
-  const io = new IntersectionObserver(entries =>
-    entries.forEach(e=> e.isIntersecting && e.target.classList.add('in')),
-    { threshold: .15 }
-  );
-  cards.forEach(c=> io.observe(c));
-});
-</script>
+</div>
+<script src="{{ '/assets/js/hero_graphic.js' | relative_url }}" defer></script>

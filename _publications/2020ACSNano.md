@@ -12,4 +12,6 @@ pages: 10518-10526
 publisher: American Chemical Society
 paperurl: 'https://doi.org/10.1021/acsnano.0c04453'
 doi: '10.1021/acsnano.0c04453'
+selected: true
+finding: "Pore electrical properties shape ion transport at molecular scales."
 ---

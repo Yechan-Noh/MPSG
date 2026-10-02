@@ -3,37 +3,37 @@
 document.addEventListener("DOMContentLoaded", function () {
     // --- 1. SETUP ---
     // Find the main header container. If it doesn't exist, stop the script.
-    const root = document.querySelector("[data-mpsg-masthead]");
+    const root = document.querySelector("[data-mtsg-masthead]");
     if (!root) return;
 
     // Select essential elements
     const body = document.body;
-    const toggle = root.querySelector("#mpsg-nav-toggle");
-    const nav = root.querySelector("#mpsg-site-nav");
-    const menu = root.querySelector("[data-mpsg-menu]");
-    const scrim = root.querySelector(".mpsg-scrim");
+    const toggle = root.querySelector("#mtsg-nav-toggle");
+    const nav = root.querySelector("#mtsg-site-nav");
+    const menu = root.querySelector("[data-mtsg-menu]");
+    const scrim = root.querySelector(".mtsg-scrim");
 
     // If the main toggle or nav elements are missing, stop the script.
     if (!toggle || !nav || !menu) return;
 
     // Get all menu items that have a submenu (dropdowns)
-    const dropdownItems = Array.from(menu.querySelectorAll(".mpsg-item--has-children"));
+    const dropdownItems = Array.from(menu.querySelectorAll(".mtsg-item--has-children"));
 
 
     // --- 2. HELPER FUNCTIONS ---
     // Checks if the mobile navigation is currently open
-    const isOpen = () => body.classList.contains("mpsg-nav-open");
+    const isOpen = () => body.classList.contains("mtsg-nav-open");
 
     // Opens the mobile navigation
     const openNav = () => {
-        body.classList.add("mpsg-nav-open");
+        body.classList.add("mtsg-nav-open");
         toggle.setAttribute("aria-expanded", "true");
         toggle.setAttribute("aria-label", "Close menu");
     };
 
     // Closes the mobile navigation and any open dropdowns
     const closeNav = () => {
-        body.classList.remove("mpsg-nav-open");
+        body.classList.remove("mtsg-nav-open");
         toggle.setAttribute("aria-expanded", "false");
         toggle.setAttribute("aria-label", "Open menu");
         dropdownItems.forEach(closeSubmenu); // Close all submenus when nav closes
@@ -41,19 +41,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Opens a specific dropdown submenu
     const openSubmenu = (item) => {
-        const btn = item.querySelector(".mpsg-submenu-toggle");
-        const panel = item.querySelector(".mpsg-submenu");
+        const btn = item.querySelector(".mtsg-submenu-toggle");
+        const panel = item.querySelector(".mtsg-submenu");
         if (!btn || !panel) return;
-        item.classList.add("mpsg-item--open");
+        item.classList.add("mtsg-item--open");
         btn.setAttribute("aria-expanded", "true");
     };
 
     // Closes a specific dropdown submenu
     const closeSubmenu = (item) => {
-        const btn = item.querySelector(".mpsg-submenu-toggle");
-        const panel = item.querySelector(".mpsg-submenu");
+        const btn = item.querySelector(".mtsg-submenu-toggle");
+        const panel = item.querySelector(".mtsg-submenu");
         if (!btn || !panel) return;
-        item.classList.remove("mpsg-item--open");
+        item.classList.remove("mtsg-item--open");
         btn.setAttribute("aria-expanded", "false");
     };
 
@@ -79,14 +79,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Handles clicks on dropdown toggles
     dropdownItems.forEach((item) => {
-        const btn = item.querySelector(".mpsg-submenu-toggle");
+        const btn = item.querySelector(".mtsg-submenu-toggle");
         if (!btn) return;
 
         btn.addEventListener("click", (e) => {
             e.preventDefault(); // Prevents link navigation if the button is an '<a>' tag
             e.stopPropagation(); // Prevents the 'document' click listener
 
-            const isItemOpen = item.classList.contains("mpsg-item--open");
+            const isItemOpen = item.classList.contains("mtsg-item--open");
 
             // Close any other open dropdowns first
             dropdownItems.forEach((siblingItem) => {

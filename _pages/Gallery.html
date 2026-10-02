@@ -167,7 +167,7 @@ author_profile: false
         {%- assign sorted = items | sort: 'date' | reverse -%}
         {%- for post in sorted -%}
         {%- assign y = post.date | date: '%Y' -%}
-        {%- assign date_str = post.date | date: '%b %d, %Y' -%}
+        {%- if post.date_precision == 'month' -%}{%- assign date_str = post.date | date: '%b %Y' -%}{%- else -%}{%- assign date_str = post.date | date: '%b %d, %Y' -%}{%- endif -%}
 
         {%- if post.authors -%}
         {%- assign authors_list = post.authors -%}

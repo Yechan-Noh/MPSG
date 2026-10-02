@@ -1,0 +1,9 @@
+{% assign paper = include.paper %}
+<article class="publication-entry{% if include.featured %} publication-entry--selected{% endif %}">
+  <p class="publication-venue">{{ paper.venue }} · {{ paper.date | date: "%Y" }}{% if paper.status %}<span class="editorial-note">{{ paper.status }}</span>{% endif %}</p>
+  <h3><a href="{{ paper.paperurl }}">{{ paper.title }}</a></h3>
+  <p class="publication-authors">{{ paper.authors | replace: 'Yechan Noh', '<strong>Yechan Noh</strong>' | replace: '*', '<sup>*</sup>' | replace: '†', '<sup>†</sup>' }}</p>
+  <p class="publication-citation">{% if paper.volume %}{{ paper.volume }}{% endif %}{% if paper.issue %}({{ paper.issue }}){% endif %}{% if paper.pages %}, {{ paper.pages }}{% endif %}{% if paper.endnote %} · {{ paper.endnote }}{% endif %}</p>
+  {% if include.featured and paper.finding %}<p class="publication-finding">{{ paper.finding }}</p>{% endif %}
+  <a class="text-link" href="{{ paper.paperurl }}">DOI / Article <span aria-hidden="true">↗</span></a>{% if paper.arxivurl %} · <a class="text-link" href="{{ paper.arxivurl }}">Preprint</a>{% endif %}
+</article>

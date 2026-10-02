@@ -3,7 +3,7 @@
    ========================================================================== */
 
 /* Outer footer strip */
-#mpsg-footer {
+#mtsg-footer {
   flex-shrink: 0;
   width: 100%;
   background: var(--ft-bg);
@@ -12,7 +12,7 @@
 }
 
 /* Centered card */
-.mpsg-footer__card {
+.mtsg-footer__card {
   box-sizing: border-box;
   max-width: var(--ft-max);
   margin: 0 auto;
@@ -25,7 +25,7 @@
 }
 
 /* Top micro-divider with gradient */
-.mpsg-footer__divider {
+.mtsg-footer__divider {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--ft-border), transparent);
   margin: 8px 0 8px;
@@ -33,7 +33,7 @@
 }
 
 /* Row: left brand + right links */
-.mpsg-footer__row {
+.mtsg-footer__row {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
@@ -41,14 +41,14 @@
 }
 
 @media (max-width: 640px) {
-  .mpsg-footer__row {
+  .mtsg-footer__row {
     grid-template-columns: 1fr;
     gap: 12px;
   }
 }
 
 /* Brand */
-.mpsg-footer__brand {
+.mtsg-footer__brand {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -57,13 +57,13 @@
   white-space: nowrap;
 }
 
-.mpsg-footer__brand small {
+.mtsg-footer__brand small {
   color: var(--ft-muted);
   font-weight: 500;
 }
 
 /* Link pills container */
-.mpsg-footer__links {
+.mtsg-footer__links {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
@@ -71,14 +71,14 @@
 }
 
 @media (max-width: 640px) {
-  .mpsg-footer__links {
+  .mtsg-footer__links {
     justify-content: flex-start;
     gap: 8px;
   }
 }
 
 /* Smaller pill buttons */
-.mpsg-pill {
+.mtsg-pill {
   display: inline-flex;
   align-items: center;
   gap: 2px;
@@ -92,36 +92,36 @@
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
-.mpsg-pill:hover {
+.mtsg-pill:hover {
   transform: translateY(-1px);
   border-color: var(--ft-accent);
 }
 
-.mpsg-pill svg {
+.mtsg-pill svg {
   width: 14px;
   height: 14px;
 }
 
 /* Bottom fine print */
-.mpsg-footer__fine {
+.mtsg-footer__fine {
   margin: 8px 2px 0;
   color: var(--ft-muted);
   font-size: 0.8rem;
   text-align: center;
 }
 
-.mpsg-footer__fine a {
+.mtsg-footer__fine a {
   color: inherit;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
-.mpsg-footer__fine a:hover {
+.mtsg-footer__fine a:hover {
   text-decoration-color: var(--ft-accent);
 }
 
 /* Smaller "Top" button to match pills */
-.mpsg-top {
+.mtsg-top {
   display: inline-flex;
   align-items: center;
   gap: 2px;
@@ -134,19 +134,19 @@
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
-.mpsg-top:hover {
+.mtsg-top:hover {
   transform: translateY(-1px);
   border-color: var(--ft-accent);
 }
 
-.mpsg-top svg {
+.mtsg-top svg {
   width: 14px;
   height: 14px;
 }
 
 /* Fixes to prevent theme styles from conflicting with the modern footer */
 .page__footer,
-.mpsg-footer-wrap,
+.mtsg-footer-wrap,
 .site-footer {
   background: transparent !important;
   border: 0 !important;

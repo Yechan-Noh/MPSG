@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Electrode-Tethered DNA: Mechanics and Dynamics through GPU-Accelerated Molecular Simulations.",
+    "authors": "Yechan Noh, H. Chang* & K. Fu*",
+    "status": "Submitted to bioRxiv",
+    "year": 2026,
+    "milestone_month": "2026-10"
+  },
+  {
+    "title": "Nanoconfinement and Surface Chemistry Convert Aptamer Cross-Reactivity into Quantitative Chemical-Analog Sensing.",
+    "authors": "M. P. McGowan, Yechan Noh, V. Liu, M. Casario, I. Stadthagen-Peralta, H. Chang & K. X. Fu*",
+    "status": "Under review",
+    "year": 2026,
+    "milestone_month": "2026-07"
+  },
+  {
+    "title": "Mechanosensitive Ion Transport in Hexagonal Boron Nitride Nanopores.",
+    "authors": "M. Saraswat, Yechan Noh, A. T. Hall, D. O. Byrne, K. Damberg, S. Marion, C. A. Violet, J. Chung, J. Cumings, A. Radenovic, F. I. Allen*, A. Smolyanitsky* & A. Noy*",
+    "status": "Internal review",
+    "year": 2026,
+    "milestone_month": "2026-09"
+  },
+  {
+    "title": "FiberPro 1.0: Multiagent AI-Guided Design for High-Throughput Production and Conformal Deposition of Functional Protein Micro/Nanofibers.",
+    "authors": "L. Li, C. Moses, Yechan Noh, C. Hsu, F. Calderon-Gutierrez, C. Ruiz, J. F. Mogollón-Molina, K. Fu & H. Chang*",
+    "status": "Submitted",
+    "year": 2026,
+    "preprint": "https://www.biorxiv.org/content/10.64898/2026.09.18.752775v1",
+    "milestone_month": "2026-09"
+  },
+  {
+    "title": "A Fully Edible Microneedle for Vision–Language Freshness Reasoning.",
+    "authors": "L. Li, Q. Cao, C. Hsu, Yechan Noh, F. Calderon-Gutierrez, C. Ruiz, W. Liu, K. Fu & H. Chang*",
+    "status": "Submitted",
+    "year": 2026,
+    "milestone_month": "2026-07"
+  }
+]

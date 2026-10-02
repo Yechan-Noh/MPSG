@@ -4,309 +4,72 @@ title: "Publications"
 permalink: /publications/
 author_profile: false
 ---
-
-<style>
-  :root {
-    --accent1: #364f6b;
-    --content-bg: #ffffff;
-    --card-radius: 0.85rem;
-    --card-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-    --card-shadow-hover: 0 5px 14px rgba(0, 0, 0, 0.12);
-  }
-
-  /* ——— Google Scholar Card ——— */
-  .scholar-card {
-    background: var(--content-bg);
-    border-radius: var(--card-radius);
-    /* box-shadow removed */
-    padding: 1.0rem 1.5rem;
-    margin: 1rem 0;
-    text-align: center;
-    transition: transform 0.2s ease;
-    /* only transform now */
-  }
-
-  .scholar-card:hover {
-    transform: translateY(-3px);
-    /* no shadow on hover */
-  }
-
-  .scholar-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--accent1);
-    font: 500 1rem/0.5 "Inter", sans-serif;
-    text-decoration: none;
-  }
-
-  .scholar-link i {
-    font-size: 1.4rem;
-  }
-
-  .scholar-link:hover {
-    text-decoration: underline;
-  }
-
-  .Journals {
-    text-align: center;
-    margin: 0.5rem auto;
-    max-width: 1000px;
-    /* keeps content nicely centered on large screens */
-  }
-
-  .journal-title {
-    font-size: 1.6rem;
-    font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    color: #364f6b;
-  }
-
-  /* journal bar container */
-  .journal-bar {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1rem;
-    margin: 0.25rem auto;
-
-    /* maximum of 5 items of 140px + 4 gaps of 1rem each */
-    max-width: calc((160px * 5) + (1rem * 4));
-  }
-
-  /* Generic journal container */
-  .journal-item {
-    /* allow wrapping, but don't shrink below 140px */
-    flex: 0 1 160px;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Generic logo styling */
-  .journal-item img {
-    object-fit: contain;
-    filter: grayscale(15%);
-    display: block;
-  }
-
-  /* === Percentage-based logo sizing === */
-
-  .size40 img {
-    width: 40%;
-  }
-
-  .size50 img {
-    width: 50%;
-  }
-
-  .size60 img {
-    width: 60%;
-  }
-
-  .size70 img {
-    width: 70%;
-  }
-
-  .size80 img {
-    width: 80%;
-  }
-
-  .size90 img {
-    width: 90%;
-  }
-
-  .size100 img {
-    width: 100%;
-  }
-
-  /* ───── Publications Card Grid ─────────────────────────────────────── */
-  .pub-grid {
-    display: grid;
-
-    /* This single line creates a fluid, responsive grid.
-    - 'auto-fit': Creates as many columns as will fit in the available space.
-    - 'minmax(240px, 1fr)': Each column will be at least 240px wide but can grow 
-      to fill any extra space equally ('1fr'). When a column can no longer
-      maintain the 240px minimum, it wraps to the next line automatically.
-  */
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-
-    gap: 1.0rem;
-    margin: 1.0rem auto;
-    padding: 0 1.5rem;
-  }
-
-  /* Optional: Constrain the grid's width on very large screens for readability. */
-  @media (min-width: 1080px) {
-    .pub-grid {
-      max-width: 1080px;
-    }
-  }
-
-  .year-tag {
-    grid-column: 1 / -1;
-    font: 700 1.3rem/0.1 "Inter", sans-serif;
-    /* match research-header font family + weight */
-    color: #364f6b;
-    margin: 1.0rem 0 0.0rem;
-  }
-
-  .pub-card {
-    background: var(--content-bg);
-    border: 1px solid #e2e8f0;
-    border-radius: var(--card-radius);
-    box-shadow: var(--card-shadow);
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    padding: 1rem 1.2rem;
-    /* same padding as research-body */
-    font-size: 0.9rem;
-    /* match research-card font sizing */
-    line-height: 1.45;
-  }
-
-  .pub-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--card-shadow-hover);
-  }
-
-  .badge {
-    display: inline-block;
-    background: #ffd966;
-    color: #222;
-    font-size: 0.6rem;
-    padding: 0.1rem 0.35rem;
-    border-radius: 4px;
-    margin-right: 0.4rem;
-    text-transform: uppercase;
-  }
-
-  .pub-authors {
-    margin: 0 0 0.3rem;
-    font: 0.8rem/1.3 "Helvetica Neue", sans-serif;
-  }
-
-  .pub-title {
-    margin: 0.1rem 0;
-    font: 400 0.85rem/1.35 "Helvetica Neue", sans-serif;
-  }
-
-  .pub-meta {
-    margin: 0;
-    font: 0.7rem/1.35 "Helvetica Neue", sans-serif;
-    color: #555;
-  }
-
-  .journal {
-    font-weight: 700;
-    font-size: 0.8rem;
-    color: #007ACC;
-  }
-</style>
-
-
-<!-- ——— Funding / supporter logos ——— -->
+<div class="mt-page">
 <section class="Journals">
-  <h2 class="journal-title">Journal Publications</h2>
+  <h1 class="journal-title">Publications</h1>
 
   <div class="journal-bar">
     <div class="journal-item size100">
-      <img src="{{ '/assets/img/journals/Science_Advances.svg' | relative_url }}">
+      <img src="{{ '/assets/img/journals/Science_Advances.svg' | relative_url }}" alt="Science Advances">
     </div>
     <div class="journal-item size100">
-      <img src="{{ '/assets/img/journals/Nature_Communications.png' | relative_url }}">
+      <img src="{{ '/assets/img/journals/Nature_Communications.png' | relative_url }}" alt="Nature Communications">
     </div>
     <div class="journal-item size70">
-      <img src="{{ '/assets/img/journals/ACS_Nano.svg' | relative_url }}">
+      <img src="{{ '/assets/img/journals/ACS_Nano.svg' | relative_url }}" alt="ACS Nano">
     </div>
     <div class="journal-item size80">
-      <img src="{{ '/assets/img/journals/Nano_Letters.svg' | relative_url }}">
+      <img src="{{ '/assets/img/journals/Nano_Letters.svg' | relative_url }}" alt="Nano Letters">
     </div>
     <div class="journal-item size50">
-      <img src="{{ '/assets/img/journals/small.png' | relative_url }}">
+      <img src="{{ '/assets/img/journals/small.png' | relative_url }}" alt="small">
     </div>
     <div class="journal-item size70">
-      <img src="{{ '/assets/img/journals/Scientific_Reports.png' | relative_url }}">
+      <img src="{{ '/assets/img/journals/Scientific_Reports.png' | relative_url }}" alt="Scientific Reports">
     </div>
     <div class="journal-item size100">
-      <img src="{{ '/assets/img/journals/PRL.png' | relative_url }}">
+      <img src="{{ '/assets/img/journals/PRL.png' | relative_url }}" alt="PRL">
     </div>
     <div class="journal-item size100">
-      <img src="{{ '/assets/img/journals/PRE.png' | relative_url }}">
+      <img src="{{ '/assets/img/journals/PRE.png' | relative_url }}" alt="PRE">
     </div>
     <div class="journal-item size100">
-      <img src="{{ '/assets/img/journals/PRM.png' | relative_url }}">
+      <img src="{{ '/assets/img/journals/PRM.png' | relative_url }}" alt="PRM">
     </div>
     <div class="journal-item size70">
-      <img src="{{ '/assets/img/journals/JPCL.png' | relative_url }}">
+      <img src="{{ '/assets/img/journals/JPCL.png' | relative_url }}" alt="JPCL">
     </div>
     <div class="journal-item size60">
-      <img src="{{ '/assets/img/journals/JPCB.png' | relative_url }}">
+      <img src="{{ '/assets/img/journals/JPCB.png' | relative_url }}" alt="JPCB">
     </div>
     <div class="journal-item size90">
-      <img src="{{ '/assets/img/journals/APL.png' | relative_url }}">
+      <img src="{{ '/assets/img/journals/APL.png' | relative_url }}" alt="APL">
     </div>
     <div class="journal-item size80">
-      <img src="{{ '/assets/img/journals/JCP.png' | relative_url }}">
+      <img src="{{ '/assets/img/journals/JCP.png' | relative_url }}" alt="JCP">
     </div>
     <div class="journal-item size80">
-      <img src="{{ '/assets/img/journals/applied_science.png' | relative_url }}">
+      <img src="{{ '/assets/img/journals/applied_science.png' | relative_url }}" alt="applied science">
     </div>
     <div class="journal-item size80">
-      <img src="{{ '/assets/img/journals/nanoscale.jpg' | relative_url }}">
+      <img src="{{ '/assets/img/journals/nanoscale.jpg' | relative_url }}" alt="nanoscale">
     </div>
 
   </div>
 </section>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  referrerpolicy="no-referrer">
-
-{% if site.author.googlescholar %}
-<div class="scholar-card">
-  <a href="{{ site.author.googlescholar }}" class="scholar-link" target="_blank" rel="noopener noreferrer">
-    <i class="fa-solid fa-graduation-cap"></i>
-    <span>Google Scholar Profile</span>
-  </a>
-</div>
-{% endif %}
-
+<nav class="publication-nav" aria-label="Publication links"><a href="{{ site.author.googlescholar }}">Google Scholar ↗</a></nav>
 {% assign sorted_pubs = site.publications | sort: 'date' | reverse %}
-{% assign pubs_by_year = sorted_pubs | group_by_exp:"post", "post.date | date: '%Y'" %}
-
+{% assign groups = sorted_pubs | group_by_exp: 'post', "post.date | date: '%Y'" %}
+<section class="mt-section" id="all-publications" aria-label="Publications by year">
 <div class="pub-grid">
-  {% for year_group in pubs_by_year %}
-  <div class="year-tag">{{ year_group.name }}</div>
-
-  {% for post in year_group.items %}
-  <div class="pub-card">
-    <p class="pub-authors">
-      {% if post.status %}
-      <span class="badge">{{ post.status }}</span><br>
-      {% endif %}
-      {{ post.authors | replace: 'Yechan Noh', '<b>Yechan Noh</b>' }}
-    </p>
-
-    <p class="pub-title">{{ post.title }}</p>
-
-    <p class="pub-meta">
-      <span class="journal">{{ post.venue }}</span>{% if post.volume %}, {{ post.volume }}{% endif %}{% if post.issue %}
-      ({{ post.issue }}){% endif %}{% if post.pages %}, {{ post.pages }}{% endif %}, ({{ post.date | date: "%Y" }})
-      {% if post.paperurl %}
-      <a href="{{ post.paperurl }}" target="_blank" rel="noopener noreferrer">URL</a>
-      {% endif %}
-      {% if post.arxivurl %}
-      <a href="{{ post.arxivurl }}" target="_blank" rel="noopener noreferrer">arXiv URL</a>
-      {% endif %}
-      {% if post.endnote %}, <span class="endnote-orange">{{ post.endnote }}</span>
-      {% endif %}
-    </p>
-
-
-  </div>
-  {% endfor %}
-  {% endfor %}
+{% for group in groups %}
+  <h2 class="year-tag" id="year-{{ group.name }}">{{ group.name }}</h2>
+  {% for paper in group.items %}{% include publication-card.html paper=paper %}{% endfor %}
+  {% assign year_number = group.name | plus: 0 %}
+  {% assign manuscripts = site.data.submitted_manuscripts | where: 'year', year_number %}
+  {% for paper in manuscripts %}{% include publication-card.html paper=paper submitted=true %}{% endfor %}
+{% endfor %}
+</div>
+<p class="section-note">* Corresponding author. † Equal contribution. Manuscript status is labeled individually.</p>
+</section>
 </div>

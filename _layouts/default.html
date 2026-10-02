@@ -12,7 +12,7 @@ layout: compress
   {% include head.html %}
   {% include head/custom.html %}
 
-<body>
+<body{% if page.body_class %} class="{{ page.body_class }}"{% endif %}>
   {% include browser-upgrade.html %}
   {% include masthead.html %}
 
@@ -22,12 +22,13 @@ layout: compress
   </main>
 
   <!-- Single source of footer truth: keep your modern footer ONLY in footer/custom.html -->
-  <div class="mpsg-footer-wrap" role="contentinfo">
+  <div class="mtsg-footer-wrap" role="contentinfo">
     {% include footer/custom.html %}
   </div>
 
   {% include scripts.html %}
 
+  {% unless site.local_preview %}
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZM8MTZDBL3"></script>
   <script>
@@ -36,6 +37,7 @@ layout: compress
     gtag('js', new Date());
     gtag('config', 'G-ZM8MTZDBL3');
   </script>
+  {% endunless %}
 </body>
 
 </html>

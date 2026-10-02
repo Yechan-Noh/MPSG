@@ -2,12 +2,12 @@
 #  SITE BASICS
 # ────────────────────────────────────────────────
 locale            : "en-US"
-title             : "MPSG"
+title             : "MTSG"
 title_separator   : "-"
-description       : "Computational theorist exploring molecular-scale transport for energy-efficient devices."
+description       : "Molecular Transport Simulation Group — molecular simulation, transport physics, and molecular biomimetic engineering."
 url               : "https://yechan-noh.github.io"   # production URL
 baseurl           : "/MPSG"                          # GitHub Pages project repo
-repository        : "Yechan-Noh/MPSG.github.io"
+repository        : "Yechan-Noh/MPSG"
 remote_theme      : "mmistakes/minimal-mistakes"
 
 
@@ -16,10 +16,10 @@ remote_theme      : "mmistakes/minimal-mistakes"
 # ────────────────────────────────────────────────
 author:
   name        : "Yechan Noh"
-  avatar      : "Yechan_photo.png"
-  bio         : "."
-  location    : "Boulder, Colorado, USA"
-  email       : "yechan.noh@nist.gov"
+  avatar      : "/assets/img/people/yechan-noh-2026.jpg"
+  bio         : "Provost’s Postdoctoral Fellow, University of Notre Dame"
+  location    : "Notre Dame, Indiana, USA"
+  email       : "ynoh@nd.edu"
   googlescholar : "https://scholar.google.com/citations?user=0zdqbtIAAAAJ"
   orcid         : "https://orcid.org/0000-0003-1688-4907"
   linkedin      : "yechan-noh-phd-421906155"
@@ -92,8 +92,8 @@ social:
     - "https://scholar.google.com/citations?user=0zdqbtIAAAAJ"
     - "https://www.linkedin.com/in/yechan-noh-phd-421906155/"
 
-og_image         : "/images/site-share.png"  # ⚑ optional OG image
-og_description   : "MPSG · Computational molecular physics research."
+og_image         : "/assets/img/people/yechan-noh-2026.jpg"  # ⚑ optional OG image
+og_description   : "MTSG · Molecular transport, interfacial dynamics, and biomimetic function."
 
 # ────────────────────────────────────────────────
 #  ANALYTICS  (Google Analytics 4 — replace ID)
