@@ -12,6 +12,6 @@ Our manuscript on electrode-tethered DNA mechanics and dynamics was submitted to
 
 This manuscript uses GPU-accelerated molecular simulations to study the mechanics and dynamics of electrode-tethered DNA.
 
-**Manuscript:** Electrode-Tethered DNA: Mechanics and Dynamics through GPU-Accelerated Molecular Simulations.
+**Manuscript:** Electrode-Tethered DNA: Interfacial Mechanics and Switching Dynamics from Ensemble-Level Atomistic Simulations.
 
 [View the manuscript listing]({{ "/publications/#year-2026" | relative_url }}).
