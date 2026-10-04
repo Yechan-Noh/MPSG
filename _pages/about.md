@@ -9,7 +9,7 @@ body_class: home-page
 <section class="home-intro" aria-labelledby="group-title">
   <div class="home-intro-copy">
     <h1 id="group-title">Molecular Transport<br>Simulation Group</h1>
-    <p class="home-phrase">The chemistry of <span>molecular transport.</span></p>
+    <p class="home-phrase">At the intersection of <span>chemistry and transport.</span></p>
   </div>
   <div class="home-animation"><canvas id="titleCanvas" aria-label="Animated MTSG particle logo">MTSG</canvas></div>
 </section>
