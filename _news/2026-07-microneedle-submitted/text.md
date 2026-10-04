@@ -8,8 +8,8 @@ summary: "Our manuscript on edible dual-reservoir microneedles for food preserva
 permalink: "/news/2026-07-microneedle-submitted/"
 ---
 
-Our manuscript on edible dual-reservoir microneedles for food preservation and risk-aware freshness assessment was submitted in July 2026.
+**Edible dual-reservoir microneedles for food preservation and risk-aware freshness assessment.**
 
-The collaborative study is titled “Edible dual-reservoir microneedles for food preservation and risk-aware freshness assessment.”
+Submitted in July 2026.
 
-[View the manuscript listing]({{ "/publications/#year-2026" | relative_url }}).
+[Manuscript details]({{ "/publications/#year-2026" | relative_url }}).

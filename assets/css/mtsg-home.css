@@ -12,7 +12,6 @@
 .home-page .home-pi h2{font-size:22px;font-weight:600;letter-spacing:-.35px;margin:0 0 7px;color:var(--home-ink)}
 .home-page .home-pi p{font-size:15px;color:#596975;line-height:1.6;margin:0}
 .home-page .home-profile-link{font-size:14px;font-weight:600;padding:12px 0 12px 16px;color:var(--home-accent);white-space:nowrap}
-.home-page .home-profile-link span{margin-left:10px}
 .home-page .home-news{display:grid;grid-template-columns:220px minmax(0,1fr);gap:32px;padding-top:40px}
 .home-page .home-news h2{font-size:25px;font-weight:600;letter-spacing:-.5px;margin:0 0 14px;color:var(--home-ink)}
 .home-page .home-news-heading>a{font-size:14px;color:var(--home-accent)}
@@ -20,8 +19,7 @@
 .home-page .home-news-list li{display:grid;grid-template-columns:106px minmax(0,1fr);gap:20px;align-items:baseline;padding:19px 0;border-bottom:1px solid #e3e9ed}
 .home-page .home-news-list li:first-child{padding-top:2px}
 .home-page .home-news-list time{font-size:12px;letter-spacing:.02em;color:#61707c;white-space:nowrap;font-variant-numeric:tabular-nums}
-.home-page .home-news-list a{position:relative;padding-right:24px;font-size:16px;line-height:1.5;color:var(--home-ink)}
-.home-page .news-arrow{position:absolute;right:0;top:0;color:#64828e;font-size:16px}
+.home-page .home-news-list a{font-size:16px;line-height:1.5;color:var(--home-ink)}
 .home-page #mtsg-footer .mtsg-footer__card{max-width:1064px;margin:0 auto;border:0;border-radius:0;box-shadow:none;padding:24px 0 8px;border-top:1px solid #d5e0e5}
 .home-page #mtsg-footer{padding:16px 28px 24px}
 .home-page #mtsg-footer .mtsg-pill,.home-page #mtsg-footer .mtsg-top{border:0;border-radius:0;font-size:12px;padding:7px}

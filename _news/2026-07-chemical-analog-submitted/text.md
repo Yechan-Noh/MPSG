@@ -8,10 +8,8 @@ summary: "Our chemical-analog sensing manuscript, submitted in July 2026, is und
 permalink: "/news/2026-07-chemical-analog-submitted/"
 ---
 
-Our chemical-analog sensing manuscript, submitted in July 2026, is under review.
+**Nanoconfinement and Surface Chemistry Convert Aptamer Cross-Reactivity into Quantitative Chemical-Analog Sensing.**
 
-The collaborative study with M. P. McGowan and colleagues examines nanoconfinement and surface chemistry in aptamer-based sensing.
+Submitted in July 2026 and currently under review. This work is a collaboration with M. P. McGowan and colleagues.
 
-**Manuscript:** Nanoconfinement and Surface Chemistry Convert Aptamer Cross-Reactivity into Quantitative Chemical-Analog Sensing.
-
-[View the manuscript listing]({{ "/publications/#year-2026" | relative_url }}).
+[Manuscript details]({{ "/publications/#year-2026" | relative_url }}).

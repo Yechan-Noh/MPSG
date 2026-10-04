@@ -2,25 +2,25 @@
   {
     "id": "ionic-memory",
     "title": "Ionic Memory and Computing",
-    "intro": "At the molecular scale, ion transport through a pore can depend on its previous electrical history. We use simulations to understand how molecular interactions create memory and signaling behavior, and to explore physical principles for ionic computing.",
+    "intro": "We investigate how ion interactions and local free-energy barriers allow a nanopore to retain that history. Molecular simulations connect the motion of individual ions to changes in conductance and the response to successive voltage pulses.",
     "image": "/assets/img/research/ionic-neuromorphic.png",
-    "caption": "Conceptual comparison of biological signaling and ionic computing.",
-    "background_html": "Growing demand for computing motivates the search for more energy-efficient ways to process information. Biological nervous systems offer inspiration: they process information through ionic signals and connections that retain a memory of past activity."
+    "caption": "Biological signaling, artificial neural networks, and ionic devices that reproduce aspects of neuronal function.",
+    "background_html": "An ion-conducting pore can respond differently to the same voltage depending on its electrical history. This memory offers a way to reproduce aspects of synaptic behavior with ions, the charge carriers used in biological signaling."
   },
   {
     "id": "selective-transport",
     "title": "Selective Ion Transport",
-    "intro": "Biological ion channels show that selectivity can coexist with rapid transport. We study how pore chemistry, molecular interactions, and membrane motion control ion passage, seeking principles for selective membranes and resource recovery.",
+    "intro": "Biological ion channels provide examples of selective, rapid transport. We examine how pore chemistry and membrane motion change the barriers to ion passage, including how small chemical differences can separate ions with similar properties.",
     "image": "/assets/img/research/bioinspired-separation.png",
-    "caption": "Bio-inspired selective transport for rare-earth separation.",
-    "background_html": "Selective separation is essential to clean water and the recovery of valuable elements, including rare-earth elements. Separating chemically similar ions remains a fundamental challenge: an interaction strong enough to capture a desired ion can also make it difficult to release."
+    "caption": "Ion-channel-inspired membrane concepts for separating rare-earth ions.",
+    "background_html": "A membrane must distinguish between ions while still allowing them to pass. Strong binding can favor one ion over another, but it can also slow the release of the captured ion. This tension matters for water purification and the recovery of valuable elements."
   },
   {
     "id": "interfacial-recognition",
     "title": "Interfacial Molecular Recognition",
-    "intro": "We use molecular simulations to understand how interfaces influence biomolecular motion and recognition. By connecting these insights with experiments, we aim to establish physical principles for designing receptor–electrode interfaces for chemical and biological sensing.",
+    "intro": "Our molecular simulations follow the motion of surface-bound biomolecules and their interactions with the electrode and surrounding solution. In collaboration with experimental researchers, we examine how these interfacial effects influence recognition and electrochemical sensing.",
     "image": "/assets/img/research/bio-chemical-sensor.png",
-    "caption": "Molecular recognition in biological sensing and electrochemical biosensors.",
-    "background_html": "Electrochemical biosensors offer a route to detecting disease biomarkers near the point of care by converting molecular recognition into electrical signals. Yet a receptor that binds a target in solution may behave differently when attached to an electrode. The surrounding surface can change both the receptor’s shape and the molecules available to bind it."
+    "caption": "Target recognition by biological receptors and by receptors attached to sensing electrodes.",
+    "background_html": "Attaching a molecular receptor to an electrode changes its environment. A receptor that binds a target in solution may adopt a different shape or encounter different molecules at the surface, changing how it recognizes the target."
   }
 ]

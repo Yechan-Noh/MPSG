@@ -8,10 +8,8 @@ summary: "Our manuscript on electrode-tethered DNA mechanics and dynamics was su
 permalink: "/news/2026-10-dna-biorxiv/"
 ---
 
-Our manuscript on electrode-tethered DNA mechanics and dynamics was submitted to bioRxiv in October 2026.
+**Electrode-Tethered DNA: Interfacial Mechanics and Switching Dynamics from Ensemble-Level Atomistic Simulations.**
 
-This manuscript uses GPU-accelerated molecular simulations to study the mechanics and dynamics of electrode-tethered DNA.
+Submitted to bioRxiv in October 2026.
 
-**Manuscript:** Electrode-Tethered DNA: Interfacial Mechanics and Switching Dynamics from Ensemble-Level Atomistic Simulations.
-
-[View the manuscript listing]({{ "/publications/#year-2026" | relative_url }}).
+[Manuscript details]({{ "/publications/#year-2026" | relative_url }}).

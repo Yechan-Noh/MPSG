@@ -51,7 +51,7 @@ author_profile: false
 </section>
 {% for theme in site.data.research_themes %}
 <section class="research-panel research-topic-card" id="{{ theme.id }}" aria-labelledby="{{ theme.id }}-title">
-  <div class="research-panel-heading"><span class="theme-number">0{{ forloop.index }}</span><h2 id="{{ theme.id }}-title">{{ theme.title }}</h2></div>
+  <div class="research-panel-heading"><h2 id="{{ theme.id }}-title">{{ theme.title }}</h2></div>
   <div class="research-topic-content">
   <div class="research-topic-copy"><p>{{ theme.background_html }}</p><p>{{ theme.intro }}</p></div>
   <figure><a href="{{ theme.image | relative_url }}" aria-label="View full-size figure: {{ theme.title }}"><img src="{{ theme.image | relative_url }}" alt="{{ theme.caption }}" loading="lazy"></a><figcaption>{{ theme.caption }}</figcaption></figure>

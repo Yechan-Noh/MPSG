@@ -8,10 +8,8 @@ summary: "Our collaborative manuscript on mechanosensitive ion transport in hexa
 permalink: "/news/2026-09-hbn-internal-review/"
 ---
 
-Our collaborative manuscript on mechanosensitive ion transport in hexagonal boron nitride nanopores entered internal review in September 2026.
+**Mechanosensitive Ion Transport in Hexagonal Boron Nitride Nanopores.**
 
-The study brings together molecular simulations and experimental collaboration with Alex Noy and colleagues.
+Entered internal review in September 2026. This work combines molecular simulations with experimental research in collaboration with Alex Noy and colleagues.
 
-**Manuscript:** Mechanosensitive Ion Transport in Hexagonal Boron Nitride Nanopores.
-
-[View the manuscript listing]({{ "/publications/#year-2026" | relative_url }}).
+[Manuscript details]({{ "/publications/#year-2026" | relative_url }}).
