@@ -86,7 +86,7 @@
         particles.length = 0;
 
         const TEXT = 'MTSG';
-        const fontSize = Math.min(140, canvas.clientWidth / 3.4);
+        const fontSize = 1.25 * Math.min(140, canvas.clientWidth / 3.4);
         const temp = document.createElement('canvas');
         const tctx = temp.getContext('2d');
         tctx.font = `bold ${fontSize}px Inter, Helvetica, sans-serif`;
@@ -165,8 +165,4 @@
     window.addEventListener('resize', resize);
     resize();
     animate();
-    const toggle = document.getElementById('motion-toggle');
-    function label() { toggle.textContent = paused ? 'Play animation' : 'Pause animation'; toggle.setAttribute('aria-pressed', String(paused)); }
-    label();
-    toggle.addEventListener('click', () => { paused = !paused; cancelAnimationFrame(animationFrame); if (!paused) animate(); label(); });
 })();
