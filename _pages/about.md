@@ -5,25 +5,7 @@ permalink: /
 author_profile: false
 body_class: home-page
 ---
-<div class="mt-page mt-home">
-<section class="home-intro" aria-labelledby="group-title">
-  <div class="home-intro-copy">
-    <h1 id="group-title">Molecular Transport<br>Simulation Group</h1>
-    <p class="home-phrase">At the intersection of <span>chemistry and transport.</span></p>
-  </div>
-  <div class="home-animation"><canvas id="titleCanvas" aria-label="Animated MTSG particle logo">MTSG</canvas></div>
-</section>
-<section class="home-pi" aria-labelledby="pi-name">
-  <img src="{{ '/assets/img/people/yechan-noh-2026.jpg' | relative_url }}" alt="Portrait of Yechan Noh" width="1114" height="1412">
-  <div class="home-pi-details"><p class="home-pi-role">Principal Investigator</p><h2 id="pi-name">Yechan Noh, Ph.D.</h2><p>Provost’s Postdoctoral Fellow<br>University of Notre Dame</p></div>
-  <p class="home-pi-bio">Before joining Notre Dame, Yechan was a postdoctoral researcher at the National Institute of Standards and Technology. He received his Ph.D. in Mechanical Engineering from the University of Illinois Urbana-Champaign.</p>
-  <a class="home-profile-link" href="{{ '/people/' | relative_url }}">Full profile</a>
-</section>
-<section class="home-news" aria-labelledby="latest-news">
-  <div class="home-news-heading"><h2 id="latest-news">Latest News</h2><a href="{{ '/news/' | relative_url }}">All news</a></div>
-  <ul class="home-news-list">{% assign sorted_news = site.news | sort: 'date' | reverse %}{% for post in sorted_news limit:4 %}
-    <li>{% if post.date_precision == 'month' %}<time datetime="{{ post.date | date: '%Y-%m' }}">{{ post.date | date: '%b %Y' }}</time>{% else %}<time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%b %d, %Y' }}</time>{% endif %}<a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>{% endfor %}
-  </ul>
-</section>
-</div>
+<div class="home-refresh"><section class="home-hero"><div class="shell hero-grid"><div class="hero-copy"><h1>Molecular Transport<br>Simulation Group</h1><p>At the intersection of<br><span>chemistry and transport.</span></p></div><div class="hero-motion"><canvas id="titleCanvas" aria-label="Animated MTSG particle logo">MTSG</canvas><button id="motion-toggle" class="motion-toggle" aria-pressed="false">Pause animation</button></div></div></section>
+<section class="shell home-research"><div class="section-top"><h2>Research</h2><a class="plain-link" href="{{ '/research/' | relative_url }}">Research overview <span aria-hidden="true">↗</span></a></div><div class="topic-grid"><article class="topic-preview"><a class="topic-image" href="{{ '/research/#ionic-memory' | relative_url }}" aria-label="Ionic Memory and Computing"><img src="{{ '/assets/img/research/ionic-neuromorphic.png' | relative_url }}" alt="Biological signaling, artificial neural networks, and ionic devices that reproduce aspects of neuronal function." loading="lazy"></a><h3><a href="{{ '/research/#ionic-memory' | relative_url }}">Ionic Memory and Computing</a></h3><p>History-dependent ion transport and synaptic-like responses.</p></article><article class="topic-preview"><a class="topic-image" href="{{ '/research/#selective-transport' | relative_url }}" aria-label="Selective Ion Transport"><img src="{{ '/assets/img/research/bioinspired-separation.png' | relative_url }}" alt="Ion-channel-inspired membrane concepts for separating rare-earth ions." loading="lazy"></a><h3><a href="{{ '/research/#selective-transport' | relative_url }}">Selective Ion Transport</a></h3><p>Pore chemistry and membrane motion in selective transport.</p></article><article class="topic-preview"><a class="topic-image" href="{{ '/research/#interfacial-recognition' | relative_url }}" aria-label="Interfacial Molecular Recognition"><img src="{{ '/assets/img/research/bio-chemical-sensor.png' | relative_url }}" alt="Target recognition by biological receptors and by receptors attached to sensing electrodes." loading="lazy"></a><h3><a href="{{ '/research/#interfacial-recognition' | relative_url }}">Interfacial Molecular Recognition</a></h3><p>Molecular interactions at the electrode–solution interface.</p></article></div></section>
+<div class="shell home-lower"><section class="home-person" aria-labelledby="home-person-title"><img src="{{ '/assets/img/people/yechan-noh-2026.jpg' | relative_url }}" alt="Yechan Noh" width="1114" height="1412"><div><p class="overline">Principal Investigator</p><h2 id="home-person-title">Yechan Noh</h2><p class="person-role">Provost’s Postdoctoral Fellow<br>University of Notre Dame</p><p class="person-bio">Before joining Notre Dame, Yechan was a postdoctoral researcher at the National Institute of Standards and Technology. He received his Ph.D. in Mechanical Engineering from the University of Illinois Urbana-Champaign.</p><a class="plain-link" href="{{ '/people/' | relative_url }}">Biography & appointments <span aria-hidden="true">↗</span></a></div></section><section class="home-news" aria-labelledby="news-title"><div class="section-top"><h2 id="news-title">Latest news</h2><a class="plain-link" href="{{ '/news/' | relative_url }}">All news <span aria-hidden="true">↗</span></a></div><ul class="news-list">{% assign sorted_news = site.news | sort: 'date' | reverse %}{% for post in sorted_news limit:4 %}<li><time datetime="{{ post.date | date: '%Y-%m' }}">{{ post.date | date: '%b %Y' }}</time><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>{% endfor %}</ul></section></div></div>
 <script src="{{ '/assets/js/hero_graphic.js' | relative_url }}" defer></script>

@@ -75,3 +75,6 @@
 .mt-page .pub-card--submitted .pub-title,.mt-page .pub-card--submitted .pub-authors{color:#596570}
 .pub-card--submitted .badge--submitted{background:#e1e6e9;color:#495764}
 .pub-card--published-current{border:2px solid #347c88;box-shadow:0 3px 12px rgba(23,108,120,.1)}
+
+/* People: selected CV honors and support as a concise list. */
+.people-page .honors-list{display:block;padding-left:22px;margin:0;list-style:disc}.people-page .honors-list li{padding-left:6px;margin-bottom:24px}.people-page .honors-list h3{font-size:19px;line-height:1.5;margin:0 0 6px}.people-page .honors-list h3 span{display:block;font-size:14px;font-weight:400;color:#56636a;margin-top:3px}.people-page .honors-list p{font-size:16px;line-height:1.7;margin:0;color:#56636a}

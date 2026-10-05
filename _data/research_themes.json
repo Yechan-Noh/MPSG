@@ -2,25 +2,25 @@
   {
     "id": "ionic-memory",
     "title": "Ionic Memory and Computing",
-    "intro": "We investigate how ion interactions and local free-energy barriers allow a nanopore to retain that history. Molecular simulations connect the motion of individual ions to changes in conductance and the response to successive voltage pulses.",
+    "intro": "Synthetic ionic materials could offer a route to brain-like computing. Realizing that potential requires understanding how their chemistry enables them to process, retain, and transmit information.",
     "image": "/assets/img/research/ionic-neuromorphic.png",
     "caption": "Biological signaling, artificial neural networks, and ionic devices that reproduce aspects of neuronal function.",
-    "background_html": "An ion-conducting pore can respond differently to the same voltage depending on its electrical history. This memory offers a way to reproduce aspects of synaptic behavior with ions, the charge carriers used in biological signaling."
+    "background_html": "The growing computational demands of AI make energy-efficient information processing increasingly important. The brain offers a different model: it learns and remembers through regulated ion flow, rather than the electronic currents used in conventional computers."
   },
   {
     "id": "selective-transport",
     "title": "Selective Ion Transport",
-    "intro": "Biological ion channels provide examples of selective, rapid transport. We examine how pore chemistry and membrane motion change the barriers to ion passage, including how small chemical differences can separate ions with similar properties.",
+    "intro": "In synthetic pores, however, selective binding does not necessarily lead to selective passage. Understanding how pore chemistry governs ion entry, binding, and release could guide more efficient separations with less waste.",
     "image": "/assets/img/research/bioinspired-separation.png",
     "caption": "Ion-channel-inspired membrane concepts for separating rare-earth ions.",
-    "background_html": "A membrane must distinguish between ions while still allowing them to pass. Strong binding can favor one ion over another, but it can also slow the release of the captured ion. This tension matters for water purification and the recovery of valuable elements."
+    "background_html": "Rare-earth elements are essential to magnets used in electric vehicles and wind turbines, but their chemical similarity makes separation difficult and resource-intensive. Biological molecules show how subtle differences between ions can produce strong selectivity."
   },
   {
     "id": "interfacial-recognition",
     "title": "Interfacial Molecular Recognition",
-    "intro": "Our molecular simulations follow the motion of surface-bound biomolecules and their interactions with the electrode and surrounding solution. In collaboration with experimental researchers, we examine how these interfacial effects influence recognition and electrochemical sensing.",
+    "intro": "Understanding how surfaces shape molecular recognition could make receptor design more predictive, extend continuous monitoring to new targets, and broaden access to diagnostics beyond the laboratory.",
     "image": "/assets/img/research/bio-chemical-sensor.png",
     "caption": "Target recognition by biological receptors and by receptors attached to sensing electrodes.",
-    "background_html": "Attaching a molecular receptor to an electrode changes its environment. A receptor that binds a target in solution may adopt a different shape or encounter different molecules at the surface, changing how it recognizes the target."
+    "background_html": "Continuous glucose monitors show what real-time molecular sensing can offer, yet most other molecules still require laboratory testing. A central obstacle is finding receptors that recognize their targets reliably when attached to an electrode."
   }
 ]

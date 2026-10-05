@@ -7,6 +7,8 @@
     const canvas = document.getElementById('titleCanvas');
     if (!canvas) return;                       // canvas might not exist on every page
     const ctx = canvas.getContext('2d', { alpha: true });
+    let paused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let animationFrame = 0;
 
     /* ─── Mouse repulsion ────────────────────────────────────────────── */
     const mouse = { x: null, y: null, radius: 60 };
@@ -41,7 +43,7 @@
             this.hue = 185 + Math.random() * 25;
         }
         draw() {
-            ctx.fillStyle = `hsla(${this.hue},58%,40%,.85)`;
+            ctx.fillStyle = `hsla(${this.hue},45%,70%,.95)`;
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fill();
@@ -84,7 +86,7 @@
         particles.length = 0;
 
         const TEXT = 'MTSG';
-        const fontSize = Math.min(100, canvas.clientWidth / 3.6);
+        const fontSize = Math.min(140, canvas.clientWidth / 3.4);
         const temp = document.createElement('canvas');
         const tctx = temp.getContext('2d');
         tctx.font = `bold ${fontSize}px Inter, Helvetica, sans-serif`;
@@ -101,7 +103,7 @@
         const dpr = window.devicePixelRatio || 1;
         const offX = (canvas.width / dpr - temp.width) / 2;
         const offY = (canvas.height / dpr - temp.height) / 2;
-        const gap = 5;
+        const gap = 6;
 
         for (let y = 0; y < temp.height; y += gap) {
             for (let x = 0; x < temp.width; x += gap) {
@@ -121,7 +123,7 @@
                     d = Math.hypot(dx, dy);
                 if (d < 15) {
                     ctx.strokeStyle =
-                        `hsla(${particles[i].hue},58%,40%,${0.5 - 0.5 * (d / 15)})`;
+                        `hsla(${particles[i].hue},45%,70%,${0.5 - 0.5 * (d / 15)})`;
                     ctx.lineWidth = 1.2;
                     ctx.beginPath();
                     ctx.moveTo(particles[i].x, particles[i].y);
@@ -146,7 +148,7 @@
         for (const p of particles) { p.update(); p.draw(); }
         connect();
 
-        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) requestAnimationFrame(animate);
+        if (!paused) animationFrame = requestAnimationFrame(animate);
     }
 
     /* ─── Responsive / Hi-DPI handling ──────────────────────────────── */
@@ -163,4 +165,8 @@
     window.addEventListener('resize', resize);
     resize();
     animate();
+    const toggle = document.getElementById('motion-toggle');
+    function label() { toggle.textContent = paused ? 'Play animation' : 'Pause animation'; toggle.setAttribute('aria-pressed', String(paused)); }
+    label();
+    toggle.addEventListener('click', () => { paused = !paused; cancelAnimationFrame(animationFrame); if (!paused) animate(); label(); });
 })();
