@@ -112,3 +112,6 @@
 .home-refresh .topic-image{height:188px;padding-bottom:24px}
 @media(max-width:760px){.home-refresh .topic-preview{grid-template-columns:128px minmax(0,1fr)}.home-refresh .topic-image{height:128px;padding:6px 0}}
 @media(max-width:380px){.home-refresh .topic-preview{grid-template-columns:101px minmax(0,1fr)}.home-refresh .topic-image{height:110px}}
+
+/* Override the legacy canvas dimensions with a larger, sharper logo. */
+.home-refresh #titleCanvas{width:400px;height:180px;max-width:100%;align-self:center}

@@ -37,7 +37,7 @@
             this.baseX = x; this.baseY = y;
             this.x = x + (Math.random() - 0.5) * 20;
             this.y = y + (Math.random() - 0.5) * 20;
-            this.size = Math.random() * 0.2 + 1.8;
+            this.size = Math.random() * 0.2 + 1.5;
             this.density = Math.random() * 25 + 5;
             this.vx = this.vy = 0;
             this.hue = 185 + Math.random() * 25;
@@ -86,9 +86,11 @@
         particles.length = 0;
 
         const TEXT = 'MTSG';
-        const fontSize = 1.25 * Math.min(140, canvas.clientWidth / 3.4);
+        let fontSize = 1.25 * Math.min(140, canvas.clientWidth / 3.4);
         const temp = document.createElement('canvas');
         const tctx = temp.getContext('2d');
+        tctx.font = `bold ${fontSize}px Inter, Helvetica, sans-serif`;
+        fontSize *= Math.min(1, (canvas.clientWidth - 32) / tctx.measureText(TEXT).width);
         tctx.font = `bold ${fontSize}px Inter, Helvetica, sans-serif`;
         temp.width = Math.ceil(tctx.measureText(TEXT).width) + 20;
         temp.height = Math.ceil(fontSize + 40);
@@ -100,10 +102,9 @@
         tctx.fillText(TEXT, temp.width / 2, temp.height / 2);
 
         const img = tctx.getImageData(0, 0, temp.width, temp.height).data;
-        const dpr = window.devicePixelRatio || 1;
-        const offX = (canvas.width / dpr - temp.width) / 2;
-        const offY = (canvas.height / dpr - temp.height) / 2;
-        const gap = 6;
+        const offX = (canvas.clientWidth - temp.width) / 2;
+        const offY = (canvas.clientHeight - temp.height) / 2;
+        const gap = 5;
 
         for (let y = 0; y < temp.height; y += gap) {
             for (let x = 0; x < temp.width; x += gap) {
@@ -116,21 +117,24 @@
 
     /* ─── Thin particle connections ─────────────────────────────────── */
     function connect() {
-        for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x,
-                    dy = particles[i].y - particles[j].y,
-                    d = Math.hypot(dx, dy);
-                if (d < 15) {
-                    ctx.strokeStyle =
-                        `hsla(${particles[i].hue},45%,70%,${0.5 - 0.5 * (d / 15)})`;
-                    ctx.lineWidth = 1.2;
-                    ctx.beginPath();
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.stroke();
+        // Compare nearby particles only so denser lettering stays responsive.
+        const cells = new Map();
+        for (const p of particles) {
+            const cx = Math.floor(p.x / 15), cy = Math.floor(p.y / 15);
+            for (let x = cx - 1; x <= cx + 1; x++) {
+                for (let y = cy - 1; y <= cy + 1; y++) {
+                    for (const q of cells.get(`${x},${y}`) || []) {
+                        const d = Math.hypot(p.x - q.x, p.y - q.y);
+                        if (d >= 15) continue;
+                        ctx.strokeStyle = `hsla(${p.hue},45%,70%,${0.4 - 0.4 * d / 15})`;
+                        ctx.lineWidth = 0.85;
+                        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+                    }
                 }
             }
+            const key = `${cx},${cy}`;
+            if (!cells.has(key)) cells.set(key, []);
+            cells.get(key).push(p);
         }
     }
 
@@ -139,8 +143,7 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         /* move the invisible repeller */
-        const dpr = window.devicePixelRatio || 1;
-        const w = canvas.width / dpr;
+        const w = canvas.clientWidth;
         autoCircle.x += autoCircle.vx;
         if (autoCircle.x > w + autoCircle.radius) autoCircle.x = -autoCircle.radius;
 
@@ -153,12 +156,12 @@
 
     /* ─── Responsive / Hi-DPI handling ──────────────────────────────── */
     function resize() {
-        const dpr = window.devicePixelRatio || 1;
+        const dpr = Math.min(3, Math.max(2.5, window.devicePixelRatio || 1));
         ctx.setTransform(1, 0, 0, 1, 0, 0);          // reset transform
         canvas.width = canvas.clientWidth * dpr;
         canvas.height = canvas.clientHeight * dpr;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);      // scale all draws
-        autoCircle.y = (canvas.height / dpr) * 0.46;
+        autoCircle.y = canvas.clientHeight * 0.46;
         initParticles();
     }
 
