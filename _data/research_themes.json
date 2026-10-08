@@ -22,5 +22,14 @@
     "image": "/assets/img/research/bio-chemical-sensor.png",
     "caption": "Target recognition by biological receptors and by receptors attached to sensing electrodes.",
     "background_html": "Continuous glucose monitors show what real-time molecular sensing can offer, yet most other molecules still require laboratory testing. A central obstacle is finding receptors that recognize their targets reliably when attached to an electrode."
+  },
+  {
+    "id": "researcher-directed-automation",
+    "title": "Researcher-Directed Automation",
+    "background_html": "Molecular simulation can help explain experimental measurements and identify promising directions for discovery. Its wider use, however, is limited by the time researchers spend preparing and running calculations and processing results. Reducing this repetitive work could make computational insight available to more experimental studies and leave more time for developing questions and interpreting the underlying science.",
+    "intro": "This research explores how AI-assisted automation can support molecular simulation while keeping scientific judgment with the researcher. The broader goal is to make computation a more practical partner in experimental discovery: helping researchers examine more hypotheses, reduce trial and error, and use experimental time and resources more effectively.",
+    "image": "/assets/img/research/researcher-directed-automation.png",
+    "caption": "Computation-guided experimental discovery. Candidates and screening outcomes are illustrative, not reported results. The robotic arms represent software-based automation, not physical laboratory robots.",
+    "alt": "Conceptual illustration linking researcher direction, computational automation, illustrative candidate screening, and experimental studies."
   }
 ]
