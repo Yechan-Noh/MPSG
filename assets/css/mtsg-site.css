@@ -155,3 +155,9 @@
 .updates-page .thumbs{display:flex;gap:8px;padding:0 20px 18px;overflow-x:auto}
 .updates-page .thumbs img{width:72px;height:54px;object-fit:cover;border-radius:3px}
 @media(max-width:760px){.updates-page{padding:22px 20px 30px}.updates-page :is(.news-grid,.gallery-grid){grid-template-columns:1fr;gap:20px}.updates-page :is(.news-hero,.gallery-hero) h1{font-size:26px}.updates-page :is(.news-header,.gallery-header){font-size:17px;padding:16px 18px}.updates-page :is(.news-body,.gallery-body){padding:16px 18px}}
+
+/* Center the profile introduction within the shared page shell. */
+.people-page .profile-header{width:100%;max-width:780px;margin:0 auto;grid-template-columns:200px minmax(0,1fr);gap:36px}
+.people-page .profile-columns,.people-page> .mt-section{width:100%;max-width:none}
+@media(max-width:760px){.people-page .profile-header{max-width:560px;grid-template-columns:115px minmax(0,1fr);gap:20px}}
+@media(max-width:420px){.people-page .profile-header{grid-template-columns:92px minmax(0,1fr);gap:16px}.people-page .profile-header .mt-actions{gap:8px}.people-page .profile-header .mt-button{padding:8px 10px}}
