@@ -1,5 +1,5 @@
 
-:root{--mt-ink:#233548;--mt-muted:#586674;--mt-blue:#364f6b;--mt-line:#dfe5eb;--mt-paper:#f5f7f9}
+:root{--mt-ink:#182d38;--mt-muted:#56636a;--mt-blue:#182d38;--mt-line:#d6dddf;--mt-paper:#f4f6f6}
 .mt-page{max-width:1120px;margin:0 auto;padding:30px 28px 45px;color:var(--mt-ink);font-family:Inter,"Helvetica Neue",Arial,sans-serif;font-size:16px;line-height:1.65}
 .mt-page *{box-sizing:border-box}.mt-page h1,.mt-page h2,.mt-page h3,.mt-page h4{color:var(--mt-ink);line-height:1.22}.mt-page h1{font-size:clamp(29px,3.4vw,43px);letter-spacing:-1px;margin:0 0 22px}.mt-page h2{font-size:26px;margin:0 0 18px}.mt-page h3{font-size:19px;margin:0 0 10px}.mt-page h4{font-size:15px;margin:24px 0 8px}.mt-page p{margin:0 0 16px}.mt-page a{color:#315c83;text-decoration:none}.mt-page a:hover{text-decoration:underline}.mt-page a:focus-visible{outline:3px solid #547cb0;outline-offset:4px}.mt-page section[id]{scroll-margin-top:90px}
 .eyebrow{font-size:12px!important;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mt-muted);margin:0 0 14px!important}.mt-hero{display:grid;grid-template-columns:minmax(0,1fr) 255px;gap:64px;align-items:center;padding:24px 0 48px}.hero-lead{font-size:21px;line-height:1.5;font-weight:600}.mt-portrait{margin:0}.mt-portrait img{display:block;width:100%;height:auto;border-radius:12px}.mt-portrait figcaption{font-size:13px;line-height:1.6;margin-top:14px}.mt-portrait figcaption strong{font-size:18px}.mt-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.mt-button{display:inline-block;background:var(--mt-blue);color:white!important;padding:10px 16px;border:1px solid var(--mt-blue);border-radius:5px;font-size:14px;font-weight:600}.mt-button--quiet{background:white;color:var(--mt-blue)!important}.mt-section{margin:36px 0;padding-top:28px;border-top:1px solid var(--mt-line)}.section-intro{max-width:850px}.theme-grid,.recognition-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.theme-preview,.recognition-grid article{padding:24px;background:var(--mt-paper);border-radius:8px}.theme-number{font-size:12px;letter-spacing:.1em;font-weight:700;color:#667e96;display:block;margin-bottom:15px}.theme-preview p,.recognition-grid p{font-size:14px;line-height:1.65}.theme-preview .text-link{font-size:13px;font-weight:600}.section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:16px}.section-heading>a{font-size:14px}.selected-home{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}.selected-home .publication-entry{margin:0;padding:18px 0;border-top:2px solid #9cb0c5;border-bottom:0}.selected-home .publication-entry h3{font-size:17px}.publication-entry{padding:22px 0;border-bottom:1px solid var(--mt-line)}.publication-entry h3{font-size:19px;max-width:900px}.publication-venue{font-size:13px;font-weight:700;color:#42617e;margin-bottom:7px!important}.publication-authors{font-size:14px;line-height:1.55;margin-bottom:7px!important}.publication-citation{font-size:13px;color:var(--mt-muted);margin-bottom:8px!important}.publication-finding{font-size:15px}.text-link{font-size:13px;font-weight:600}.editorial-note{margin-left:12px;font-size:11px;background:#f6e9ba;padding:3px 7px}.section-note{font-size:14px;color:var(--mt-muted)}.publication-year{font-size:22px!important;margin-top:28px!important}.status-label{background:#eaf0f6;padding:4px 9px;border-radius:4px}.publication-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;font-size:14px;padding:16px 0}.Journals{text-align:center}.journal-title{font-size:29px!important}.journal-bar{max-width:960px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px 20px;margin:22px auto}.journal-item{width:102px;height:34px;display:flex;align-items:center;justify-content:center}.journal-item img{max-width:100%;max-height:34px;width:auto;height:auto;object-fit:contain}.journal-item.size50 img{max-width:68px}.journal-item.size60 img{max-width:82px}
@@ -111,3 +111,47 @@
 .people-page .honors-list li{margin-bottom:2px;line-height:1.5}
 .people-page .honors-list li:last-child{margin-bottom:0}
 @media(max-width:760px){.people-page .profile-header h1{font-size:23px;margin-bottom:10px}.people-page .profile-columns{gap:0}.people-page .mt-section{margin:18px 0;padding-top:16px}}
+
+/* Aligned logo rosters, with a shared rhythm across Research and Publications. */
+.publications-page .logo-section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin:0 0 16px}
+.publications-page .journal-title{margin:0!important;text-align:left;font-size:29px!important}
+.publications-page .scholar-link{font-size:14px;white-space:nowrap;color:#42636e;text-decoration:none;border-bottom:1px solid #b5c2c8;padding-bottom:3px}
+.publications-page .journal-bar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0 24px;max-width:none;margin:0;padding:4px 0;border-top:1px solid #d6dddf;border-bottom:1px solid #d6dddf}
+.publications-page .journal-item{width:auto;height:62px;min-width:0;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #edf0f1;padding:10px 8px}
+.publications-page .journal-item:nth-last-child(-n+5){border-bottom:0}
+.publications-page .journal-item img{max-width:100%;max-height:36px;width:auto;height:auto;object-fit:contain}
+.publications-page .journal-item.size50 img{max-width:90px}
+.publications-page #all-publications{border-top:0;margin-top:26px;padding-top:0}
+.research-page .support-roster{text-align:left;padding:0 0 8px;border-bottom:1px solid #d6dddf}
+.research-page .support-roster .funding-title{font-size:20px!important;margin:0 0 12px!important}
+.research-page .support-group{display:grid;grid-template-columns:96px minmax(0,1fr);align-items:center;gap:20px;padding:9px 0;border-top:1px solid #edf0f1}
+.research-page .support-group h3{font-size:14px;line-height:1.4;font-weight:500;color:#586674;margin:0}
+.research-page .support-logos{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px 20px;list-style:none;padding:0;margin:0}
+.research-page .support-logo{display:flex;justify-content:center;align-items:center;height:48px;min-width:0;margin:0;padding:3px 0}
+.research-page .support-logo img{display:block;max-width:100%;max-height:40px;width:auto;height:auto;object-fit:contain}
+@media(max-width:900px){.research-page .support-logos{grid-template-columns:repeat(3,minmax(0,1fr))}.research-page .support-group{align-items:start}.research-page .support-group h3{padding-top:16px}}
+@media(max-width:600px){.publications-page .journal-bar{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:12px}.publications-page .journal-item{height:54px;padding:8px 2px;border-bottom:1px solid #edf0f1!important}.publications-page .journal-item:nth-last-child(-n+3){border-bottom:0!important}.publications-page .journal-item img{max-height:32px}.publications-page .logo-section-heading{gap:16px}.publications-page .journal-title{font-size:26px!important}.publications-page .scholar-link{font-size:12px}.research-page .support-group{grid-template-columns:1fr;gap:8px;padding:12px 0}.research-page .support-group h3{padding:0}.research-page .support-logos{gap:8px 20px}.research-page .support-logo{height:42px}.research-page .support-logo img{max-height:36px}}
+
+/* News and Gallery share the Research card palette and page dimensions. */
+.updates-page{box-sizing:border-box;max-width:1120px;margin:0 auto;padding:30px 28px 45px;font-family:Inter,"Helvetica Neue",Arial,sans-serif;color:var(--mt-ink)}
+.updates-page *{box-sizing:border-box}
+.updates-page :is(.news-hero,.gallery-hero){margin:0 0 22px;text-align:left}
+.updates-page :is(.news-hero,.gallery-hero) h1{margin:0;padding:0;border:0;font-size:29px;line-height:1.22;letter-spacing:-.5px;color:var(--mt-ink)}
+.updates-page :is(.news-grid,.gallery-grid){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}
+.updates-page :is(.news-card,.gallery-card){min-width:0;background:#fff;border:1px solid var(--mt-line);border-radius:8px;box-shadow:0 3px 12px rgba(24,45,56,.04);overflow:hidden}
+.updates-page :is(.news-header,.gallery-header){margin:0;padding:18px 20px;border:0;background:#182d38;color:#f7f8f5;font-size:18px;font-weight:600;line-height:1.4}
+.updates-page :is(.news-media,.gallery-media){display:flex;align-items:center;justify-content:center;width:calc(100% - 40px);margin:18px auto 0;background:#fff}
+.updates-page :is(.news-media,.gallery-media) img{display:block;width:100%;height:auto;object-fit:contain}
+.updates-page :is(.news-body,.gallery-body){padding:18px 20px}
+.updates-page :is(.news-summary,.gallery-summary,.news-full,.gallery-full){margin:0 0 14px;font-size:15px;line-height:1.6;color:var(--mt-ink);overflow-wrap:anywhere}
+.updates-page :is(.news-full,.gallery-full) p:last-child{margin-bottom:0}
+.updates-page :is(.news-meta,.gallery-meta){display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:12px;border-top:1px solid #edf0f1}
+.updates-page :is(.news-meta-left,.gallery-meta-left){display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px}
+.updates-page :is(.posted-pill,.news-date,.gallery-date){padding:0;border:0;border-radius:0;background:none;font-size:12px;color:var(--mt-muted);line-height:1.5}
+.updates-page .expand-btn{appearance:none;background:#fff;border:1px solid var(--mt-line);border-radius:5px;padding:6px 11px;color:var(--mt-ink);font-family:inherit;font-size:12px;cursor:pointer}
+.updates-page .expand-btn:hover{background:var(--mt-paper);border-color:#aebdc4}
+.updates-page a{color:#42636e;text-underline-offset:3px}
+.updates-page :is(a,button):focus-visible{outline:2px solid #42636e;outline-offset:3px}
+.updates-page .thumbs{display:flex;gap:8px;padding:0 20px 18px;overflow-x:auto}
+.updates-page .thumbs img{width:72px;height:54px;object-fit:cover;border-radius:3px}
+@media(max-width:760px){.updates-page{padding:22px 20px 30px}.updates-page :is(.news-grid,.gallery-grid){grid-template-columns:1fr;gap:20px}.updates-page :is(.news-hero,.gallery-hero) h1{font-size:26px}.updates-page :is(.news-header,.gallery-header){font-size:17px;padding:16px 18px}.updates-page :is(.news-body,.gallery-body){padding:16px 18px}}

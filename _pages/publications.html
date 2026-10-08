@@ -4,60 +4,59 @@ title: "Publications"
 permalink: /publications/
 author_profile: false
 ---
-<div class="mt-page">
+<div class="mt-page publications-page">
 <section class="Journals">
-  <h1 class="journal-title">Publications</h1>
+  <div class="logo-section-heading"><h1 class="journal-title">Publications</h1><a class="scholar-link" href="{{ site.author.googlescholar }}">Google Scholar <span aria-hidden="true">↗</span></a></div>
 
-  <div class="journal-bar">
-    <div class="journal-item size100">
+  <div class="journal-bar" role="list" aria-label="Journals featuring our publications">
+    <div class="journal-item size100" role="listitem">
       <img src="{{ '/assets/img/journals/Science_Advances.svg' | relative_url }}" alt="Science Advances">
     </div>
-    <div class="journal-item size100">
+    <div class="journal-item size100" role="listitem">
       <img src="{{ '/assets/img/journals/Nature_Communications.png' | relative_url }}" alt="Nature Communications">
     </div>
-    <div class="journal-item size70">
+    <div class="journal-item size70" role="listitem">
       <img src="{{ '/assets/img/journals/ACS_Nano.svg' | relative_url }}" alt="ACS Nano">
     </div>
-    <div class="journal-item size80">
+    <div class="journal-item size80" role="listitem">
       <img src="{{ '/assets/img/journals/Nano_Letters.svg' | relative_url }}" alt="Nano Letters">
     </div>
-    <div class="journal-item size50">
+    <div class="journal-item size50" role="listitem">
       <img src="{{ '/assets/img/journals/small.png' | relative_url }}" alt="small">
     </div>
-    <div class="journal-item size70">
+    <div class="journal-item size70" role="listitem">
       <img src="{{ '/assets/img/journals/Scientific_Reports.png' | relative_url }}" alt="Scientific Reports">
     </div>
-    <div class="journal-item size100">
-      <img src="{{ '/assets/img/journals/PRL.png' | relative_url }}" alt="PRL">
+    <div class="journal-item size100" role="listitem">
+      <img src="{{ '/assets/img/journals/PRL.png' | relative_url }}" alt="Physical Review Letters">
     </div>
-    <div class="journal-item size100">
-      <img src="{{ '/assets/img/journals/PRE.png' | relative_url }}" alt="PRE">
+    <div class="journal-item size100" role="listitem">
+      <img src="{{ '/assets/img/journals/PRE.png' | relative_url }}" alt="Physical Review E">
     </div>
-    <div class="journal-item size100">
-      <img src="{{ '/assets/img/journals/PRM.png' | relative_url }}" alt="PRM">
+    <div class="journal-item size100" role="listitem">
+      <img src="{{ '/assets/img/journals/PRM.png' | relative_url }}" alt="Physical Review Materials">
     </div>
-    <div class="journal-item size70">
-      <img src="{{ '/assets/img/journals/JPCL.png' | relative_url }}" alt="JPCL">
+    <div class="journal-item size70" role="listitem">
+      <img src="{{ '/assets/img/journals/JPCL.png' | relative_url }}" alt="The Journal of Physical Chemistry Letters">
     </div>
-    <div class="journal-item size60">
-      <img src="{{ '/assets/img/journals/JPCB.png' | relative_url }}" alt="JPCB">
+    <div class="journal-item size60" role="listitem">
+      <img src="{{ '/assets/img/journals/JPCB.png' | relative_url }}" alt="The Journal of Physical Chemistry B">
     </div>
-    <div class="journal-item size90">
-      <img src="{{ '/assets/img/journals/APL.png' | relative_url }}" alt="APL">
+    <div class="journal-item size90" role="listitem">
+      <img src="{{ '/assets/img/journals/APL.png' | relative_url }}" alt="Applied Physics Letters">
     </div>
-    <div class="journal-item size80">
-      <img src="{{ '/assets/img/journals/JCP.png' | relative_url }}" alt="JCP">
+    <div class="journal-item size80" role="listitem">
+      <img src="{{ '/assets/img/journals/JCP.png' | relative_url }}" alt="The Journal of Chemical Physics">
     </div>
-    <div class="journal-item size80">
+    <div class="journal-item size80" role="listitem">
       <img src="{{ '/assets/img/journals/applied_science.png' | relative_url }}" alt="applied science">
     </div>
-    <div class="journal-item size80">
+    <div class="journal-item size80" role="listitem">
       <img src="{{ '/assets/img/journals/nanoscale.jpg' | relative_url }}" alt="nanoscale">
     </div>
 
   </div>
 </section>
-<nav class="publication-nav" aria-label="Publication links"><a href="{{ site.author.googlescholar }}">Google Scholar ↗</a></nav>
 {% assign sorted_pubs = site.publications | sort: 'date' | reverse %}
 {% assign groups = sorted_pubs | group_by_exp: 'post', "post.date | date: '%Y'" %}
 <section class="mt-section" id="all-publications" aria-label="Publications by year">

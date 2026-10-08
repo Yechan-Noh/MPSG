@@ -5,49 +5,22 @@ permalink: /research/
 author_profile: false
 ---
 <div class="mt-page research-page">
-<section class="funding">
-    <h2 class="funding-title">Funding & Support</h2>
-
-    <!-- Current Sponsors -->
-    <div class="sponsor-bar sponsor-bar--current">
-        <span class="sponsor-bar__title">Current:</span>
-        <div class="sponsor-item size70">
-            <img src="{{ '/assets/img/funding/access-logo.svg' | relative_url }}" alt="ACCESS">
-        </div>
-        <div class="sponsor-item size80">
-            <img src="{{ '/assets/img/funding/UND-logo.png' | relative_url }}" alt="University of Notre Dame">
-        </div>
-        <div class="sponsor-item size90">
-            <img src="{{ '/assets/img/funding/NCSA.png' | relative_url }}" alt="NCSA">
-        </div>
-        <div class="sponsor-item size70">
-            <img src="{{ '/assets/img/funding/TACC.jpg' | relative_url }}" alt="Texas Advanced Computing Center">
-        </div>
-    </div>
-
-    <!-- Previous Sponsors -->
-    <div class="sponsor-bar sponsor-bar--previous">
-        <span class="sponsor-bar__title">Previous:</span>
-        <div class="sponsor-item size70">
-            <img src="{{ '/assets/img/funding/nsf-logo.png' | relative_url }}" alt="National Science Foundation">
-        </div>
-        <div class="sponsor-item size80">
-            <img src="{{ '/assets/img/funding/UIUC.png' | relative_url }}"
-                alt="University of Illinois Urbana-Champaign">
-        </div>
-        <div class="sponsor-item size80">
-            <img src="{{ '/assets/img/funding/UC_Berkeley.webp' | relative_url }}" alt="University of California, Berkeley">
-        </div>
-        <div class="sponsor-item size100">
-            <img src="{{ '/assets/img/funding/Kwanjeong.png' | relative_url }}" alt="Kwanjeong Educational Foundation">
-        </div>
-        <div class="sponsor-item size100">
-            <img src="{{ '/assets/img/funding/nist-logo.png' | relative_url }}" alt="NIST">
-        </div>
-        <div class="sponsor-item size100">
-            <img src="{{ '/assets/img/funding/CU_Coulder.png' | relative_url }}" alt="University of Colorado Boulder">
-        </div>
-    </div>
+<section class="funding support-roster" aria-labelledby="support-title">
+  <h2 class="funding-title" id="support-title">Funding &amp; Support</h2>
+  <div class="support-group"><h3>Current</h3><ul class="support-logos" aria-label="Current funding and support">
+      <li class="support-logo"><img src="{{ '/assets/img/funding/access-logo.svg' | relative_url }}" alt="ACCESS"></li>
+      <li class="support-logo"><img src="{{ '/assets/img/funding/UND-logo.png' | relative_url }}" alt="University of Notre Dame"></li>
+      <li class="support-logo"><img src="{{ '/assets/img/funding/NCSA.png' | relative_url }}" alt="NCSA"></li>
+      <li class="support-logo"><img src="{{ '/assets/img/funding/TACC.jpg' | relative_url }}" alt="Texas Advanced Computing Center"></li>
+  </ul></div>
+  <div class="support-group"><h3>Previous</h3><ul class="support-logos" aria-label="Previous funding and support">
+      <li class="support-logo"><img src="{{ '/assets/img/funding/nsf-logo.png' | relative_url }}" alt="National Science Foundation"></li>
+      <li class="support-logo"><img src="{{ '/assets/img/funding/UIUC.png' | relative_url }}" alt="University of Illinois Urbana-Champaign"></li>
+      <li class="support-logo"><img src="{{ '/assets/img/funding/UC_Berkeley.webp' | relative_url }}" alt="University of California, Berkeley"></li>
+      <li class="support-logo"><img src="{{ '/assets/img/funding/Kwanjeong.png' | relative_url }}" alt="Kwanjeong Educational Foundation"></li>
+      <li class="support-logo"><img src="{{ '/assets/img/funding/nist-logo.png' | relative_url }}" alt="NIST"></li>
+      <li class="support-logo"><img src="{{ '/assets/img/funding/CU_Coulder.png' | relative_url }}" alt="University of Colorado Boulder"></li>
+  </ul></div>
 </section>
 <div class="research-topic-grid">
 {% for theme in site.data.research_themes %}
