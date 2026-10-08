@@ -3,7 +3,9 @@
   const script = document.currentScript;
   const base = script.dataset.base || '/MPSG';
   const mode = document.body.dataset.ownerMode;
-  const storageKey = 'mtsg-owner-session-v1';
+  const storageKey = 'mtsg-owner-session-v2';
+  const legacyKey = 'mtsg-owner-session-v1';
+  const rememberedKey = 'mtsg-owner-remembered-v1';
   const scope = 'https://www.googleapis.com/auth/drive.appdata';
   const status = document.querySelector('[data-owner-status]');
   const signIn = document.querySelector('[data-owner-signin]');
@@ -11,9 +13,19 @@
   let config, expiryTimer, generation = 0, authorized = false, lastCheck = 0;
   const channel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('mtsg-owner-access') : null;
   const message = text => { if (status) status.textContent = text; };
+  const forget = document.querySelector('[data-owner-forget]');
+  const stored = (key) => { try { return localStorage.getItem(key); } catch { return null; } };
+  const remembered = () => stored(rememberedKey) === 'yes';
+  function showOwnerLink() {
+    document.querySelectorAll('[data-owner-link]').forEach(e => e.hidden = !remembered());
+    if (forget) forget.hidden = !remembered();
+  }
+  function clearToken() {
+    try { localStorage.removeItem(storageKey); sessionStorage.removeItem(legacyKey); } catch {}
+  }
   function readSession() {
     try {
-      const value = JSON.parse(sessionStorage.getItem(storageKey));
+      const value = JSON.parse(stored(storageKey) || sessionStorage.getItem(legacyKey));
       return value && typeof value.token === 'string' && value.expiresAt > Date.now() + 5000 ? value : null;
     } catch { return null; }
   }
@@ -21,16 +33,22 @@
     generation++;
     authorized = false;
     clearTimeout(expiryTimer);
-    document.querySelectorAll('[data-owner-link]').forEach(e => e.hidden = true);
+    showOwnerLink();
     document.querySelectorAll('[data-private-view], [data-private-style]').forEach(e => e.remove());
     if (panel) panel.hidden = false;
     if (mode) document.title = 'Owner sign-in · MTSG';
     message(text);
   }
   function signOut(broadcast = true) {
-    sessionStorage.removeItem(storageKey);
-    lock('You have signed out.');
+    clearToken();
+    try { localStorage.removeItem(rememberedKey); } catch {}
+    lock('You have signed out and this browser is no longer remembered.');
     if (broadcast && channel) channel.postMessage('sign-out');
+  }
+  if (forget) forget.addEventListener('click', () => signOut());
+  function expire() {
+    clearToken();
+    lock('This browser is remembered. Continue with Google to renew access.');
   }
   if (channel) channel.onmessage = e => { if (e.data === 'sign-out') signOut(false); };
   async function loadConfig() {
@@ -66,7 +84,7 @@
     document.title = 'Site Overview · MTSG';
     const frame = view.querySelector('#report'), link = view.querySelector('#report-link');
     view.querySelectorAll('[data-report]').forEach(button => button.addEventListener('click', () => {
-      if (!readSession()) { signOut(); return; }
+      if (!readSession()) { expire(); return; }
       view.querySelectorAll('[data-report]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
       frame.src = button.dataset.report; frame.title = button.textContent + ' — private analytics report';
       link.href = button.dataset.report.replace('/embed/reporting/', '/reporting/');
@@ -75,22 +93,30 @@
   }
   async function check(session = readSession(), persist = false) {
     const current = ++generation;
-    if (!session) { lock(); return false; }
+    if (!session) { lock(remembered() ? 'This browser is remembered. Continue with Google to open your overview.' : undefined); return false; }
     try {
       message('Checking access…');
       const html = await protectedContent(session);
       if (current !== generation || session.expiresAt <= Date.now() + 5000) return false;
-      if (persist) sessionStorage.setItem(storageKey, JSON.stringify(session));
+      // Remember only after Google has verified access to the private file.
+      // The marker controls navigation visibility; it never authorizes report access.
+      try {
+        localStorage.setItem(rememberedKey, 'yes');
+        localStorage.setItem(storageKey, JSON.stringify(session));
+        sessionStorage.removeItem(legacyKey);
+      } catch {
+        sessionStorage.setItem(legacyKey, JSON.stringify(session));
+      }
       authorized = true; lastCheck = Date.now();
       document.querySelectorAll('[data-owner-link]').forEach(e => e.hidden = false);
       clearTimeout(expiryTimer);
-      expiryTimer = setTimeout(() => signOut(false), Math.max(0, session.expiresAt - Date.now() - 5000));
+      expiryTimer = setTimeout(() => expire(), Math.max(0, session.expiresAt - Date.now() - 5000));
       if (mode === 'dashboard') mountReport(html);
       if (mode === 'login') location.replace(base + '/dashboard/');
       return true;
     } catch (error) {
       if (current !== generation) return false;
-      if (error.message === 'denied') sessionStorage.removeItem(storageKey);
+      if (error.message === 'denied') clearToken();
       lock(error.message === 'not-ready' ? 'Sign-in setup is not complete yet.' : error.message === 'denied' ? 'This account cannot access this page. Use the authorized account.' : 'Access could not be verified. Please try again.');
       return false;
     }
@@ -116,17 +142,21 @@
         });
         signIn.addEventListener('click', () => {
           signIn.disabled = true; message('Connecting to Google…');
-          client.requestAccessToken({prompt: 'select_account'});
+          client.requestAccessToken({prompt: remembered() ? '' : 'select_account'});
         });
         signIn.disabled = false;
       } catch { message('Unable to start sign-in. Please reload to try again.'); }
     })();
   }
+  window.addEventListener('storage', e => {
+    if (e.key === rememberedKey && !remembered()) { clearToken(); lock('You have signed out.'); }
+    else if (e.key === storageKey || e.key === rememberedKey || e.key === null) { lock(); check(); }
+  });
   window.addEventListener('pagehide', () => lock());
   window.addEventListener('pageshow', e => { if (e.persisted) check(); });
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden && (!readSession() || Date.now() - lastCheck > 60000)) { lock(); check(); }
   });
-  setInterval(() => { if (authorized && !readSession()) signOut(false); }, 15000);
+  setInterval(() => { if (authorized && !readSession()) expire(); }, 15000);
   check();
 })();
