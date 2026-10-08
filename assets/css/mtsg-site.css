@@ -94,3 +94,20 @@
 .pub-card .badge{background:#d0dcdf;color:#182d38}.pub-card .badge--submitted{background:#e7edef;color:#56636a}
 .pub-card--submitted{background:#f4f6f6;border-color:#e1e6e7}.pub-card--published-current{border-color:#182d38;box-shadow:0 3px 12px rgba(24,45,56,.1)}
 .mt-page .pub-meta a{color:#42636e}.pub-card:hover{box-shadow:0 5px 14px rgba(24,45,56,.12)}
+
+/* A denser People page, with clear separation between entries and sections. */
+.people-page .profile-header{padding:12px 0}
+.people-page .profile-header h1{font-size:34px;margin-bottom:14px}
+.people-page .profile-header p{margin-bottom:10px}
+.people-page .profile-header .eyebrow{margin-bottom:10px!important}
+.people-page .profile-header .mt-actions{margin-top:16px}
+.people-page .mt-section{margin:22px 0;padding-top:18px}
+.people-page .mt-section h2{margin-bottom:12px}
+.people-page .profile-timeline{margin:0}
+.people-page .profile-timeline dt{margin-top:14px}
+.people-page .profile-timeline dt:first-child{margin-top:0}
+.people-page .profile-timeline dd{margin:3px 0 10px;line-height:1.5}
+.people-page .profile-timeline dd:last-child{margin-bottom:0}
+.people-page .honors-list li{margin-bottom:2px;line-height:1.5}
+.people-page .honors-list li:last-child{margin-bottom:0}
+@media(max-width:760px){.people-page .profile-header h1{font-size:23px;margin-bottom:10px}.people-page .profile-columns{gap:0}.people-page .mt-section{margin:18px 0;padding-top:16px}}

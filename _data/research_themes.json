@@ -13,7 +13,7 @@
     "intro": "This research examines the molecular basis of selective transport, with the goal of separating valuable elements using fewer resources and generating less waste.",
     "image": "/assets/img/research/bioinspired-separation.png",
     "caption": "Ion-channel-inspired membrane concepts for separating rare-earth ions.",
-    "background_html": "In 2024, China produced 91% of the world’s refined magnet rare earths. Their chemical similarity makes separation difficult, limiting routes to more resilient supply chains. <span class=\"muted\">(IEA, 2026).</span>"
+    "background_html": "In 2024, 91% of the world’s refined magnet rare earths came from a single country. Their chemical similarity makes separation difficult, limiting routes to more resilient supply chains. <span class=\"muted\">(IEA, 2026).</span>"
   },
   {
     "id": "interfacial-recognition",
