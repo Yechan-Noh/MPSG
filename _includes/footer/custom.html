@@ -257,7 +257,11 @@
 
         <p class="mtsg-footer__fine">
             © 2026 <strong>Molecular Transport Simulation Group (MTSG)</strong>.
+            <a data-owner-link hidden style="margin-left:12px" href="{{ '/dashboard/' | relative_url }}">Site Overview</a>
         </p>
     </div>
 </footer>
 <!-- ===== /MTSG Footer ===== -->
+
+<style>[data-owner-link][hidden]{display:none!important}</style>
+<script defer src="{{ '/assets/js/owner/access.js' | relative_url }}" data-base="{{ site.baseurl }}"></script>

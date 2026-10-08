@@ -1,1 +1,2 @@
-# Dashboard content is withheld until server-side owner authentication is connected.
+# Private dashboard HTML lives in the owner's Google Drive appDataFolder.
+# Google enforces account-scoped access; no report URLs or credentials belong here.
