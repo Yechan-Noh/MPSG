@@ -49,6 +49,7 @@ author_profile: false
         </div>
     </div>
 </section>
+<div class="research-topic-grid">
 {% for theme in site.data.research_themes %}
 <section class="research-panel research-topic-card" id="{{ theme.id }}" aria-labelledby="{{ theme.id }}-title">
   <div class="research-panel-heading"><h2 id="{{ theme.id }}-title">{{ theme.title }}</h2></div>
@@ -58,4 +59,5 @@ author_profile: false
   </div>
 </section>
 {% endfor %}
+</div>
 </div>
