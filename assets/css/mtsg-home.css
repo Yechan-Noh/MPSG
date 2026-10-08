@@ -1,5 +1,5 @@
 /* Approved homepage design, scoped to avoid changes to other pages. */
-.home-refresh{--ink:#192d36;--muted:#56636a;--accent:#a8462d;--line:#d6dddf;--wash:#f4f5f2;--dark:#182d38;--paper:#fff;--space:8px;--measure:66ch;--shell:1248px;--font:"Helvetica Neue",Helvetica,Arial,sans-serif;--mono:"SFMono-Regular",Consolas,monospace}
+.home-refresh{--ink:#192d36;--muted:#56636a;--accent:#a8462d;--line:#d6dddf;--wash:#f4f5f2;--dark:#182d38;--paper:#fff;--space:8px;--measure:66ch;--shell:1120px;--font:"Helvetica Neue",Helvetica,Arial,sans-serif;--mono:"SFMono-Regular",Consolas,monospace}
 .home-refresh *{box-sizing:border-box}
 .home-refresh{margin:0;color:var(--ink);background:var(--paper);font:17px/1.6 var(--font);-webkit-font-smoothing:antialiased}
 .home-refresh h1,.home-refresh h2,.home-refresh h3,.home-refresh p,.home-refresh figure,.home-refresh dl{margin:0}
@@ -14,7 +14,7 @@
 .home-refresh img{display:block;max-width:100%;height:auto}
 .home-refresh button:focus-visible,.home-refresh a:focus-visible{outline:3px solid #aa5038;outline-offset:5px}
 .home-refresh button[hidden],.home-refresh [hidden]{display:none!important}
-.home-refresh .shell{max-width:var(--shell);padding:0 40px;margin:auto}
+.home-refresh .shell{max-width:var(--shell);padding:0 28px;margin:auto}
 .home-refresh .overline{font:12px/1.5 var(--font);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
 .home-refresh .plain-link{font-size:14px;line-height:1.5;text-decoration:none;border-bottom:1px solid #889aa2;padding-bottom:3px;white-space:nowrap;display:inline-flex;gap:20px;align-items:center}
 .home-refresh .section-top{display:flex;justify-content:space-between;align-items:baseline;gap:24px;margin-bottom:32px}
@@ -27,8 +27,8 @@
 .home-refresh .hero-motion{min-width:0;align-self:stretch;display:flex;flex-direction:column;justify-content:center;position:relative}
 .home-refresh .hero-motion canvas{display:block;width:100%;height:230px}
 .home-refresh .motion-toggle{align-self:end;font-size:11px;border:0;background:transparent;border-bottom:1px solid #68828d;color:#d4e0e3;padding:6px 0;margin-top:0}
-.home-refresh .home-research{padding-top:48px;padding-bottom:48px}
-.home-refresh .topic-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+.home-refresh .home-research{padding-top:30px;padding-bottom:48px}
+.home-refresh .topic-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
 .home-refresh .topic-preview{min-width:0}
 .home-refresh .topic-image{height:164px;border-bottom:1px solid var(--line);padding:0 16px 24px;display:flex;justify-content:center;align-items:center;margin-bottom:20px;background:#fff}
 .home-refresh .topic-image img{height:100%;width:100%;object-fit:contain}
@@ -53,7 +53,7 @@
 @media(min-width:1600px){.home-refresh .hero-copy h1{font-size:52.7px}
 .home-refresh .hero-grid{min-height:400px}
 }
-@media(max-width:1100px){.home-refresh .shell{padding-left:32px;padding-right:32px}
+@media(max-width:1100px){.home-refresh .shell{padding-left:28px;padding-right:28px}
 .home-refresh .hero-copy h1{font-size:39.1px}
 .home-refresh .hero-grid{min-height:340px}
 .home-refresh .hero-motion canvas{height:200px}
@@ -63,14 +63,14 @@
 .home-refresh .home-person>img{width:104px;height:140px}
 }
 @media(max-width:760px){.home-refresh{font-size:16px}
-.home-refresh .shell{padding-left:24px;padding-right:24px}
+.home-refresh .shell{padding-left:20px;padding-right:20px}
 .home-refresh .hero-grid{grid-template-columns:1fr;gap:8px;padding-top:36px;padding-bottom:26px}
 .home-refresh .hero-copy h1{font-size:36.55px;line-height:1.06;letter-spacing:-1.5px;margin-bottom:20px}
 .home-refresh .hero-copy>p{font-size:18px;line-height:1.45}
 .home-refresh .hero-motion canvas{height:146px;max-width:390px;align-self:center}
 .home-refresh .hero-motion{margin-top:8px}
 .home-refresh .motion-toggle{font-size:11px;margin-top:4px}
-.home-refresh .home-research{padding-top:32px;padding-bottom:32px}
+.home-refresh .home-research{padding-top:24px;padding-bottom:32px}
 .home-refresh .section-top{margin-bottom:24px;gap:16px}
 .home-refresh .section-top h2{font-size:28px}
 .home-refresh .plain-link{font-size:12px;gap:10px}
@@ -104,14 +104,27 @@
 .home-refresh h1,.home-refresh h2,.home-refresh h3{border:0;padding:0;color:inherit}.home-refresh .hero-copy h1{color:#f7f8f5}.home-refresh .home-lower{padding-bottom:48px}.home-refresh a{box-shadow:none}
 
 /* Compact hero spacing; particle lettering enlarged in animation script. */
-.home-refresh .hero-grid{min-height:330px;padding-top:32px;padding-bottom:32px}
-@media(min-width:1600px){.home-refresh .hero-grid{min-height:344px}}
-@media(max-width:1100px){.home-refresh .hero-grid{min-height:300px}}
-@media(max-width:760px){.home-refresh .hero-grid{min-height:0;padding-top:26px;padding-bottom:18px}}
+.home-refresh .hero-grid{min-height:290px;padding-top:24px;padding-bottom:24px}
+@media(min-width:1600px){.home-refresh .hero-grid{min-height:304px}}
+@media(max-width:1100px){.home-refresh .hero-grid{min-height:276px}}
+@media(max-width:760px){.home-refresh .hero-grid{min-height:0;padding-top:22px;padding-bottom:14px}}
 /* Slightly larger research illustrations, preserving their proportions. */
-.home-refresh .topic-image{height:188px;padding-bottom:24px}
-@media(max-width:760px){.home-refresh .topic-preview{grid-template-columns:128px minmax(0,1fr)}.home-refresh .topic-image{height:128px;padding:6px 0}}
-@media(max-width:380px){.home-refresh .topic-preview{grid-template-columns:101px minmax(0,1fr)}.home-refresh .topic-image{height:110px}}
+.home-refresh .topic-image{height:204px;padding:0 0 14px}
+@media(max-width:760px){.home-refresh .topic-preview{grid-template-columns:140px minmax(0,1fr)}.home-refresh .topic-image{height:140px;padding:6px 0}}
+@media(max-width:380px){.home-refresh .topic-preview{grid-template-columns:112px minmax(0,1fr)}.home-refresh .topic-image{height:120px}}
 
 /* Override the legacy canvas dimensions with a larger, sharper logo. */
 .home-refresh #titleCanvas{width:400px;height:180px;max-width:100%;align-self:center}
+
+/* Keep research topics in one swipeable strip when space is limited. */
+.home-refresh .home-research .section-top{flex-wrap:wrap;gap:16px;margin-bottom:24px}
+.home-refresh .home-research .section-top h2{margin-right:auto}
+.home-refresh .topic-controls{display:flex;gap:6px}
+.home-refresh .topic-controls button{width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:50%;background:white;font-size:19px;line-height:1}
+.home-refresh .topic-controls button:hover{background:var(--wash)}
+.home-refresh .topic-controls button:disabled{opacity:.3;cursor:default}
+.home-refresh .topic-grid{display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:max(280px,calc((100% - 48px)/4));gap:16px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:#b6c3c8 transparent;padding:0 0 14px}
+.home-refresh .topic-preview{display:block;scroll-snap-align:start;scroll-snap-stop:normal;border:0;padding:0}
+.home-refresh .topic-image{height:220px;padding:0 0 14px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.home-refresh .topic-preview h3{margin-bottom:10px}
+@media(max-width:760px){.home-refresh .topic-grid{grid-auto-columns:calc(100% - 28px);gap:16px}.home-refresh .topic-image{height:206px}.home-refresh .home-research .section-top{gap:12px}.home-refresh .topic-controls button{width:30px;height:30px}.home-refresh .home-research .plain-link{gap:8px}}

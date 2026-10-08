@@ -73,6 +73,11 @@
 @media(max-width:900px){.research-topic-grid{grid-template-columns:1fr;max-width:680px;margin:30px auto}}
 @media(max-width:760px){.research-topic-content{padding:20px}.research-topic-content figure{max-width:320px}.research-topic-copy p{font-size:15px}}
 
+/* Give the more detailed recognition and automation figures more room. */
+#interfacial-recognition .research-topic-content figure{max-width:460px}
+#researcher-directed-automation .research-topic-content figure{width:calc(100% + 24px);max-width:520px;align-self:center;margin:auto 0 0}
+#researcher-directed-automation .research-topic-content figcaption{padding:0 12px}
+
 /* Publication status remains visible without competing with published work. */
 .pub-card--submitted{background:#f3f5f6;border-color:#e4e8eb;box-shadow:none}
 .mt-page .pub-card--submitted .pub-title,.mt-page .pub-card--submitted .pub-authors{color:#596570}

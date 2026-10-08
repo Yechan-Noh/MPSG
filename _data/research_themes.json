@@ -2,31 +2,31 @@
   {
     "id": "ionic-memory",
     "title": "Ionic Memory and Computing",
-    "intro": "Synthetic ionic materials could offer a route to brain-like computing. Realizing that potential requires understanding how their chemistry enables them to process, retain, and transmit information.",
+    "intro": "This research examines how ionic materials process, retain, and transmit information, toward principles for energy-efficient computing.",
     "image": "/assets/img/research/ionic-neuromorphic.png",
     "caption": "Biological signaling, artificial neural networks, and ionic devices that reproduce aspects of neuronal function.",
-    "background_html": "The growing computational demands of AI make energy-efficient information processing increasingly important. The brain offers a different model: it learns and remembers through regulated ion flow, rather than the electronic currents used in conventional computers."
+    "background_html": "A 2026 reference scenario projects that data centers could consume nearly 12% of U.S. electricity by 2030. The human brain operates on roughly 20 watts. <span class=\"muted\">(Smith et al., 2026; Levy & Calvert, 2021).</span>"
   },
   {
     "id": "selective-transport",
     "title": "Selective Ion Transport",
-    "intro": "In synthetic pores, however, selective binding does not necessarily lead to selective passage. Understanding how pore chemistry governs ion entry, binding, and release could guide more efficient separations with less waste.",
+    "intro": "This research examines the molecular basis of selective transport, with the goal of separating valuable elements using fewer resources and generating less waste.",
     "image": "/assets/img/research/bioinspired-separation.png",
     "caption": "Ion-channel-inspired membrane concepts for separating rare-earth ions.",
-    "background_html": "Rare-earth elements are essential to magnets used in electric vehicles and wind turbines, but their chemical similarity makes separation difficult and resource-intensive. Biological molecules show how subtle differences between ions can produce strong selectivity."
+    "background_html": "In 2024, China produced 91% of the world’s refined magnet rare earths. Their chemical similarity makes separation difficult, limiting routes to more resilient supply chains. <span class=\"muted\">(IEA, 2026).</span>"
   },
   {
     "id": "interfacial-recognition",
     "title": "Interfacial Molecular Recognition",
-    "intro": "Understanding how surfaces shape molecular recognition could make receptor design more predictive, extend continuous monitoring to new targets, and broaden access to diagnostics beyond the laboratory.",
+    "intro": "This research studies molecular recognition at interfaces to extend continuous sensing beyond glucose and make molecular measurements more accessible.",
     "image": "/assets/img/research/bio-chemical-sensor.png",
     "caption": "Target recognition by biological receptors and by receptors attached to sensing electrodes.",
-    "background_html": "Continuous glucose monitors show what real-time molecular sensing can offer, yet most other molecules still require laboratory testing. A central obstacle is finding receptors that recognize their targets reliably when attached to an electrode."
+    "background_html": "A 2021 Lancet Commission estimated that 47% of the world’s population had little or no access to diagnostics. Continuous glucose monitors demonstrate the value of molecular measurements beyond the laboratory. <span class=\"muted\">(Fleming et al., 2021).</span>"
   },
   {
     "id": "researcher-directed-automation",
     "title": "Researcher-Directed Automation",
-    "background_html": "In a survey of 1,972 scientists, respondents reported spending, on average, <strong>30% of their working time developing scientific software</strong> and <strong>40% using it</strong> <span class=\"muted\">(Hannay et al., 2009).</span>",
+    "background_html": "In a survey of 1,972 scientists, respondents reported spending, on average, 30% of their working time developing scientific software and 40% using it <span class=\"muted\">(Hannay et al., 2009).</span>",
     "intro": "This research aims to reduce the hands-on workload of molecular simulation through AI-assisted automation, while keeping scientific judgment with the researcher.",
     "image": "/assets/img/research/researcher-directed-automation.png",
     "caption": "Computation-guided experimental discovery. Candidates and screening outcomes are illustrative, not reported results. The robotic arms represent software-based automation, not physical laboratory robots.",
