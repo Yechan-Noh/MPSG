@@ -26,8 +26,8 @@
   {
     "id": "researcher-directed-automation",
     "title": "Researcher-Directed Automation",
-    "background_html": "Molecular simulation can help explain experimental measurements and identify promising directions for discovery. Its wider use, however, is limited by the time researchers spend preparing and running calculations and processing results. Reducing this repetitive work could make computational insight available to more experimental studies and leave more time for developing questions and interpreting the underlying science.",
-    "intro": "This research explores how AI-assisted automation can support molecular simulation while keeping scientific judgment with the researcher. The broader goal is to make computation a more practical partner in experimental discovery: helping researchers examine more hypotheses, reduce trial and error, and use experimental time and resources more effectively.",
+    "background_html": "Repetitive computational work limits how widely molecular simulation can support experimental research.",
+    "intro": "Researcher-directed AI automation could free time for scientific thinking and help researchers test more hypotheses with fewer experimental resources.",
     "image": "/assets/img/research/researcher-directed-automation.png",
     "caption": "Computation-guided experimental discovery. Candidates and screening outcomes are illustrative, not reported results. The robotic arms represent software-based automation, not physical laboratory robots.",
     "alt": "Conceptual illustration linking researcher direction, computational automation, illustrative candidate screening, and experimental studies."
