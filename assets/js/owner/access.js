@@ -6,11 +6,11 @@
   const storageKey = 'mtsg-owner-session-v2';
   const legacyKey = 'mtsg-owner-session-v1';
   const rememberedKey = 'mtsg-owner-remembered-v1';
-  const scope = 'https://www.googleapis.com/auth/drive.appdata';
+  const scope = 'https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/analytics.readonly';
   const status = document.querySelector('[data-owner-status]');
   const signIn = document.querySelector('[data-owner-signin]');
   const panel = document.querySelector('[data-owner-panel]');
-  let config, expiryTimer, generation = 0, authorized = false, lastCheck = 0;
+  let overview, config, expiryTimer, generation = 0, authorized = false, lastCheck = 0;
   const channel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('mtsg-owner-access') : null;
   const message = text => { if (status) status.textContent = text; };
   const forget = document.querySelector('[data-owner-forget]');
@@ -32,6 +32,7 @@
   function lock(text = 'Sign in with the authorized Google account.') {
     generation++;
     authorized = false;
+    overview?.dispose(); overview = null;
     clearTimeout(expiryTimer);
     showOwnerLink();
     document.querySelectorAll('[data-private-view], [data-private-style]').forEach(e => e.remove());
@@ -71,25 +72,15 @@
     if (hash !== cfg.sha256) throw new Error('integrity');
     return text;
   }
-  function mountReport(html) {
-    if (document.querySelector('[data-private-view]')) return;
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    doc.querySelectorAll('script').forEach(e => e.remove());
-    doc.querySelectorAll('style').forEach(e => {
-      const style = document.createElement('style'); style.dataset.privateStyle = ''; style.textContent = e.textContent; document.head.append(style);
-    });
+  function mountReport() {
+    if (!window.MTSGOverview) throw new Error('not-ready');
+    if (overview) { overview.reload(); return; }
     const view = document.createElement('div'); view.dataset.privateView = '';
-    view.append(...Array.from(doc.body.childNodes)); document.body.append(view);
+    document.body.append(view);
     if (panel) panel.hidden = true;
     document.title = 'Site Overview · MTSG';
-    const frame = view.querySelector('#report'), link = view.querySelector('#report-link');
-    view.querySelectorAll('[data-report]').forEach(button => button.addEventListener('click', () => {
-      if (!readSession()) { expire(); return; }
-      view.querySelectorAll('[data-report]').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
-      frame.src = button.dataset.report; frame.title = button.textContent + ' — private analytics report';
-      link.href = button.dataset.report.replace('/embed/reporting/', '/reporting/');
-    }));
-    view.querySelectorAll('[data-owner-logout]').forEach(button => button.addEventListener('click', () => signOut()));
+    overview = window.MTSGOverview.mount({root: view, propertyId: config.propertyId,
+      getSession: readSession, onRenew: () => signIn?.click(), onSignOut: signOut});
   }
   async function check(session = readSession(), persist = false) {
     const current = ++generation;
@@ -111,7 +102,7 @@
       document.querySelectorAll('[data-owner-link]').forEach(e => e.hidden = false);
       clearTimeout(expiryTimer);
       expiryTimer = setTimeout(() => expire(), Math.max(0, session.expiresAt - Date.now() - 5000));
-      if (mode === 'dashboard') mountReport(html);
+      if (mode === 'dashboard') mountReport();
       if (mode === 'login') location.replace(base + '/dashboard/');
       return true;
     } catch (error) {

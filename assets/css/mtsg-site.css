@@ -63,7 +63,7 @@
 .research-topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin:30px 0;align-items:stretch}
 .research-topic-card{display:flex;flex-direction:column;min-width:0;max-width:none;margin:0;border:1px solid var(--mt-line);box-shadow:0 3px 12px rgba(24,51,71,.04)}
 .research-topic-card .research-panel-heading{padding:20px 24px}
-.research-topic-card .research-panel-heading h2{font-size:22px;line-height:1.3}
+.research-topic-card .research-panel-heading h2{font-size:20px;line-height:1.3}
 .research-topic-content{display:flex;flex-direction:column;flex:1;gap:24px;padding:24px}
 .research-topic-copy p{font-size:15px;line-height:1.7}.research-topic-copy p:last-child{margin-bottom:0}.research-topic-copy a{text-decoration:underline;text-underline-offset:3px}
 .research-topic-content figure{width:100%;max-width:420px;margin:auto auto 0}
