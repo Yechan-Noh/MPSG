@@ -1,5 +1,5 @@
 /* Approved homepage design, scoped to avoid changes to other pages. */
-.home-refresh{--ink:#192d36;--muted:#56636a;--accent:#a8462d;--line:#d6dddf;--wash:#f4f5f2;--dark:#182d38;--paper:#fff;--space:8px;--measure:66ch;--shell:1120px;--font:"Helvetica Neue",Helvetica,Arial,sans-serif;--mono:"SFMono-Regular",Consolas,monospace}
+.home-refresh{--ink:var(--site-ink);--muted:var(--site-muted);--accent:var(--site-accent);--line:var(--site-line);--wash:var(--site-soft);--dark:var(--site-ink);--paper:#fff;--space:8px;--measure:66ch;--shell:1120px;--font:"Helvetica Neue",Helvetica,Arial,sans-serif;--mono:"SFMono-Regular",Consolas,monospace}
 .home-refresh *{box-sizing:border-box}
 .home-refresh{margin:0;color:var(--ink);background:var(--paper);font:17px/1.6 var(--font);-webkit-font-smoothing:antialiased}
 .home-refresh h1,.home-refresh h2,.home-refresh h3,.home-refresh p,.home-refresh figure,.home-refresh dl{margin:0}
@@ -12,7 +12,7 @@
 .home-refresh button{font:inherit;color:inherit;cursor:pointer}
 .home-refresh button,.home-refresh a{-webkit-tap-highlight-color:transparent}
 .home-refresh img{display:block;max-width:100%;height:auto}
-.home-refresh button:focus-visible,.home-refresh a:focus-visible{outline:3px solid #aa5038;outline-offset:5px}
+.home-refresh button:focus-visible,.home-refresh a:focus-visible{outline:3px solid var(--site-accent);outline-offset:5px}
 .home-refresh button[hidden],.home-refresh [hidden]{display:none!important}
 .home-refresh .shell{max-width:var(--shell);padding:0 28px;margin:auto}
 .home-refresh .overline{font:12px/1.5 var(--font);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}

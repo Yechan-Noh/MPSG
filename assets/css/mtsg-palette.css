@@ -1,0 +1,18 @@
+/* Shared colors for every public page and the private overview. */
+:root{
+  --site-ink:#182d38;
+  --site-muted:#56636a;
+  --site-accent:#42636e;
+  --site-line:#d6dddf;
+  --site-soft:#f4f6f6;
+  --site-paper:#ffffff;
+  --site-on-dark:#f7f8f5;
+}
+/* Bridge the existing navigation controls to the same shared colors. */
+:root{
+  --mtsg-bg:var(--site-paper);
+  --mtsg-fg:var(--site-ink);
+  --mtsg-fg-muted:var(--site-muted);
+  --mtsg-border:var(--site-line);
+  --mtsg-accent:var(--site-ink);
+}
