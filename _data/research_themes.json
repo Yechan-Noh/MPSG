@@ -28,7 +28,7 @@
     "title": "Researcher-Directed Automation",
     "background_html": "In a survey of 1,972 scientists, respondents reported spending, on average, 30% of their working time developing scientific software and 40% using it <span class=\"muted\">(Hannay et al., 2009).</span>",
     "intro": "This research aims to reduce the hands-on workload of molecular simulation through AI-assisted automation, while keeping scientific judgment with the researcher.",
-    "image": "/assets/img/research/researcher-directed-automation.png",
+    "image": "/assets/img/research/researcher-directed-automation-20261008.png",
     "caption": "Computation-guided experimental discovery. Candidates and screening outcomes are illustrative, not reported results. The robotic arms represent software-based automation, not physical laboratory robots.",
     "alt": "Conceptual illustration linking researcher direction, computational automation, illustrative candidate screening, and experimental studies."
   }
