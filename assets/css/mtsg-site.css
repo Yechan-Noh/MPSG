@@ -77,7 +77,7 @@
 .pub-card--published-current{border:2px solid #347c88;box-shadow:0 3px 12px rgba(23,108,120,.1)}
 
 /* People: selected CV honors and support as a concise list. */
-.people-page .honors-list{display:block;padding-left:22px;margin:0;list-style:disc}.people-page .honors-list li{padding-left:6px;margin-bottom:24px}.people-page .honors-list h3{font-size:19px;line-height:1.5;margin:0 0 6px}.people-page .honors-list h3 span{display:block;font-size:14px;font-weight:400;color:#56636a;margin-top:3px}.people-page .honors-list p{font-size:16px;line-height:1.7;margin:0;color:#56636a}
+.people-page .honors-list{display:block;padding-left:22px;margin:0;list-style:disc}.people-page .honors-list li{padding-left:4px;margin-bottom:10px;font-size:16px;line-height:1.65;font-weight:400}.people-page .honors-list h3{font-size:19px;line-height:1.5;margin:0 0 6px}.people-page .honors-list h3 span{display:block;font-size:14px;font-weight:400;color:#56636a;margin-top:3px}.people-page .honors-list p{font-size:16px;line-height:1.7;margin:0;color:#56636a}
 /* Match existing research and publication cards to the homepage palette. */
 .research-topic-card{border-color:#d6dddf;box-shadow:0 3px 12px rgba(24,45,56,.04)}
 .research-panel-heading{background:#182d38;color:#f7f8f5}.research-panel-heading h2{color:#f7f8f5}
