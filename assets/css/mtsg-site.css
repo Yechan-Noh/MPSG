@@ -60,7 +60,7 @@
 @media(max-width:760px){.mt-animation-top #titleCanvas{height:120px}}
 
 /* Preserve the original research-topic cards with brief introductions and figures. */
-.research-topic-card{margin:30px 0;border:1px solid var(--mt-line);box-shadow:0 3px 12px rgba(24,51,71,.04)}
+.research-topic-card{max-width:960px;margin:30px auto;border:1px solid var(--mt-line);box-shadow:0 3px 12px rgba(24,51,71,.04)}
 .research-topic-content{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:30px;align-items:center;padding:26px 30px 28px}
 .research-topic-copy p{font-size:15px;line-height:1.7}.research-topic-copy p:last-child{margin-bottom:0}.research-topic-copy a{text-decoration:underline;text-underline-offset:3px}
 .research-topic-content figure{width:100%;max-width:420px;margin:0 auto}
