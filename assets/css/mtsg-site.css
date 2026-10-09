@@ -183,3 +183,12 @@ body{color:var(--site-ink);background:var(--site-paper)}
 @media(max-width:900px){.research-page .support-roster .support-logos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));max-width:600px;gap:12px 20px}.research-page .support-roster .support-logos[aria-label^="Previous"]{grid-template-columns:repeat(3,minmax(0,1fr));max-width:440px}.research-page .support-roster .support-logo{width:auto}}
 @media(max-width:600px){.research-page .support-roster .funding-title{font-size:21px!important}.research-page .support-roster .support-logos{grid-template-columns:repeat(2,minmax(0,1fr));max-width:300px}.research-page .support-roster .support-logo{height:46px}.research-page .support-roster .support-logo img{max-height:38px}}
 @media(max-width:420px){.research-page .support-roster .support-logos[aria-label^="Previous"]{grid-template-columns:repeat(2,minmax(0,1fr));max-width:300px}}
+
+/* Normalize visible logo artwork, not the differently padded source canvases.
+   Per-logo dimensions preserve original proportions and balance wordmarks/seals. */
+.research-page .support-roster .support-logos{column-gap:20px}
+.research-page .support-roster .support-logo{width:144px;flex-basis:144px;height:52px;padding:4px 0}
+.research-page .support-logo-art{position:relative;display:block;overflow:hidden;width:var(--art-width);max-width:100%;aspect-ratio:var(--art-ratio);flex-shrink:0}
+.research-page .support-roster .support-logo-art img{position:absolute;display:block;width:var(--source-width);max-width:none;height:auto;max-height:none;left:var(--source-left);top:var(--source-top);margin:0;object-fit:initial}
+@media(max-width:900px){.research-page .support-roster .support-logo{width:auto;min-width:0}}
+@media(max-width:600px){.research-page .support-roster .support-logo{height:48px}.research-page .support-logo-art{width:calc(var(--art-width)*.92)}}
