@@ -171,24 +171,17 @@ body{color:var(--site-ink);background:var(--site-paper)}
 #mtsg-footer a,#mtsg-footer a:visited{color:var(--site-muted)}
 #mtsg-footer a:hover{color:var(--site-accent)}
 
-/* A quiet, centered acknowledgment block rather than a tabular roster. */
-.research-page .support-roster{text-align:center;padding:0 0 4px;border:0}
-.research-page .support-roster .funding-title{font-size:23px!important;font-weight:600;margin-bottom:18px!important;color:var(--site-ink)}
+/* Funding uses the same ruled logo-grid treatment as Publications. */
+.research-page .support-roster{text-align:left;padding:0 0 4px;border:0}
+.research-page .support-roster .funding-title{font-size:29px!important;font-weight:600;margin:0 0 16px!important;color:var(--site-ink)}
 .research-page .support-roster .support-group{display:block;padding:0;border:0}
-.research-page .support-roster .support-group+.support-group{margin-top:18px}
+.research-page .support-roster .support-group+.support-group{margin-top:16px}
 .research-page .support-roster .support-group h3{padding:0;margin:0 0 8px;font-size:14px;font-weight:500;color:var(--site-muted)}
-.research-page .support-roster .support-logos{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;margin:0 auto}
-.research-page .support-roster .support-logo{width:128px;flex:0 0 128px;height:52px;padding:4px 0}
-.research-page .support-roster .support-logo img{max-height:44px}
-@media(max-width:900px){.research-page .support-roster .support-logos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));max-width:600px;gap:12px 20px}.research-page .support-roster .support-logos[aria-label^="Previous"]{grid-template-columns:repeat(3,minmax(0,1fr));max-width:440px}.research-page .support-roster .support-logo{width:auto}}
-@media(max-width:600px){.research-page .support-roster .funding-title{font-size:21px!important}.research-page .support-roster .support-logos{grid-template-columns:repeat(2,minmax(0,1fr));max-width:300px}.research-page .support-roster .support-logo{height:46px}.research-page .support-roster .support-logo img{max-height:38px}}
-@media(max-width:420px){.research-page .support-roster .support-logos[aria-label^="Previous"]{grid-template-columns:repeat(2,minmax(0,1fr));max-width:300px}}
-
-/* Normalize visible logo artwork, not the differently padded source canvases.
-   Per-logo dimensions preserve original proportions and balance wordmarks/seals. */
-.research-page .support-roster .support-logos{column-gap:20px}
-.research-page .support-roster .support-logo{width:144px;flex-basis:144px;height:52px;padding:4px 0}
+.research-page .support-roster .support-logos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 24px;max-width:none;margin:0;padding:4px 0;border-top:1px solid var(--site-line);border-bottom:1px solid var(--site-line)}
+.research-page .support-roster .support-logos[aria-label^="Previous"]{grid-template-columns:repeat(6,minmax(0,1fr))}
+.research-page .support-roster .support-logo{width:auto;min-width:0;height:62px;margin:0;padding:10px 0}
+/* Bounds exclude source-canvas whitespace; each logo retains its original ratio. */
 .research-page .support-logo-art{position:relative;display:block;overflow:hidden;width:var(--art-width);max-width:100%;aspect-ratio:var(--art-ratio);flex-shrink:0}
 .research-page .support-roster .support-logo-art img{position:absolute;display:block;width:var(--source-width);max-width:none;height:auto;max-height:none;left:var(--source-left);top:var(--source-top);margin:0;object-fit:initial}
-@media(max-width:900px){.research-page .support-roster .support-logo{width:auto;min-width:0}}
-@media(max-width:600px){.research-page .support-roster .support-logo{height:48px}.research-page .support-logo-art{width:calc(var(--art-width)*.92)}}
+@media(max-width:900px){.research-page .support-roster .support-logos[aria-label^="Previous"]{grid-template-columns:repeat(3,minmax(0,1fr))}.research-page .support-logos[aria-label^="Previous"] .support-logo{border-bottom:1px solid #edf0f1}.research-page .support-logos[aria-label^="Previous"] .support-logo:nth-last-child(-n+3){border-bottom:0}}
+@media(max-width:600px){.research-page .support-roster .funding-title{font-size:26px!important}.research-page .support-roster .support-logos,.research-page .support-roster .support-logos[aria-label^="Previous"]{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:12px}.research-page .support-roster .support-logo{height:58px;border-bottom:1px solid #edf0f1!important}.research-page .support-roster .support-logo:nth-last-child(-n+2){border-bottom:0!important}.research-page .support-logo-art{width:calc(var(--art-width)*.92)}}
