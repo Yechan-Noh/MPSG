@@ -41,9 +41,11 @@
     return {x:500+groundX*perspective,y:145+(field.offsetY||0)+groundY*Math.sin(elevation)*perspective,depth,scale:.86*perspective};
   }
   function projectOrbit(field,a){return projectPoint(field,field.cx-500+field.rx*Math.cos(a),field.rx*Math.sin(a));}
-  // Cast shadows: logos stay on the orbit; a floor lies FLOOR_DROP below the orbit plane, lit by a low
-  // front light from the viewer's side (elevation LIGHT_ELEV, azimuth LIGHT_AZ) so each silhouette falls backward.
-  const FLOOR_DROP=50,LIGHT_ELEV=14*Math.PI/180,LIGHT_AZ=6*Math.PI/180,SHADOW_ALPHA=.6;
+  // Grounding shadows: logos stay on the orbit; a floor lies FLOOR_DROP below the orbit plane under a high,
+  // soft key light from the viewer's side (elevation LIGHT_ELEV, azimuth LIGHT_AZ). At this camera height each
+  // logo casts a short contact shadow (core) with a soft ambient halo; rear shadows nearly vanish.
+  const FLOOR_DROP=26,LIGHT_ELEV=65*Math.PI/180,LIGHT_AZ=0,SHADOW_ALPHA=.6,REAR_SHADOW_FADE=.7;
+  const CORE_BLUR='4 1.6',HALO_BLUR='16 4',HALO_ALPHA=.5;
   const lightRun=1/Math.tan(LIGHT_ELEV),lightX=Math.sin(LIGHT_AZ)*lightRun,lightY=-Math.cos(LIGHT_AZ)*lightRun;
   function project3(field,gx,gy,z){
     const depth=gy*Math.cos(elevation)+z*Math.sin(elevation),p=cameraDistance/(cameraDistance-depth);
@@ -72,7 +74,7 @@
     if(source.complete&&source.naturalWidth)done();else source.addEventListener('load',done,{once:true});
   }
   function buildFields(){
-    svg.setAttribute('viewBox','0 8 1000 256');
+    svg.setAttribute('viewBox','0 8 1000 232');
     const fields=[
       {name:'Publication venues',offsetY:-12,cx:500,cy:145,rx:410,ry:41,width:132,speed:1,venues:[
         'Science Advances','Physical Review E','Nano Letters','The Journal of Physical Chemistry B',
@@ -84,7 +86,7 @@
     const defs=node('defs'),gradient=node('linearGradient',{id:'orbital-depth',x1:0,y1:65,x2:0,y2:255,gradientUnits:'userSpaceOnUse'});
     gradient.append(node('stop',{offset:0,'stop-color':'#e0e9ed'}),node('stop',{offset:1,'stop-color':'#91a8b3'}));defs.append(gradient);
     // The floor fades out before the stage edges so cast shadows never end in a hard clip.
-    const fadeX=node('linearGradient',{id:'floor-fade-x',x1:0,y1:0,x2:1000,y2:0,gradientUnits:'userSpaceOnUse'}),fadeY=node('linearGradient',{id:'floor-fade-y',x1:0,y1:236,x2:0,y2:264,gradientUnits:'userSpaceOnUse'});
+    const fadeX=node('linearGradient',{id:'floor-fade-x',x1:0,y1:0,x2:1000,y2:0,gradientUnits:'userSpaceOnUse'}),fadeY=node('linearGradient',{id:'floor-fade-y',x1:0,y1:214,x2:0,y2:240,gradientUnits:'userSpaceOnUse'});
     [[0,0],[.12,1],[.88,1],[1,0]].forEach(([o,v])=>fadeX.append(node('stop',{offset:o,'stop-color':'#fff','stop-opacity':v})));
     [[0,1],[1,0]].forEach(([o,v])=>fadeY.append(node('stop',{offset:o,'stop-color':'#fff','stop-opacity':v})));
     const maskX=node('mask',{id:'floor-mask-x',maskUnits:'userSpaceOnUse',x:-200,y:0,width:1400,height:300}),maskY=node('mask',{id:'floor-mask-y',maskUnits:'userSpaceOnUse',x:-200,y:0,width:1400,height:300});
@@ -93,7 +95,11 @@
     fields.forEach((f,j)=>{
       const points=Array.from({length:181},(_,i)=>projectOrbit(f,i*Math.PI/90));
       const d=points.map((p,i)=>`${i?'L':'M'}${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' ')+' Z';
-      const floor=node('g',{'data-layer':'floor',mask:'url(#floor-mask-x)'}),shadows=node('g',{'data-layer':'floor-shadows',mask:'url(#floor-mask-y)'});floor.append(shadows);svg.append(floor);
+      const floor=node('g',{'data-layer':'floor',mask:'url(#floor-mask-x)'}),fadeBottom=node('g',{mask:'url(#floor-mask-y)'});
+      const coreBlur=node('filter',{id:'shadow-core-blur',x:'-20%',y:'-200%',width:'140%',height:'500%'}),haloBlur=node('filter',{id:'shadow-halo-blur',x:'-30%',y:'-400%',width:'160%',height:'900%'});
+      coreBlur.append(node('feGaussianBlur',{stdDeviation:CORE_BLUR}));haloBlur.append(node('feGaussianBlur',{stdDeviation:HALO_BLUR}));defs.append(coreBlur,haloBlur);
+      const shadows=node('g',{'data-layer':'floor-shadows',id:'shadow-core',filter:'url(#shadow-core-blur)'}),halo=node('g',{filter:'url(#shadow-halo-blur)',opacity:HALO_ALPHA});
+      halo.append(node('use',{href:'#shadow-core'}));fadeBottom.append(halo,shadows);floor.append(fadeBottom);svg.append(floor);
       svg.append(node('path',{d,fill:'none',stroke:'url(#orbital-depth)','stroke-width':1.15,'data-orbit':f.name}));
       f.venues.forEach((venue,i)=>{
         const source=original.find(s=>s.alt===venue);if(!source)return;
@@ -125,7 +131,7 @@
         const o=cast(left,top),u=cast(right,top),v=cast(left,bottom);
         if(shadow.getAttribute('href')!==sil.href){shadow.setAttribute('href',sil.href);shadow.setAttribute('visibility','visible')}
         shadow.setAttribute('transform',`matrix(${(u.x-o.x).toFixed(3)} ${(u.y-o.y).toFixed(3)} ${(v.x-o.x).toFixed(3)} ${(v.y-o.y).toFixed(3)} ${o.x.toFixed(3)} ${o.y.toFixed(3)})`);
-        shadow.setAttribute('opacity',(SHADOW_ALPHA*(1-.35*rear)).toFixed(3));
+        shadow.setAttribute('opacity',(SHADOW_ALPHA*(1-REAR_SHADOW_FADE*rear)).toFixed(3));
       }
       g.style.opacity=String(1-.28*rear);g.style.filter=rear?`blur(${(.65*rear).toFixed(3)}px)`:'none';g.style.mixBlendMode='multiply';ordered.push({g,depth});
     });
