@@ -104,10 +104,10 @@
 .home-refresh h1,.home-refresh h2,.home-refresh h3{border:0;padding:0;color:inherit}.home-refresh .hero-copy h1{color:#f7f8f5}.home-refresh .home-lower{padding-bottom:48px}.home-refresh a{box-shadow:none}
 
 /* Compact hero spacing; particle lettering enlarged in animation script. */
-.home-refresh .hero-grid{min-height:290px;padding-top:24px;padding-bottom:24px}
-@media(min-width:1600px){.home-refresh .hero-grid{min-height:304px}}
-@media(max-width:1100px){.home-refresh .hero-grid{min-height:276px}}
-@media(max-width:760px){.home-refresh .hero-grid{min-height:0;padding-top:22px;padding-bottom:14px}}
+.home-refresh .hero-grid{min-height:250px;padding-top:12px;padding-bottom:12px}
+@media(min-width:1600px){.home-refresh .hero-grid{min-height:264px}}
+@media(max-width:1100px){.home-refresh .hero-grid{min-height:236px}}
+@media(max-width:760px){.home-refresh .hero-grid{min-height:0;padding-top:14px;padding-bottom:8px}}
 /* Slightly larger research illustrations, preserving their proportions. */
 .home-refresh .topic-image{height:204px;padding:0 0 14px}
 @media(max-width:760px){.home-refresh .topic-preview{grid-template-columns:140px minmax(0,1fr)}.home-refresh .topic-image{height:140px;padding:6px 0}}
