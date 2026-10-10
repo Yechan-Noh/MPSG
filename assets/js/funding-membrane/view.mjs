@@ -1,8 +1,8 @@
-import {SPECIES,SETTINGS,GEOMETRY} from './core.mjs?v=pulse864-20261010';
-import {createLogoArtwork} from './logos.mjs?v=pulse864-20261010';
+import {SPECIES,SETTINGS,GEOMETRY} from './core.mjs?v=fast-contacts-20261010';
+import {createLogoArtwork} from './logos.mjs?v=fast-contacts-20261010';
 const artwork=await createLogoArtwork();
-const canvas=document.querySelector('#scene'),ctx=canvas.getContext('2d'),worker=new Worker(new URL('./worker.mjs?v=pulse864-20261010',import.meta.url),{type:'module'});
-let state=null,paused=false,pending=false,timer=0,dpr=1,w=1000,h=238,visible=true;
+const canvas=document.querySelector('#scene'),ctx=canvas.getContext('2d'),worker=new Worker(new URL('./worker.mjs?v=fast-contacts-20261010',import.meta.url),{type:'module'});
+let state=null,paused=false,pending=false,timer=0,requestedAt=0,dpr=1,w=1000,h=238,visible=true;
 let membraneColor='#182d38';
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');paused=reduced.matches;
 const active=()=>!paused&&visible&&!document.hidden;
@@ -61,7 +61,7 @@ function draw(){
 
 
 }
-function schedule(){clearTimeout(timer);if(active()&&!pending)timer=setTimeout(()=>{pending=true;worker.postMessage({type:'step'});},33);}
+function schedule(){clearTimeout(timer);if(active()&&!pending)timer=setTimeout(()=>{pending=true;requestedAt=performance.now();worker.postMessage({type:'step'});},Math.max(0,1000/30-(performance.now()-requestedAt)));}
 worker.onmessage=({data})=>{pending=false;if(data.error){paused=true;canvas.dataset.error=data.error;pause.textContent='Animation unavailable';return;}state=data;draw();schedule();};
 const pause=document.querySelector('#pause');function sync(){pause.textContent=paused?'Play animation':'Pause animation';pause.setAttribute('aria-pressed',String(paused));schedule();}
 pause.onclick=()=>{paused=!paused;sync();};

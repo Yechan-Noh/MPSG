@@ -1,4 +1,5 @@
-import {insideRoundedWall, hitRoundedWall} from './rounded-walls.mjs?v=pulse864-20261010';
+import {ContactGrid} from './contact-grid.mjs?v=fast-contacts-20261010';
+import {insideRoundedWall, hitRoundedWall} from './rounded-walls.mjs?v=fast-contacts-20261010';
 // Reduced-unit visual model. Explicit monovalent ions; implicit dielectric solvent.
 export const SPECIES=[{label:'K⁺',charge:1,color:'#9467ce'},{label:'Na⁺',charge:1,color:'#e3b72e'},{label:'Cl⁻',charge:-1,color:'#429d70'}];
 export const GEOMETRY={width:44.8,height:41.58336,center:20.79168,viewHeight:10.6624,viewY:15.46048,radius:.24,poreWidth:.7744,edgeRadius:.18,poreCount:24,membraneHalf:.315,maskWidth:1000,maskHeight:238};
@@ -9,7 +10,7 @@ export class IonMembrane {
   this.pores=Array.from({length:GEOMETRY.poreCount},(_,i)=>({x:(i+.5)*this.width/GEOMETRY.poreCount,width:GEOMETRY.poreWidth}));this.walls=[];let left=-1;
   for(const p of this.pores){this.walls.push([left,p.x-p.width/2,this.center-GEOMETRY.membraneHalf,this.center+GEOMETRY.membraneHalf]);left=p.x+p.width/2;}this.walls.push([left,this.width+1,this.center-GEOMETRY.membraneHalf,this.center+GEOMETRY.membraneHalf]);
   this.n=counts.reduce((a,b)=>a+b,0);for(const key of ['x','y','vx','vy','fx','fy','oldX','oldY'])this[key]=new Float64Array(this.n);
-  this.type=new Uint8Array(this.n);
+  this.type=new Uint8Array(this.n);this.contactGrid=new ContactGrid(this.width,this.height,2*this.radius,this.n);
   // Reserve occupied pores before placing free ions, so no K/Cl blocks Na initialization.
   const preloadNa=preload&&membrane;
   if(preloadNa&&counts[1]>this.pores.length)throw Error('More preloaded Na ions than pores');
@@ -35,8 +36,9 @@ export class IonMembrane {
  random(){let t=this.seed+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296;}
  normal(){return Math.sqrt(-2*Math.log(Math.max(1e-12,this.random())))*Math.cos(2*Math.PI*this.random());}
  wrap(x,L){return (x%L+L)%L;}
- delta(x,L){return x-L*Math.round(x/L);}
- inside(x,y){return this.membrane&&this.walls.some(wall=>insideRoundedWall(x,y,wall,GEOMETRY.edgeRadius,this.radius));}
+ // Wrapped coordinates guarantee separation within one box length.
+ delta(x,L){const half=L*.5;return x>=half?x-L:x< -half?x+L:x;}
+ inside(x,y){return this.membrane&&Math.abs(y-this.center)<GEOMETRY.membraneHalf+this.radius&&this.walls.some(wall=>insideRoundedWall(x,y,wall,GEOMETRY.edgeRadius,this.radius));}
  // Artwork occupies only the central visible window, not the hidden reservoirs.
  logoHit(x,y){if(!this.obstacleMask)return false;const localY=this.wrap(y,this.height)-GEOMETRY.viewY;if(localY<0||localY>=GEOMETRY.viewHeight)return false;return !!this.obstacleMask[Math.floor(localY/GEOMETRY.viewHeight*GEOMETRY.maskHeight)*GEOMETRY.maskWidth+Math.floor(this.wrap(x,this.width)/this.width*GEOMETRY.maskWidth)];}
  pulse(){if(!this.pulsed)return this.field;if(this.time<SETTINGS.pulseDelay)return 0;const phase=(this.time-SETTINGS.pulseDelay)%SETTINGS.pulsePeriod;return phase<SETTINGS.pulseDuration?this.pulsePeak*Math.min(1,phase/.12,(SETTINGS.pulseDuration-phase)/.12):0;}
@@ -77,7 +79,7 @@ export class IonMembrane {
   let remaining=dt;
   for(let bounce=0;bounce<8&&remaining>1e-10;bounce++){
    const x=this.x[i],y=this.y[i],dx=this.vx[i]*remaining,dy=this.vy[i]*remaining;let hit=1,normal=null;
-   if(this.membrane)for(const wall of this.walls){
+   if(this.membrane&&Math.max(y,y+dy)>=this.center-GEOMETRY.membraneHalf-this.radius&&Math.min(y,y+dy)<=this.center+GEOMETRY.membraneHalf+this.radius)for(const wall of this.walls){
     const collision=hitRoundedWall(x,y,dx,dy,wall,GEOMETRY.edgeRadius,this.radius);
     if(collision&&collision.t<hit){hit=collision.t;normal=collision;}
    }
@@ -97,17 +99,40 @@ export class IonMembrane {
  }
  contacts(){
   if(!this.interactions)return;
-  const diameter=2*this.radius;
-  for(let pass=0;pass<5;pass++){let overlap=false;for(let i=0;i<this.n;i++)for(let j=i+1;j<this.n;j++){
-   const dx=this.delta(this.x[i]-this.x[j],this.width),dy=this.delta(this.y[i]-this.y[j],this.height);if(Math.abs(dx)>=diameter||Math.abs(dy)>=diameter)continue;const r=Math.hypot(dx,dy);if(r>=diameter||r<1e-10)continue;overlap=true;
-   const nx=dx/r,ny=dy/r,gap=diameter-r+1e-8;
-   const valid=(x,y)=>!this.inside(this.wrap(x,this.width),this.wrap(y,this.height))&&!this.logoHit(x,y);
-   let ai=.5,aj=.5;if(!valid(this.x[i]+nx*gap/2,this.y[i]+ny*gap/2)){ai=0;aj=1;}else if(!valid(this.x[j]-nx*gap/2,this.y[j]-ny*gap/2)){ai=1;aj=0;}
-   if(valid(this.x[i]+nx*gap*ai,this.y[i]+ny*gap*ai)&&valid(this.x[j]-nx*gap*aj,this.y[j]-ny*gap*aj)){
-    this.x[i]=this.wrap(this.x[i]+nx*gap*ai,this.width);this.y[i]=this.wrap(this.y[i]+ny*gap*ai,this.height);this.x[j]=this.wrap(this.x[j]-nx*gap*aj,this.width);this.y[j]=this.wrap(this.y[j]-ny*gap*aj,this.height);
-   }else{this.x[i]=this.oldX[i];this.y[i]=this.oldY[i];this.x[j]=this.oldX[j];this.y[j]=this.oldY[j];}
-   const v=(this.vx[i]-this.vx[j])*nx+(this.vy[i]-this.vy[j])*ny;if(v<0){this.vx[i]-=v*nx;this.vy[i]-=v*ny;this.vx[j]+=v*nx;this.vy[j]+=v*ny;}
-  }if(!overlap)break;}
+  const diameter=2*this.radius,grid=this.contactGrid;
+  grid.rebuild(this.x,this.y);
+  for(let pass=0;pass<5;pass++){
+   let overlap=false;
+   for(let i=0;i<this.n;i++){
+    let after=i;
+    while(after<this.n-1){
+     const count=grid.collect(i,after);let moved=false;
+     for(let index=0;index<count;index++){
+      const j=grid.candidates[index];after=j;
+      const dx=this.delta(this.x[i]-this.x[j],this.width),dy=this.delta(this.y[i]-this.y[j],this.height);
+      if(Math.abs(dx)>=diameter||Math.abs(dy)>=diameter)continue;
+      const r=Math.hypot(dx,dy);if(r>=diameter||r<1e-10)continue;overlap=true;
+      const nx=dx/r,ny=dy/r,gap=diameter-r+1e-8;
+      const valid=(x,y)=>!this.inside(this.wrap(x,this.width),this.wrap(y,this.height))&&!this.logoHit(x,y);
+      let ai=.5,aj=.5;
+      if(!valid(this.x[i]+nx*gap/2,this.y[i]+ny*gap/2)){ai=0;aj=1;}
+      else if(!valid(this.x[j]-nx*gap/2,this.y[j]-ny*gap/2)){ai=1;aj=0;}
+      if(valid(this.x[i]+nx*gap*ai,this.y[i]+ny*gap*ai)&&valid(this.x[j]-nx*gap*aj,this.y[j]-ny*gap*aj)){
+       this.x[i]=this.wrap(this.x[i]+nx*gap*ai,this.width);this.y[i]=this.wrap(this.y[i]+ny*gap*ai,this.height);
+       this.x[j]=this.wrap(this.x[j]-nx*gap*aj,this.width);this.y[j]=this.wrap(this.y[j]-ny*gap*aj,this.height);
+      }else{this.x[i]=this.oldX[i];this.y[i]=this.oldY[i];this.x[j]=this.oldX[j];this.y[j]=this.oldY[j];}
+      const v=(this.vx[i]-this.vx[j])*nx+(this.vy[i]-this.vy[j])*ny;
+      if(v<0){this.vx[i]-=v*nx;this.vy[i]-=v*ny;this.vx[j]+=v*nx;this.vy[j]+=v*ny;}
+      grid.update(i,this.x[i],this.y[i]);grid.update(j,this.x[j],this.y[j]);
+      // A collision can move i into another cell. Refresh only unprocessed j values,
+      // exactly as the old ascending all-pairs loop would encounter them.
+      moved=true;break;
+     }
+     if(!moved)break;
+    }
+   }
+   if(!overlap)break;
+  }
  }
  trapped(i){return this.type[i]===1&&Math.abs(this.y[i]-this.center)<.35&&this.pores.some(p=>Math.abs(this.x[i]-p.x)<.09);}
  step(count=1){
@@ -122,5 +147,5 @@ export class IonMembrane {
    }
   }
  }
- state(){return {initialTrapped:this.initialTrapped,edgeRadius:GEOMETRY.edgeRadius,width:this.width,height:this.height,viewHeight:GEOMETRY.viewHeight,viewY:GEOMETRY.viewY,center:this.center,membraneHalf:GEOMETRY.membraneHalf,radius:this.radius,x:Array.from(this.x),y:Array.from(this.y),type:Array.from(this.type),pores:this.pores,time:this.time,field:this.pulse()};}
+ state(){return {initialTrapped:this.initialTrapped,edgeRadius:GEOMETRY.edgeRadius,width:this.width,height:this.height,viewHeight:GEOMETRY.viewHeight,viewY:GEOMETRY.viewY,center:this.center,membraneHalf:GEOMETRY.membraneHalf,radius:this.radius,x:this.x.slice(),y:this.y.slice(),type:Array.from(this.type),pores:this.pores,time:this.time,field:this.pulse()};}
 }
