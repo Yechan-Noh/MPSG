@@ -4,31 +4,25 @@ title: "Research"
 permalink: /research/
 author_profile: false
 ---
+<link rel="stylesheet" href="{{ "/assets/css/funding-membrane.css" | relative_url }}?v={{ site.time | date: "%s" }}">
 <div class="mt-page research-page">
-<section class="funding support-roster" aria-labelledby="support-title">
-  <h2 class="funding-title" id="support-title">Funding &amp; Support</h2>
-  <div class="support-group"><h3>Current</h3><ul class="support-logos" aria-label="Current funding and support">
-      <li class="support-logo"><span class="support-logo-art" style="--art-width:136px;--art-ratio:6.50568;--source-width:100.0000%;--source-left:0.0000%;--source-top:0.0000%"><img src="{{ '/assets/img/funding/access-logo.svg' | relative_url }}" alt="ACCESS"></span></li>
-      <li class="support-logo"><span class="support-logo-art" style="--art-width:128px;--art-ratio:4.27132;--source-width:100.0000%;--source-left:0.0000%;--source-top:0.0000%"><img src="{{ '/assets/img/funding/UND-logo.png' | relative_url }}" alt="University of Notre Dame"></span></li>
-      <li class="support-logo"><span class="support-logo-art" style="--art-width:110px;--art-ratio:2.88864;--source-width:123.1303%;--source-left:-11.5652%;--source-top:-0.6682%"><img src="{{ '/assets/img/funding/NCSA.png' | relative_url }}" alt="NCSA"></span></li>
-      <li class="support-logo"><span class="support-logo-art" style="--art-width:110px;--art-ratio:2.83036;--source-width:111.6719%;--source-left:-5.9937%;--source-top:-25.0000%"><img src="{{ '/assets/img/funding/TACC.jpg' | relative_url }}" alt="Texas Advanced Computing Center"></span></li>
-  </ul></div>
-  <div class="support-group"><h3>Previous</h3><ul class="support-logos" aria-label="Previous funding and support">
-      <li class="support-logo"><span class="support-logo-art" style="--art-width:83px;--art-ratio:1.97727;--source-width:102.3488%;--source-left:-1.1994%;--source-top:-6.9170%"><img src="{{ '/assets/img/funding/nsf-logo.png' | relative_url }}" alt="National Science Foundation"></span></li>
-      <li class="support-logo"><span class="support-logo-art" style="--art-width:124px;--art-ratio:3.78295;--source-width:102.4590%;--source-left:-1.2295%;--source-top:-58.9147%"><img src="{{ '/assets/img/funding/UIUC.png' | relative_url }}" alt="University of Illinois Urbana-Champaign"></span></li>
-      <li class="support-logo"><span class="support-logo-art" style="--art-width:124px;--art-ratio:4.00000;--source-width:101.3514%;--source-left:0.0000%;--source-top:-39.1892%"><img src="{{ '/assets/img/funding/UC_Berkeley.webp' | relative_url }}" alt="University of California, Berkeley"></span></li>
-      <li class="support-logo"><span class="support-logo-art" style="--art-width:126px;--art-ratio:4.23154;--source-width:101.3481%;--source-left:-0.7930%;--source-top:-3.6913%"><img src="{{ '/assets/img/funding/Kwanjeong.png' | relative_url }}" alt="Kwanjeong Educational Foundation"></span></li>
-      <li class="support-logo"><span class="support-logo-art" style="--art-width:144px;--art-ratio:7.16149;--source-width:100.2602%;--source-left:-0.1735%;--source-top:-1.2422%"><img src="{{ '/assets/img/funding/nist-logo.png' | relative_url }}" alt="NIST"></span></li>
-      <li class="support-logo"><span class="support-logo-art" style="--art-width:140px;--art-ratio:4.94845;--source-width:100.0000%;--source-left:0.0000%;--source-top:0.0000%"><img src="{{ '/assets/img/funding/CU_Coulder.png' | relative_url }}" alt="University of Colorado Boulder"></span></li>
-  </ul></div>
+<section class="funding-membrane" aria-labelledby="support-title">
+  <h2 id="support-title">Funding <span>&amp;</span> Support</h2>
+  <div class="funding-membrane-stage">
+    <div class="funding-row-label funding-row-label--current">Current</div>
+    <div class="funding-row-label funding-row-label--previous">Previous</div>
+    <canvas id="scene" role="img" aria-label="Current support: ACCESS, University of Notre Dame, NCSA, and Texas Advanced Computing Center. Previous support: National Science Foundation, University of Illinois Urbana-Champaign, University of California Berkeley, Kwanjeong Educational Foundation, NIST, and University of Colorado Boulder. Animated ions travel through a sixteen-pore membrane among the logos.">Current: ACCESS, Notre Dame, NCSA, TACC. Previous: NSF, Illinois, Berkeley, Kwanjeong, NIST, Colorado Boulder.</canvas>
+  </div>
+  <div class="funding-membrane-controls"><button id="pause" type="button" aria-pressed="false">Pause animation</button></div>
 </section>
+<script type="module" src="{{ "/assets/js/funding-membrane/view.mjs" | relative_url }}?v={{ site.time | date: "%s" }}"></script>
 <div class="research-topic-grid">
 {% for theme in site.data.research_themes %}
 <section class="research-panel research-topic-card" id="{{ theme.id }}" aria-labelledby="{{ theme.id }}-title">
   <div class="research-panel-heading"><h2 id="{{ theme.id }}-title">{{ theme.title }}</h2></div>
   <div class="research-topic-content">
   <div class="research-topic-copy"><p>{{ theme.background_html }}</p><p>{{ theme.intro }}</p></div>
-  <figure><a href="{{ theme.image | relative_url }}" aria-label="View full-size figure: {{ theme.title }}"><img src="{{ theme.image | relative_url }}" alt="{{ theme.caption }}" loading="lazy"></a><figcaption>{{ theme.caption }}</figcaption></figure>
+  <figure><a href="{{ theme.image | relative_url }}" aria-label="View full-size figure: {{ theme.title }}"><img src="{{ theme.image | relative_url }}" alt="{{ theme.alt | default: theme.caption | escape }}" loading="lazy"></a><figcaption>{{ theme.caption }}</figcaption></figure>
   </div>
 </section>
 {% endfor %}

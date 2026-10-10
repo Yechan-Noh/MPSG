@@ -1,0 +1,14 @@
+/* Compact entry below navigation, scoped to this research page. */
+.mt-page.research-page{padding-top:10px}
+/* Funding labels stay in a separate rail, aligned to the logo row centers. */
+.funding-membrane{margin:0 0 36px;padding:0;background:#fff;color:#19303b;border-top:0;border-bottom:1px solid #dce4e8}
+.funding-membrane #support-title{margin:0 0 8px;text-align:center;font-size:clamp(23px,2.1vw,28px);font-weight:600;letter-spacing:-.8px;line-height:1.2;border:0;padding:0;color:#19303b}
+.funding-membrane #support-title span{font-family:Georgia,serif;font-style:italic;font-weight:400}
+.funding-membrane-stage{position:relative;padding-left:100px;isolation:isolate}
+.funding-membrane #scene{display:block;width:100%;aspect-ratio:100/23.8;background:white}
+.funding-row-label{position:absolute;left:0;transform:translateY(-50%);font-size:20px;font-weight:600;letter-spacing:-.25px;line-height:1.2;color:#526b77}
+.funding-row-label--current{top:23.5294118%}.funding-row-label--previous{top:76.4705882%}
+.funding-membrane-controls{display:flex;justify-content:flex-end;padding:4px 0 10px}
+.funding-membrane-controls button{border:0;background:transparent;color:#617580;padding:6px 8px;font:inherit;font-size:11px;cursor:pointer;border-radius:3px}
+.funding-membrane-controls button:hover{background:#edf3f5}.funding-membrane-controls button:focus-visible{outline:2px solid #526b77;outline-offset:2px}
+@media(max-width:650px){.funding-membrane{padding-top:0;margin-bottom:24px}.funding-membrane-stage{padding-left:61px}.funding-row-label{font-size:13px;letter-spacing:-.1px}.funding-membrane #support-title{margin-bottom:8px}.funding-membrane-controls button{font-size:10px}}
