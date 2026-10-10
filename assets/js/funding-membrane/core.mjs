@@ -1,31 +1,44 @@
+import {insideRoundedWall, hitRoundedWall} from './rounded-walls.mjs?v=lean-reservoir-20261010';
 // Reduced-unit visual model. Explicit monovalent ions; implicit dielectric solvent.
 export const SPECIES=[{label:'K⁺',charge:1,color:'#9467ce'},{label:'Na⁺',charge:1,color:'#e3b72e'},{label:'Cl⁻',charge:-1,color:'#429d70'}];
-export const GEOMETRY={width:44.8,height:10.6624,center:5.3312,radius:.24,poreWidth:.64,poreCount:16,membraneHalf:.315,maskWidth:1000,maskHeight:238};
-export const SETTINGS={dt:.006,friction:1,temperature:1,pulsePeak:3,pulseDelay:2,pulseDuration:1.5,pulsePeriod:12,naDepth:5.0,kFriction:1,kCoreRepulsion:3.0,kCoreShift:.18,kCaptureDepth:.6,kCaptureX:1.1,kCaptureY:1.8,poreCharge:-1.5,coulomb:.5};
+export const GEOMETRY={width:44.8,height:31.9872,center:15.9936,viewHeight:10.6624,viewY:10.6624,radius:.24,poreWidth:.7744,edgeRadius:.18,poreCount:24,membraneHalf:.315,maskWidth:1000,maskHeight:238};
+export const SETTINGS={dt:.006,friction:6,temperature:1,pulsePeak:18,pulseDelay:2,pulseDuration:1.5,pulsePeriod:12,naDepth:5.0,kFriction:6,kCoreRepulsion:3.0,kCoreShift:.18,kCaptureDepth:.6,kCaptureX:1.1,kCaptureY:1.8,poreCharge:-1.5,coulomb:.5};
 export class IonMembrane {
- constructor({seed=74321,counts=[40,20,60],temperature=SETTINGS.temperature,friction=SETTINGS.friction,kFriction=SETTINGS.kFriction,kCoreRepulsion=SETTINGS.kCoreRepulsion,kCaptureDepth=SETTINGS.kCaptureDepth,field=0,interactions=true,membrane=true,pulsed=true,poreCharge=SETTINGS.poreCharge,pulsePeak=SETTINGS.pulsePeak,naDepth=SETTINGS.naDepth,preload=true,obstacleMask=null}={}){
-  Object.assign(this,{temperature,friction,kFriction,kCoreRepulsion,kCaptureDepth,field,interactions,membrane,pulsed,poreCharge,pulsePeak,naDepth,obstacleMask});this.seed=seed>>>0;this.width=GEOMETRY.width;this.height=GEOMETRY.height;this.center=GEOMETRY.center;this.radius=GEOMETRY.radius;this.dt=SETTINGS.dt;this.time=0;this.logoCollisions=0;this.wraps=0;this.pulseTrials=0;this.pulseEscapes=0;this.pulseIndex=-1;
-  this.pores=Array.from({length:GEOMETRY.poreCount},(_,i)=>({x:(i+.5)*this.width/GEOMETRY.poreCount,width:GEOMETRY.poreWidth}));this.walls=[];let left=0;
-  for(const p of this.pores){this.walls.push([left,p.x-p.width/2,this.center-GEOMETRY.membraneHalf,this.center+GEOMETRY.membraneHalf]);left=p.x+p.width/2;}this.walls.push([left,this.width,this.center-GEOMETRY.membraneHalf,this.center+GEOMETRY.membraneHalf]);
+ constructor({seed=74321,counts=[60,24,84],temperature=SETTINGS.temperature,friction=SETTINGS.friction,kFriction=SETTINGS.kFriction,kCoreRepulsion=SETTINGS.kCoreRepulsion,kCaptureDepth=SETTINGS.kCaptureDepth,field=0,interactions=true,membrane=true,pulsed=true,poreCharge=SETTINGS.poreCharge,pulsePeak=SETTINGS.pulsePeak,naDepth=SETTINGS.naDepth,preload=true,obstacleMask=null}={}){
+  Object.assign(this,{temperature,friction,kFriction,kCoreRepulsion,kCaptureDepth,field,interactions,membrane,pulsed,poreCharge,pulsePeak,naDepth,obstacleMask});this.seed=seed>>>0;this.width=GEOMETRY.width;this.height=GEOMETRY.height;this.center=GEOMETRY.center;this.radius=GEOMETRY.radius;this.dt=SETTINGS.dt;this.time=0;
+  this.pores=Array.from({length:GEOMETRY.poreCount},(_,i)=>({x:(i+.5)*this.width/GEOMETRY.poreCount,width:GEOMETRY.poreWidth}));this.walls=[];let left=-1;
+  for(const p of this.pores){this.walls.push([left,p.x-p.width/2,this.center-GEOMETRY.membraneHalf,this.center+GEOMETRY.membraneHalf]);left=p.x+p.width/2;}this.walls.push([left,this.width+1,this.center-GEOMETRY.membraneHalf,this.center+GEOMETRY.membraneHalf]);
   this.n=counts.reduce((a,b)=>a+b,0);for(const key of ['x','y','vx','vy','fx','fy','oldX','oldY'])this[key]=new Float64Array(this.n);
-  this.type=new Uint8Array(this.n);this.side=new Int8Array(this.n);this.eligible=new Uint8Array(this.n);this.crossings=new Uint32Array(3);
-  let i=0;counts.forEach((count,type)=>{for(let j=0;j<count;j++,i++){
-   this.type[i]=type;let valid=false;
+  this.type=new Uint8Array(this.n);
+  // Reserve occupied pores before placing free ions, so no K/Cl blocks Na initialization.
+  const preloadNa=preload&&membrane;
+  if(preloadNa&&counts[1]>this.pores.length)throw Error('More preloaded Na ions than pores');
+  let offset=0;counts.forEach((count,type)=>{this.type.fill(type,offset,offset+count);offset+=count;});
+  const order=Array.from({length:this.n},(_,i)=>i);
+  if(preloadNa)order.sort((a,b)=>(this.type[a]===1?0:1)-(this.type[b]===1?0:1));
+  const placed=[];
+  for(const i of order){
+   const type=this.type[i];let valid=false;
    for(let tries=0;tries<10000&&!valid;tries++){
-    this.x[i]=1+this.random()*(this.width-2);this.y[i]=type===2?1+this.random()*(this.height-2):1+this.random()*(this.center-3);
-    if(preload&&membrane&&type===1&&j<this.pores.length){this.x[i]=this.pores[j].x;this.y[i]=this.center;}
+    if(preloadNa&&type===1){this.x[i]=this.pores[i-counts[0]].x;this.y[i]=this.center;}
+    else{this.x[i]=this.random()*this.width;this.y[i]=this.random()*this.height;}
     valid=!this.inside(this.x[i],this.y[i])&&!this.logoHit(this.x[i],this.y[i]);
-    for(let k=0;k<i&&valid;k++)if(Math.hypot(this.x[k]-this.x[i],this.y[k]-this.y[i])<.8)valid=false;
+    for(const k of placed)if(valid&&Math.hypot(this.delta(this.x[k]-this.x[i],this.width),this.delta(this.y[k]-this.y[i],this.height))<.8)valid=false;
    }
-   if(!valid)throw Error('Unable to initialize ions');this.vx[i]=this.normal()*Math.sqrt(temperature);this.vy[i]=this.normal()*Math.sqrt(temperature);this.side[i]=this.y[i]<this.center?-1:1;
-  }});this.forces();
+   if(!valid)throw Error('Unable to initialize ions');
+   this.vx[i]=this.normal()*Math.sqrt(temperature);this.vy[i]=this.normal()*Math.sqrt(temperature);
+   placed.push(i);
+  }
+  this.initialTrapped=Array.from(this.type).filter((_,i)=>this.trapped(i)).length;
+  this.forces();
  }
  random(){let t=this.seed+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296;}
  normal(){return Math.sqrt(-2*Math.log(Math.max(1e-12,this.random())))*Math.cos(2*Math.PI*this.random());}
  wrap(x,L){return (x%L+L)%L;}
  delta(x,L){return x-L*Math.round(x/L);}
- inside(x,y){return this.membrane&&this.walls.some(([l,r,t,b])=>x>l-this.radius&&x<r+this.radius&&y>t-this.radius&&y<b+this.radius);}
- logoHit(x,y){if(!this.obstacleMask)return false;return !!this.obstacleMask[Math.floor(this.wrap(y,this.height)/this.height*GEOMETRY.maskHeight)*GEOMETRY.maskWidth+Math.floor(this.wrap(x,this.width)/this.width*GEOMETRY.maskWidth)];}
+ inside(x,y){return this.membrane&&this.walls.some(wall=>insideRoundedWall(x,y,wall,GEOMETRY.edgeRadius,this.radius));}
+ // Artwork occupies only the central visible window, not the hidden reservoirs.
+ logoHit(x,y){if(!this.obstacleMask)return false;const localY=this.wrap(y,this.height)-GEOMETRY.viewY;if(localY<0||localY>=GEOMETRY.viewHeight)return false;return !!this.obstacleMask[Math.floor(localY/GEOMETRY.viewHeight*GEOMETRY.maskHeight)*GEOMETRY.maskWidth+Math.floor(this.wrap(x,this.width)/this.width*GEOMETRY.maskWidth)];}
  pulse(){if(!this.pulsed)return this.field;if(this.time<SETTINGS.pulseDelay)return 0;const phase=(this.time-SETTINGS.pulseDelay)%SETTINGS.pulsePeriod;return phase<SETTINGS.pulseDuration?this.pulsePeak*Math.min(1,phase/.12,(SETTINGS.pulseDuration-phase)/.12):0;}
  forces(){
   const E=this.pulse();this.fx.fill(0);for(let i=0;i<this.n;i++){
@@ -62,14 +75,10 @@ export class IonMembrane {
  drift(i,dt){
   let remaining=dt;
   for(let bounce=0;bounce<8&&remaining>1e-10;bounce++){
-   const x=this.x[i],y=this.y[i],dx=this.vx[i]*remaining,dy=this.vy[i]*remaining;let hit=1,axis=0;
-   if(this.membrane)for(const [l,r,t,b] of this.walls){
-    let entry=-Infinity,leave=Infinity,a=0,ok=true;
-    for(const [pos,d,lo,hi,dir] of [[x,dx,l-this.radius,r+this.radius,1],[y,dy,t-this.radius,b+this.radius,2]]){
-     if(Math.abs(d)<1e-14){if(pos<=lo||pos>=hi){ok=false;break;}}
-     else{let near=(lo-pos)/d,far=(hi-pos)/d;if(near>far)[near,far]=[far,near];if(near>entry){entry=near;a=dir;}leave=Math.min(leave,far);}
-    }
-    if(ok&&entry>=-1e-10&&entry<leave&&entry<hit&&leave>0){hit=Math.max(0,entry);axis=a;}
+   const x=this.x[i],y=this.y[i],dx=this.vx[i]*remaining,dy=this.vy[i]*remaining;let hit=1,normal=null;
+   if(this.membrane)for(const wall of this.walls){
+    const collision=hitRoundedWall(x,y,dx,dy,wall,GEOMETRY.edgeRadius,this.radius);
+    if(collision&&collision.t<hit){hit=collision.t;normal=collision;}
    }
    let nx=x+dx*hit,ny=y+dy*hit;
    // The raster mask is expanded by the ion radius; small swept subsegments prevent tunneling.
@@ -78,11 +87,10 @@ export class IonMembrane {
     const xx=x+(nx-x)*k/pieces,yy=y+(ny-y)*k/pieces;
     const hitX=this.logoHit(xx,y),hitY=this.logoHit(x,yy);
     if(hitX||!hitY)this.vx[i]*=-1;if(hitY||!hitX)this.vy[i]*=-1;
-    nx=x;ny=y;logo=true;this.logoCollisions++;remaining=0;break;
+    nx=x;ny=y;logo=true;remaining=0;break;
    }
    this.x[i]=nx;this.y[i]=ny;
-   if(!logo){remaining*=1-hit;if(axis===1){this.vx[i]*=-1;this.x[i]+=Math.sign(this.vx[i])*1e-8;}else if(axis===2){this.vy[i]*=-1;this.y[i]+=Math.sign(this.vy[i])*1e-8;}else remaining=0;}
-   if(this.y[i]<0||this.y[i]>=this.height){this.wraps++;this.side[i]=this.wrap(this.y[i],this.height)<this.center?-1:1;this.eligible[i]=0;}
+   if(!logo){remaining*=1-hit;if(normal){const vn=this.vx[i]*normal.nx+this.vy[i]*normal.ny;this.vx[i]-=2*vn*normal.nx;this.vy[i]-=2*vn*normal.ny;this.x[i]+=normal.nx*1e-8;this.y[i]+=normal.ny*1e-8;}else remaining=0;}
    this.x[i]=this.wrap(this.x[i],this.width);this.y[i]=this.wrap(this.y[i],this.height);
   }
  }
@@ -104,18 +112,14 @@ export class IonMembrane {
  step(count=1){
   const h=this.dt/2,c=Math.exp(-this.friction*this.dt),noise=Math.sqrt(this.temperature*(1-c*c)),ck=Math.exp(-this.kFriction*this.dt),nk=Math.sqrt(this.temperature*(1-ck*ck));
   for(let k=0;k<count;k++){
-   const pulseIndex=this.time<SETTINGS.pulseDelay?-1:Math.floor((this.time-SETTINGS.pulseDelay)/SETTINGS.pulsePeriod);
-   if(this.pulsed&&pulseIndex!==this.pulseIndex){this.pulseIndex=pulseIndex;for(let i=0;i<this.n;i++){this.eligible[i]=this.trapped(i)?1:0;this.pulseTrials+=this.eligible[i];}}
    this.oldX.set(this.x);this.oldY.set(this.y);
    for(let i=0;i<this.n;i++){this.vx[i]+=h*this.fx[i];this.vy[i]+=h*this.fy[i];this.drift(i,h);}this.contacts();
    this.oldX.set(this.x);this.oldY.set(this.y);
    for(let i=0;i<this.n;i++){const decay=this.type[i]===0?ck:c,thermal=this.type[i]===0?nk:noise;this.vx[i]=decay*this.vx[i]+thermal*this.normal();this.vy[i]=decay*this.vy[i]+thermal*this.normal();this.drift(i,h);}this.contacts();
    this.time+=this.dt;this.forces();for(let i=0;i<this.n;i++){
     this.vx[i]+=h*this.fx[i];this.vy[i]+=h*this.fy[i];
-    if(this.eligible[i]&&this.y[i]>this.center+GEOMETRY.membraneHalf+this.radius+.02&&this.y[i]<this.center+3&&this.pulse()>0){this.pulseEscapes++;this.eligible[i]=0;}
-    const side=this.y[i]<this.center-.8?-1:this.y[i]>this.center+.8?1:0;if(side&&side!==this.side[i]){this.crossings[this.type[i]]++;this.side[i]=side;}
    }
   }
  }
- state(){return {width:this.width,height:this.height,center:this.center,membraneHalf:GEOMETRY.membraneHalf,radius:this.radius,x:Array.from(this.x),y:Array.from(this.y),type:Array.from(this.type),pores:this.pores,time:this.time,field:this.pulse(),crossings:Array.from(this.crossings),trapped:Array.from(this.type).filter((_,i)=>this.trapped(i)).length,pulseTrials:this.pulseTrials,pulseEscapes:this.pulseEscapes,logoCollisions:this.logoCollisions,wraps:this.wraps,kineticTemperature:this.vx.reduce((s,v,i)=>s+v*v+this.vy[i]**2,0)/(2*this.n)};}
+ state(){return {initialTrapped:this.initialTrapped,edgeRadius:GEOMETRY.edgeRadius,width:this.width,height:this.height,viewHeight:GEOMETRY.viewHeight,viewY:GEOMETRY.viewY,center:this.center,membraneHalf:GEOMETRY.membraneHalf,radius:this.radius,x:Array.from(this.x),y:Array.from(this.y),type:Array.from(this.type),pores:this.pores,time:this.time,field:this.pulse()};}
 }
