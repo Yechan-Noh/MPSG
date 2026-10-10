@@ -37,27 +37,27 @@ function draw(){
   ctx.fillStyle=surface;ctx.fillRect(x,top,width,thickness);
   ctx.fillStyle=sheen;ctx.fillRect(x,top,width,thickness*.22);
  }
- const gold=ctx.createLinearGradient(0,top,0,bottom);
- gold.addColorStop(0,'#ffe9a4');gold.addColorStop(.24,'#e9bd4d');
- gold.addColorStop(.55,'#b88c29');gold.addColorStop(.82,'#e5b947');gold.addColorStop(1,'#fff0bb');
+ const poreEdge=ctx.createLinearGradient(0,top,0,bottom);
+ poreEdge.addColorStop(0,'#ff7770');poreEdge.addColorStop(.24,'#e3443c');
+ poreEdge.addColorStop(.55,'#b5222a');poreEdge.addColorStop(.82,'#df3c36');poreEdge.addColorStop(1,'#ff8a80');
  for(const p of state.pores){
   const left=(p.x-p.width/2)*sx,right=(p.x+p.width/2)*sx,wall=sx*.1;
   // Warm inner faces and a small bevel wrap around each opening, leaving its width intact.
-  ctx.fillStyle=gold;ctx.fillRect(left-wall,top,wall,thickness);ctx.fillRect(right,top,wall,thickness);
+  ctx.fillStyle=poreEdge;ctx.fillRect(left-wall,top,wall,thickness);ctx.fillRect(right,top,wall,thickness);
   const rim=sx*.18,edge=thickness*.1;
-  ctx.fillStyle='#efd382';
+  ctx.fillStyle='#ed4b43';
   ctx.fillRect(left-rim,top,rim,edge);ctx.fillRect(right,top,rim,edge);
   ctx.fillRect(left-rim,bottom-edge,rim,edge);ctx.fillRect(right,bottom-edge,rim,edge);
 
  }
- canvas.dataset.membraneStyle='smooth-teal-gold-lined';
+ canvas.dataset.membraneStyle='smooth-teal-red-lined';
  ctx.save();
  for(let i=0;i<state.x.length;i++){
   const type=state.type[i],x=state.x[i]*sx,y=state.y[i]*sy,r=sx*GEOMETRY.radius;
   ctx.globalAlpha=type===2?.1:1;
   ctx.fillStyle=SPECIES[type].color;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
  }
- ctx.restore();canvas.dataset.cationOpacity='1';canvas.dataset.membraneColor=membraneColor;canvas.dataset.poreLiningColor='#edc552';canvas.dataset.ionStyle='flat-circle';canvas.dataset.ionDiameterPx=String(2*GEOMETRY.radius*sx);canvas.dataset.poreWidthPx=String(GEOMETRY.poreWidth*sx);canvas.dataset.ionPoreRatio=String(2*GEOMETRY.radius/GEOMETRY.poreWidth);canvas.dataset.chlorideOpacity='0.1';canvas.dataset.visibleIons=state.x.length;canvas.dataset.chlorideVisible='true';canvas.dataset.pulsePeriod=SETTINGS.pulsePeriod;canvas.dataset.friction=SETTINGS.friction;canvas.dataset.kFriction=SETTINGS.kFriction;canvas.dataset.membraneThickness=2*mh;
+ ctx.restore();canvas.dataset.cationOpacity='1';canvas.dataset.membraneColor=membraneColor;canvas.dataset.poreLiningColor='#e3443c';canvas.dataset.ionStyle='flat-circle';canvas.dataset.ionDiameterPx=String(2*GEOMETRY.radius*sx);canvas.dataset.poreWidthPx=String(GEOMETRY.poreWidth*sx);canvas.dataset.ionPoreRatio=String(2*GEOMETRY.radius/GEOMETRY.poreWidth);canvas.dataset.chlorideOpacity='0.1';canvas.dataset.visibleIons=state.x.length;canvas.dataset.chlorideVisible='true';canvas.dataset.pulsePeriod=SETTINGS.pulsePeriod;canvas.dataset.friction=SETTINGS.friction;canvas.dataset.kFriction=SETTINGS.kFriction;canvas.dataset.membraneThickness=2*mh;
  canvas.dataset.domain=state.width+'×'+state.height;canvas.dataset.field=state.field.toFixed(3);canvas.dataset.invalidPositions=state.invalidPositions;canvas.dataset.logoCollisions=state.logoCollisions;canvas.dataset.wraps=state.wraps;canvas.dataset.trapped=state.trapped;canvas.dataset.pulseTrials=state.pulseTrials;canvas.dataset.pulseEscapes=state.pulseEscapes;canvas.dataset.counts=state.type.reduce((counts,type)=>(counts[type]++,counts),[0,0,0]).join(',');canvas.dataset.ions=state.x.length;canvas.dataset.pores=state.pores.length;canvas.dataset.time=state.time.toFixed(3);canvas.dataset.temperature=state.kineticTemperature.toFixed(3);
 
 
