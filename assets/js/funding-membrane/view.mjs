@@ -1,9 +1,10 @@
-import {createIonSprites} from './ion-sprites.mjs?v=coulomb5x-20261010';
-import {SPECIES,SETTINGS,GEOMETRY} from './core.mjs?v=coulomb5x-20261010';
-import {createLogoArtwork} from './logos.mjs?v=coulomb5x-20261010';
+import {createIonSprites} from './ion-sprites.mjs?v=playback15-20261010';
+import {SPECIES,SETTINGS,GEOMETRY} from './core.mjs?v=playback15-20261010';
+import {createLogoArtwork} from './logos.mjs?v=playback15-20261010';
 const artwork=await createLogoArtwork();
 const ionSprites=createIonSprites(SPECIES.map(species=>species.color));
-const canvas=document.querySelector('#scene'),ctx=canvas.getContext('2d'),worker=new Worker(new URL('./worker.mjs?v=coulomb5x-20261010',import.meta.url),{type:'module'});
+const canvas=document.querySelector('#scene'),ctx=canvas.getContext('2d'),worker=new Worker(new URL('./worker.mjs?v=playback15-20261010',import.meta.url),{type:'module'});
+const PLAYBACK_RATE=1.5;
 let state=null,paused=false,pending=false,timer=0,requestedAt=0,dpr=1,w=1000,h=238,visible=true;
 let membraneColor='#182d38';
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');paused=reduced.matches;
@@ -63,17 +64,17 @@ function draw(){
   const type=state.type[i],x=state.x[i]*sx,y=(state.y[i]-state.viewY)*sy,r=radius;
   if(y+r<0||y-r>h)continue;
   const lit=state.poreGlow[i],sprite=ionSprites[type];
-  ctx.globalAlpha=lit?1:type===1?1:type===2?.05:.30;
+  ctx.globalAlpha=lit?1:type===2?.05:.20;
   // 64px sprite has a 30px physical radius: retain the existing ion/pore size ratio.
   const extent=r*32/30;ctx.drawImage(sprite.body,x-extent,y-extent,extent*2,extent*2);
   if(lit){ctx.globalAlpha=.9;ctx.drawImage(sprite.light,x-r,y-r,r*2,r*2);}
  }
- ctx.restore();canvas.dataset.potassiumOpacity='0.30';canvas.dataset.sodiumOpacity='1';canvas.dataset.membraneColor=membraneColor;canvas.dataset.poreLiningColor='#e3443c';canvas.dataset.ionStyle='shaded-sphere-trapped-glow';canvas.dataset.ionDiameterPx=String(2*GEOMETRY.radius*sx);canvas.dataset.poreWidthPx=String(GEOMETRY.poreWidth*sx);canvas.dataset.ionPoreRatio=String(2*GEOMETRY.radius/GEOMETRY.poreWidth);canvas.dataset.chlorideOpacity='0.05';canvas.dataset.chlorideVisible='true';canvas.dataset.pulsePeriod=SETTINGS.pulsePeriod;canvas.dataset.friction=SETTINGS.friction;canvas.dataset.kFriction=SETTINGS.kFriction;canvas.dataset.membraneThickness=2*mh;
+ ctx.restore();canvas.dataset.potassiumOpacity='0.20';canvas.dataset.sodiumOpacity='0.20';canvas.dataset.trappedOpacity='1';canvas.dataset.playbackRate=state.playbackRate;canvas.dataset.membraneColor=membraneColor;canvas.dataset.poreLiningColor='#e3443c';canvas.dataset.ionStyle='shaded-sphere-trapped-glow';canvas.dataset.ionDiameterPx=String(2*GEOMETRY.radius*sx);canvas.dataset.poreWidthPx=String(GEOMETRY.poreWidth*sx);canvas.dataset.ionPoreRatio=String(2*GEOMETRY.radius/GEOMETRY.poreWidth);canvas.dataset.chlorideOpacity='0.05';canvas.dataset.chlorideVisible='true';canvas.dataset.pulsePeriod=SETTINGS.pulsePeriod;canvas.dataset.friction=SETTINGS.friction;canvas.dataset.kFriction=SETTINGS.kFriction;canvas.dataset.membraneThickness=2*mh;
  canvas.dataset.domain=state.width+'×'+state.height;canvas.dataset.viewHeight=state.viewHeight;canvas.dataset.viewY=state.viewY;canvas.dataset.field=state.field.toFixed(3);canvas.dataset.initialTrapped=state.initialTrapped;canvas.dataset.counts=state.type.reduce((counts,type)=>(counts[type]++,counts),[0,0,0]).join(',');canvas.dataset.ions=state.x.length;canvas.dataset.pores=state.pores.length;canvas.dataset.time=state.time.toFixed(3);canvas.dataset.glowingIons=state.poreGlow.reduce((sum,lit)=>sum+lit,0);
 
 
 }
-function schedule(){clearTimeout(timer);if(active()&&!pending)timer=setTimeout(()=>{pending=true;requestedAt=performance.now();worker.postMessage({type:'step'});},Math.max(0,1000/30-(performance.now()-requestedAt)));}
+function schedule(){clearTimeout(timer);if(active()&&!pending)timer=setTimeout(()=>{pending=true;requestedAt=performance.now();worker.postMessage({type:'step'});},Math.max(0,1000/(30*PLAYBACK_RATE)-(performance.now()-requestedAt)));}
 worker.onmessage=({data})=>{pending=false;if(data.error){paused=true;canvas.dataset.error=data.error;pause.textContent='Animation unavailable';return;}state=data;draw();schedule();};
 const pause=document.querySelector('#pause');function sync(){pause.textContent=paused?'Play animation':'Pause animation';pause.setAttribute('aria-pressed',String(paused));schedule();}
 pause.onclick=()=>{paused=!paused;sync();};
