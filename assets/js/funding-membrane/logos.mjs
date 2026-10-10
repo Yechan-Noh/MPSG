@@ -5,12 +5,12 @@ export const LOGOS=[
  ['UND-logo.png',41,8,14,4.27132,100,0,0,'Notre Dame'],
  ['NCSA.png',62,8,10,2.88864,123.1303,-11.5652,-.6682,'NCSA'],
  ['TACC.jpg',83,8,9.4,2.83036,111.6719,-5.9937,-25,'TACC'],
- ['nsf-logo.png',11,26,6.3,1.97727,102.3488,-1.1994,-6.917,'NSF'],
- ['UIUC.png',27,26,9.4,3.78295,102.459,-1.2295,-58.9147,'Illinois'],
- ['UC_Berkeley.webp',43,26,9.7,4,101.3514,0,-39.1892,'Berkeley'],
- ['Kwanjeong.png',59,26,10,4.23154,101.3481,-.793,-3.6913,'Kwanjeong'],
- ['nist-logo.png',75,26,10.7,7.16149,100.2602,-.1735,-1.2422,'NIST'],
- ['CU_Coulder.png',91,26,10.4,4.94845,100,0,0,'Colorado Boulder']
+ ['nsf-logo.png',11,26,6.804,1.97727,102.3488,-1.1994,-6.917,'NSF'],
+ ['UIUC.png',27,26,10.152,3.78295,102.459,-1.2295,-58.9147,'Illinois'],
+ ['UC_Berkeley.webp',43,26,10.476,4,101.3514,0,-39.1892,'Berkeley'],
+ ['Kwanjeong.png',59,26,10.8,4.23154,101.3481,-.793,-3.6913,'Kwanjeong'],
+ ['nist-logo.png',75,26,11.556,7.16149,100.2602,-.1735,-1.2422,'NIST'],
+ ['CU_Coulder.png',91,26,11.232,4.94845,100,0,0,'Colorado Boulder']
 ];
 export async function createLogoArtwork(){
  const mw=GEOMETRY.maskWidth,mh=GEOMETRY.maskHeight;
