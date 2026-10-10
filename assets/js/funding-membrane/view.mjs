@@ -34,19 +34,41 @@ function draw(){
  canvas.dataset.logoScaleX=String(artScale);canvas.dataset.logoScaleY=String(artScale);
  canvas.dataset.artworkSize=artwork.art.width+'×'+artwork.art.height;
  let left=0;const segments=[];for(const p of state.pores){segments.push([left,p.x-p.width/2]);left=p.x+p.width/2;}segments.push([left,state.width]);
+ // A smooth teal surface replaces the dotted lattice. All details stay outside
+ // the physical aperture; light is decorative and does not change collision geometry.
+ const top=(C-mh)*sy,bottom=(C+mh)*sy,thickness=bottom-top;
+ const surface=ctx.createLinearGradient(0,top,0,bottom);
+ surface.addColorStop(0,'#7095a3');surface.addColorStop(.16,'#365968');
+ surface.addColorStop(.43,membraneColor);surface.addColorStop(.82,'#213e4b');surface.addColorStop(1,'#486c7b');
+ const sheen=ctx.createLinearGradient(0,top,0,top+thickness*.22);
+ sheen.addColorStop(0,'#c5dce599');sheen.addColorStop(1,'#c5dce500');
+ const shadow=ctx.createLinearGradient(0,bottom,0,bottom+thickness*.5);
+ shadow.addColorStop(0,'#182d3820');shadow.addColorStop(1,'#182d3800');
  for(const [l,r] of segments){
-  ctx.fillStyle=membraneColor;ctx.fillRect(l*sx,(C-mh)*sy,(r-l)*sx,2*mh*sy);
-  ctx.strokeStyle='#375462';ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(l*sx,(C-mh)*sy);ctx.lineTo(r*sx,(C-mh)*sy);ctx.moveTo(l*sx,(C+mh)*sy);ctx.lineTo(r*sx,(C+mh)*sy);ctx.stroke();
-  // Fixed atomic sites are a visual membrane texture, not extra solvent particles.
-  for(let x=l+.2;x<r;x+=.63)for(const y of [C-mh*.8,C+mh*.8]){ctx.fillStyle='#6b8b9a';ctx.beginPath();ctx.arc(x*sx,y*sy,Math.max(.65,sx*.075),0,Math.PI*2);ctx.fill();}
+  const x=l*sx,width=(r-l)*sx;
+  ctx.fillStyle=shadow;ctx.fillRect(x,bottom,width,thickness*.5);
+  ctx.fillStyle=surface;ctx.fillRect(x,top,width,thickness);
+  ctx.fillStyle=sheen;ctx.fillRect(x,top,width,thickness*.22);
  }
+ const gold=ctx.createLinearGradient(0,top,0,bottom);
+ gold.addColorStop(0,'#ffe9a4');gold.addColorStop(.24,'#e9bd4d');
+ gold.addColorStop(.55,'#b88c29');gold.addColorStop(.82,'#e5b947');gold.addColorStop(1,'#fff0bb');
  for(const p of state.pores){
-  // Gold on the two inward-facing pore walls signifies Na affinity; the aperture stays open.
-  const y=(C-mh)*sy,depth=2*mh*sy,wall=sx*.09;
-  ctx.fillStyle='#edc552';
-  ctx.fillRect((p.x-p.width/2)*sx-wall,y,wall,depth);
-  ctx.fillRect((p.x+p.width/2)*sx,y,wall,depth);
+  const left=(p.x-p.width/2)*sx,right=(p.x+p.width/2)*sx,wall=sx*.1;
+  const occupied=state.type.some((t,i)=>t===1&&Math.abs(state.y[i]-C)<.35&&Math.abs(state.x[i]-p.x)<.09);
+  // Warm inner faces and a small bevel wrap around each opening, leaving its width intact.
+  ctx.fillStyle=gold;ctx.fillRect(left-wall,top,wall,thickness);ctx.fillRect(right,top,wall,thickness);
+  const rim=sx*.18,edge=thickness*.1;
+  ctx.fillStyle='#efd382';
+  ctx.fillRect(left-rim,top,rim,edge);ctx.fillRect(right,top,rim,edge);
+  ctx.fillRect(left-rim,bottom-edge,rim,edge);ctx.fillRect(right,bottom-edge,rim,edge);
+  if(occupied){
+   const aura=ctx.createRadialGradient(p.x*sx,C*sy,0,p.x*sx,C*sy,sx*.48);
+   aura.addColorStop(0,'#edc55218');aura.addColorStop(1,'#edc55200');
+   ctx.fillStyle=aura;ctx.fillRect((p.x-.48)*sx,(C-.48)*sy,.96*sx,.96*sy);
+  }
  }
+ canvas.dataset.membraneStyle='smooth-teal-gold-lined';
  ctx.save();
  for(let i=0;i<state.x.length;i++){
   const type=state.type[i],x=state.x[i]*sx,y=state.y[i]*sy,r=sx*GEOMETRY.radius;
