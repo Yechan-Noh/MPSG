@@ -1,21 +1,24 @@
 /* Compact entry below navigation, scoped to this research page. */
 .mt-page.research-page{padding-top:10px}
 /* Funding labels stay in a separate rail, aligned to the logo row centers. */
-.funding-membrane{margin:0 0 36px;padding:0;background:#fff;color:#19303b;border-top:0;border-bottom:1px solid #dce4e8}
-.funding-membrane #support-title{margin:0 0 8px;text-align:center;font-size:clamp(23px,2.1vw,28px);font-weight:600;letter-spacing:-.8px;line-height:1.2;border:0;padding:0;color:#19303b}
-.funding-membrane #support-title span{font-family:Georgia,serif;font-style:italic;font-weight:400}
+.funding-membrane{margin:0 0 36px;padding:0;background:#fff;color:var(--site-ink,#182d38);border-top:0;border-bottom:1px solid #dce4e8}
+.funding-membrane #support-title{margin:0;text-align:center;font-size:clamp(23px,2.1vw,28px);font-weight:600;letter-spacing:normal;font-family:inherit;line-height:1.2;border:0;padding:0;color:var(--site-ink,#182d38)}
+.funding-membrane-header{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px;margin-bottom:8px}
+.funding-membrane-header #support-title{grid-column:2}
+.funding-trapped-count{display:flex;justify-content:flex-end;gap:4px;padding:3px 4px 7px;font:inherit;font-size:11px;line-height:1.3;color:var(--site-ink,#182d38);font-variant-numeric:tabular-nums}
+.funding-trapped-count span{min-width:1.3em;text-align:right}
 .funding-membrane-stage{position:relative;padding-left:100px;isolation:isolate}
 .funding-membrane #scene{display:block;width:100%;aspect-ratio:100/23.8;background:white}
-.funding-row-label{position:absolute;left:0;transform:translateY(-50%);font-size:20px;font-weight:600;letter-spacing:-.25px;line-height:1.2;color:#526b77}
+.funding-row-label{position:absolute;left:0;transform:translateY(-50%);font-size:20px;font-weight:600;letter-spacing:-.25px;line-height:1.2;color:var(--site-ink,#182d38)}
 .funding-row-label--current{top:23.5294118%}.funding-row-label--previous{top:76.4705882%}
-.funding-membrane-controls{display:flex;justify-content:flex-end;padding:0 0 4px}
+.funding-membrane-controls{grid-column:3;display:flex;justify-content:flex-end;padding:0;white-space:nowrap}
 .funding-membrane-controls button{border:0;background:transparent;color:#617580;padding:6px 8px;font:inherit;font-size:11px;cursor:pointer;border-radius:3px}
 .funding-membrane-controls button:hover{background:#edf3f5}.funding-membrane-controls button:focus-visible{outline:2px solid #526b77;outline-offset:2px}
-@media(max-width:650px){.funding-membrane{padding-top:0;margin-bottom:24px}.funding-membrane-stage{padding-left:61px}.funding-row-label{font-size:13px;letter-spacing:-.1px}.funding-membrane #support-title{margin-bottom:8px}.funding-membrane-controls button{font-size:10px}}
+@media(max-width:650px){.funding-membrane{padding-top:0;margin-bottom:24px}.funding-membrane-stage{padding-left:61px}.funding-row-label{font-size:13px;letter-spacing:-.1px}.funding-membrane-header{grid-template-columns:minmax(0,1fr) auto;gap:6px}.funding-membrane-header #support-title{grid-column:1;text-align:left;font-size:21px}.funding-membrane-controls{grid-column:2}.funding-trapped-count{font-size:10px}.funding-membrane-controls button{font-size:10px}}
 
 /* Field direction appears only during an applied pulse; no layout movement. */
 .funding-membrane{position:relative}
-.electric-field-indicator{position:absolute;z-index:2;right:4px;top:0;display:flex;align-items:flex-start;gap:10px;color:#19303b;pointer-events:none}
+.electric-field-indicator{position:absolute;z-index:2;right:4px;top:0;display:flex;align-items:flex-start;gap:10px;color:var(--site-ink,#182d38);pointer-events:none}
 .electric-field-indicator[hidden]{display:none}
 .electric-field-indicator span{padding-top:7px;font-size:14px;font-weight:600;line-height:1.2;white-space:nowrap}
 .electric-field-indicator svg{display:block;width:29px;height:58px;flex:none}

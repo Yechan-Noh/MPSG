@@ -7,8 +7,10 @@ author_profile: false
 <link rel="stylesheet" href="{{ "/assets/css/funding-membrane.css" | relative_url }}?v={{ site.time | date: "%s" }}">
 <div class="mt-page research-page">
 <section class="funding-membrane" aria-labelledby="support-title">
-  <h2 id="support-title">Funding <span>&amp;</span> Support</h2>
-  <div class="funding-membrane-controls"><button id="pause" type="button" aria-pressed="false">Pause animation</button></div>
+  <div class="funding-membrane-header">
+    <h2 id="support-title">Funding &amp; Support</h2>
+    <div class="funding-membrane-controls"><button id="pause" type="button" aria-pressed="false">Pause animation</button></div>
+  </div>
   <div class="funding-membrane-stage">
     <div id="electric-field-indicator" class="electric-field-indicator" hidden>
       <span>Electric field</span>
@@ -18,6 +20,7 @@ author_profile: false
     <div class="funding-row-label funding-row-label--previous">Previous</div>
     <canvas id="scene" role="img" aria-label="Current support: ACCESS, University of Notre Dame, NCSA, and Texas Advanced Computing Center. Previous support: National Science Foundation, University of Illinois Urbana-Champaign, University of California Berkeley, Kwanjeong Educational Foundation, NIST, and University of Colorado Boulder. Animated ions travel through a twenty-four-pore membrane among the logos.">Current: ACCESS, Notre Dame, NCSA, TACC. Previous: NSF, Illinois, Berkeley, Kwanjeong, NIST, Colorado Boulder.</canvas>
   </div>
+  <div class="funding-trapped-count" id="trapped-count">Trapped: Na⁺ <span id="trapped-na">24</span><span aria-hidden="true"> · </span>K⁺ <span id="trapped-k">0</span></div>
 </section>
 <script type="module" src="{{ "/assets/js/funding-membrane/view.mjs" | relative_url }}?v={{ site.time | date: "%s" }}"></script>
 <div class="research-topic-grid">
