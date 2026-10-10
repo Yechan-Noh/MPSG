@@ -85,7 +85,7 @@
     const dt=last?Math.min((now-last)/1000,.05):0;last=now;
     if(!paused&&!document.hidden){
       elapsed+=dt;
-      if(elapsed>1.2){phase+=dt*2*Math.PI/45;draw();}
+      if(elapsed>1.2){phase+=dt*2*Math.PI*.7/45;draw();}
     }
     requestAnimationFrame(frame);
   }
