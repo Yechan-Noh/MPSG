@@ -1,4 +1,4 @@
-import {GEOMETRY} from './core.mjs';
+import {GEOMETRY} from './core.mjs?v=domain70-20261010';
 // Original funding artwork, with the same crop windows as the preserved site.
 export const LOGOS=[
  ['access-logo.svg',20,8,13,6.50568,100,0,0,'ACCESS'],
