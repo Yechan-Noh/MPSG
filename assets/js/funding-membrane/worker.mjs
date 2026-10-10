@@ -1,4 +1,4 @@
-import {IonMembrane} from './core.mjs?v=k200-capture-20261010';
+import {IonMembrane} from './core.mjs?v=pulse864-20261010';
 let sim,obstacleMask;
 self.onmessage=({data})=>{
  if(data.obstacleMask)obstacleMask=data.obstacleMask;
