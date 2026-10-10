@@ -91,3 +91,11 @@
     margin-top: 3px;
   }
 }
+
+/* Small optical offset requested for the desktop composition. */
+@media (min-width: 900px) {
+  .people-page .profile-content {
+    position: relative;
+    left: 24px;
+  }
+}
