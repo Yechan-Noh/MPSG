@@ -34,26 +34,29 @@
     groups.forEach((group,j)=>group.forEach((source,i)=>{const slot=i===0?0:(i%2===1?(i+1)/2:-i/2);const g=node('g'),img=node('image',{href:source.src,preserveAspectRatio:'xMidYMid meet'});g.append(node('title',{},source.alt),img);svg.append(g);logos.push({g,img,ring:j,slot,cy,emphasis:logoEmphasis(source.alt)})}));
     if(options)options.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',Number(b.dataset.orbits)===mode));draw();
   }
-  // Keep the projected orbital depth at approximately 20% of its width.
-  const elevation=Math.asin(.2), cameraDistance=1700;
+  // Keep the projected orbital depth at approximately 10% of its width.
+  const elevation=Math.asin(.1), cameraDistance=1700;
   function projectPoint(field,groundX,groundY){
     const depth=groundY*Math.cos(elevation),perspective=cameraDistance/(cameraDistance-depth);
     return {x:500+groundX*perspective,y:145+(field.offsetY||0)+groundY*Math.sin(elevation)*perspective,depth,scale:.86*perspective};
   }
   function projectOrbit(field,a){return projectPoint(field,field.cx-500+field.rx*Math.cos(a),field.rx*Math.sin(a));}
   function buildFields(){
-    svg.setAttribute('viewBox','0 8 1000 270');
+    svg.setAttribute('viewBox','0 8 1000 220');
     const fields=[
-      {name:'Physics',cx:355,cy:145,rx:105,ry:55,width:112,speed:1,venues:['Physical Review Letters','Physical Review E','Physical Review Materials','Applied Physics Letters']},
-      {name:'Chemistry',cx:645,cy:145,rx:105,ry:55,width:118,speed:-.8,venues:['The Journal of Physical Chemistry Letters','The Journal of Physical Chemistry B','The Journal of Chemical Physics']},
-      {name:'Multidisciplinary',offsetY:-12,cx:500,cy:145,rx:410,ry:145,width:135,speed:.45,venues:['Science Advances','Nature Communications','Scientific Reports','Nano Letters','ACS Nano','applied science','nanoscale','small']}
+      {name:'Publication venues',offsetY:-12,cx:500,cy:145,rx:410,ry:41,width:132,speed:1,venues:[
+        'Science Advances','Physical Review E','Nano Letters','The Journal of Physical Chemistry B',
+        'Nature Communications','Applied Physics Letters','small','The Journal of Chemical Physics',
+        'ACS Nano','Physical Review Materials','nanoscale','The Journal of Physical Chemistry Letters',
+        'Scientific Reports','Physical Review Letters','applied science'
+      ]}
     ];
     const defs=node('defs'),gradient=node('linearGradient',{id:'orbital-depth',x1:0,y1:65,x2:0,y2:255,gradientUnits:'userSpaceOnUse'});
     gradient.append(node('stop',{offset:0,'stop-color':'#e0e9ed'}),node('stop',{offset:1,'stop-color':'#91a8b3'}));defs.append(gradient);svg.append(defs);
     fields.forEach((f,j)=>{
       const points=Array.from({length:181},(_,i)=>projectOrbit(f,i*Math.PI/90));
       const d=points.map((p,i)=>`${i?'L':'M'}${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' ')+' Z';
-      svg.append(node('path',{d,fill:'none',stroke:'url(#orbital-depth)','stroke-width':j===2?1.3:1,'data-orbit':f.name}));
+      svg.append(node('path',{d,fill:'none',stroke:'url(#orbital-depth)','stroke-width':1.15,'data-orbit':f.name}));
       f.venues.forEach((venue,i)=>{
         const source=original.find(s=>s.alt===venue);if(!source)return;
         const slot=j===2?(Math.floor(i/2)+.5)*(i%2?-1:1):(i===0?0:(i%2===1?(i+1)/2:-i/2));
@@ -82,7 +85,7 @@
     const dt=last?Math.min((now-last)/1000,.05):0;last=now;
     if(!paused&&!document.hidden){
       elapsed+=dt;
-      if(elapsed>1.2){phase+=dt*2*Math.PI*2.25/100;draw();}
+      if(elapsed>1.2){phase+=dt*2*Math.PI/45;draw();}
     }
     requestAnimationFrame(frame);
   }
