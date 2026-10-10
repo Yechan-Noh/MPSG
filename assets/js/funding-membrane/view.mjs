@@ -1,9 +1,9 @@
-import {createIonSprites} from './ion-sprites.mjs?v=field55-period6-20261010';
-import {SPECIES,SETTINGS,GEOMETRY} from './core.mjs?v=field55-period6-20261010';
-import {createLogoArtwork} from './logos.mjs?v=field55-period6-20261010';
+import {createIonSprites} from './ion-sprites.mjs?v=k-soft-core-period7-20261010';
+import {SPECIES,SETTINGS,GEOMETRY} from './core.mjs?v=k-soft-core-period7-20261010';
+import {createLogoArtwork} from './logos.mjs?v=k-soft-core-period7-20261010';
 const artwork=await createLogoArtwork();
 const ionSprites=createIonSprites(SPECIES.map(species=>species.color));
-const canvas=document.querySelector('#scene'),ctx=canvas.getContext('2d'),worker=new Worker(new URL('./worker.mjs?v=field55-period6-20261010',import.meta.url),{type:'module'});
+const canvas=document.querySelector('#scene'),ctx=canvas.getContext('2d'),worker=new Worker(new URL('./worker.mjs?v=k-soft-core-period7-20261010',import.meta.url),{type:'module'});
 const PLAYBACK_RATE=1.5;
 let state=null,paused=false,pending=false,timer=0,requestedAt=0,dpr=1,w=1000,h=238,visible=true;
 let membraneColor='#182d38';
