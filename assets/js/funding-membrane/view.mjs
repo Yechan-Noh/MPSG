@@ -1,4 +1,4 @@
-import {SPECIES,SETTINGS} from './core.mjs';
+import {SPECIES,SETTINGS,GEOMETRY} from './core.mjs';
 import {createLogoArtwork} from './logos.mjs';
 const artwork=await createLogoArtwork();
 const canvas=document.querySelector('#scene'),ctx=canvas.getContext('2d'),worker=new Worker(new URL('./worker.mjs',import.meta.url),{type:'module'});
@@ -42,14 +42,14 @@ function draw(){
  }
  for(const p of state.pores){
   // Gold on the two inward-facing pore walls signifies Na affinity; the aperture stays open.
-  const y=(C-mh)*sy,depth=2*mh*sy,wall=Math.max(1.2,sx*.09);
+  const y=(C-mh)*sy,depth=2*mh*sy,wall=sx*.09;
   ctx.fillStyle='#edc552';
-  ctx.fillRect((p.x-p.width/2)*sx-wall*.5,y,wall,depth);
-  ctx.fillRect((p.x+p.width/2)*sx-wall*.5,y,wall,depth);
+  ctx.fillRect((p.x-p.width/2)*sx-wall,y,wall,depth);
+  ctx.fillRect((p.x+p.width/2)*sx,y,wall,depth);
  }
  ctx.save();
  for(let i=0;i<state.x.length;i++){
-  const type=state.type[i],x=state.x[i]*sx,y=state.y[i]*sy,r=Math.max(2.3,sx*.25);
+  const type=state.type[i],x=state.x[i]*sx,y=state.y[i]*sy,r=sx*GEOMETRY.radius;
   ctx.globalAlpha=type===2?.1:1;
   const span=r*6.4;ctx.drawImage(ionSprites[type],x-span/2,y-span/2,span,span);
   // Occasional soft glints, out of phase, convey charge without flashing the whole field.
@@ -62,7 +62,7 @@ function draw(){
    }
   }
  }
- ctx.restore();canvas.dataset.cationOpacity='1';canvas.dataset.membraneColor=membraneColor;canvas.dataset.poreLiningColor='#edc552';canvas.dataset.ionStyle='luminous-sphere';canvas.dataset.chlorideOpacity='0.1';canvas.dataset.visibleIons=state.x.length;canvas.dataset.chlorideVisible='true';canvas.dataset.pulsePeriod=SETTINGS.pulsePeriod;canvas.dataset.friction=SETTINGS.friction;canvas.dataset.kFriction=SETTINGS.kFriction;canvas.dataset.membraneThickness=2*mh;
+ ctx.restore();canvas.dataset.cationOpacity='1';canvas.dataset.membraneColor=membraneColor;canvas.dataset.poreLiningColor='#edc552';canvas.dataset.ionStyle='luminous-sphere';canvas.dataset.ionDiameterPx=String(2*GEOMETRY.radius*sx);canvas.dataset.poreWidthPx=String(GEOMETRY.poreWidth*sx);canvas.dataset.ionPoreRatio=String(2*GEOMETRY.radius/GEOMETRY.poreWidth);canvas.dataset.chlorideOpacity='0.1';canvas.dataset.visibleIons=state.x.length;canvas.dataset.chlorideVisible='true';canvas.dataset.pulsePeriod=SETTINGS.pulsePeriod;canvas.dataset.friction=SETTINGS.friction;canvas.dataset.kFriction=SETTINGS.kFriction;canvas.dataset.membraneThickness=2*mh;
  canvas.dataset.domain=state.width+'×'+state.height;canvas.dataset.field=state.field.toFixed(3);canvas.dataset.invalidPositions=state.invalidPositions;canvas.dataset.logoCollisions=state.logoCollisions;canvas.dataset.wraps=state.wraps;canvas.dataset.trapped=state.trapped;canvas.dataset.pulseTrials=state.pulseTrials;canvas.dataset.pulseEscapes=state.pulseEscapes;canvas.dataset.counts=state.type.reduce((counts,type)=>(counts[type]++,counts),[0,0,0]).join(',');canvas.dataset.ions=state.x.length;canvas.dataset.pores=state.pores.length;canvas.dataset.time=state.time.toFixed(3);canvas.dataset.temperature=state.kineticTemperature.toFixed(3);
 
 
