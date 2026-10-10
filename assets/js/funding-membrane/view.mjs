@@ -10,7 +10,6 @@ let membraneColor='#182d38';
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');paused=reduced.matches;
 const active=()=>!paused&&visible&&!document.hidden;
 const fieldIndicator=document.querySelector('#electric-field-indicator');
-const trappedNa=document.querySelector('#trapped-na'),trappedK=document.querySelector('#trapped-k');
 function size(){membraneColor=getComputedStyle(canvas).getPropertyValue('--site-ink').trim()||'#182d38';const r=canvas.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(2,devicePixelRatio||1);canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);draw();}
 function draw(){
  if(!state)return;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);const sx=w/state.width,sy=h/state.viewHeight,C=state.center-state.viewY,mh=state.membraneHalf;
@@ -55,10 +54,9 @@ function draw(){
  }
  canvas.dataset.membraneStyle='rounded-entrance-red-lined';canvas.dataset.poreWidth=GEOMETRY.poreWidth;canvas.dataset.entranceRadius=GEOMETRY.edgeRadius;
  ctx.save();
- const radius=sx*GEOMETRY.radius;let naCount=0,kCount=0;
+ const radius=sx*GEOMETRY.radius;
  // Draw halos behind every sphere, only for ions residing in a pore core.
  for(let i=0;i<state.x.length;i++)if(state.poreGlow[i]){
-  if(state.type[i]===1)naCount++;else if(state.type[i]===0)kCount++;
   const x=state.x[i]*sx,y=(state.y[i]-state.viewY)*sy,extent=radius*3.2;
   ctx.globalAlpha=.9;ctx.drawImage(ionSprites[state.type[i]].halo,x-extent,y-extent,extent*2,extent*2);
  }
@@ -71,8 +69,6 @@ function draw(){
   const extent=r*32/30;ctx.drawImage(sprite.body,x-extent,y-extent,extent*2,extent*2);
   if(lit){ctx.globalAlpha=.9;ctx.drawImage(sprite.light,x-r,y-r,r*2,r*2);}
  }
- if(trappedNa&&trappedNa.textContent!==String(naCount))trappedNa.textContent=String(naCount);
- if(trappedK&&trappedK.textContent!==String(kCount))trappedK.textContent=String(kCount);
  ctx.restore();canvas.dataset.potassiumOpacity='0.20';canvas.dataset.sodiumOpacity='0.20';canvas.dataset.trappedOpacity='1';canvas.dataset.playbackRate=state.playbackRate;canvas.dataset.membraneColor=membraneColor;canvas.dataset.poreLiningColor='#e3443c';canvas.dataset.ionStyle='shaded-sphere-trapped-glow';canvas.dataset.ionDiameterPx=String(2*GEOMETRY.radius*sx);canvas.dataset.poreWidthPx=String(GEOMETRY.poreWidth*sx);canvas.dataset.ionPoreRatio=String(2*GEOMETRY.radius/GEOMETRY.poreWidth);canvas.dataset.chlorideOpacity='0.10';canvas.dataset.chlorideVisible='true';canvas.dataset.pulsePeriod=SETTINGS.pulsePeriod;canvas.dataset.friction=SETTINGS.friction;canvas.dataset.kFriction=SETTINGS.kFriction;canvas.dataset.membraneThickness=2*mh;
  canvas.dataset.domain=state.width+'×'+state.height;canvas.dataset.viewHeight=state.viewHeight;canvas.dataset.viewY=state.viewY;canvas.dataset.field=state.field.toFixed(3);canvas.dataset.initialTrapped=state.initialTrapped;canvas.dataset.counts=state.type.reduce((counts,type)=>(counts[type]++,counts),[0,0,0]).join(',');canvas.dataset.ions=state.x.length;canvas.dataset.pores=state.pores.length;canvas.dataset.time=state.time.toFixed(3);canvas.dataset.glowingIons=state.poreGlow.reduce((sum,lit)=>sum+lit,0);
 
