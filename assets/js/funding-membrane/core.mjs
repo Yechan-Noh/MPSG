@@ -1,7 +1,7 @@
 // Reduced-unit visual model. Explicit monovalent ions; implicit dielectric solvent.
 export const SPECIES=[{label:'K⁺',charge:1,color:'#9467ce'},{label:'Na⁺',charge:1,color:'#e3b72e'},{label:'Cl⁻',charge:-1,color:'#429d70'}];
 export const GEOMETRY={width:44.8,height:10.6624,center:5.3312,radius:.24,poreWidth:.64,poreCount:16,membraneHalf:.315,maskWidth:1000,maskHeight:238};
-export const SETTINGS={dt:.006,friction:3,temperature:1,pulsePeak:3,pulseDelay:2,pulseDuration:1.5,pulsePeriod:12,naDepth:5.0,kFriction:3,kCoreRepulsion:3.0,kCoreShift:.18,kCaptureDepth:.6,kCaptureX:1.1,kCaptureY:1.8,poreCharge:-1.5,coulomb:.5};
+export const SETTINGS={dt:.006,friction:1,temperature:1,pulsePeak:3,pulseDelay:2,pulseDuration:1.5,pulsePeriod:12,naDepth:5.0,kFriction:1,kCoreRepulsion:3.0,kCoreShift:.18,kCaptureDepth:.6,kCaptureX:1.1,kCaptureY:1.8,poreCharge:-1.5,coulomb:.5};
 export class IonMembrane {
  constructor({seed=74321,counts=[40,20,60],temperature=SETTINGS.temperature,friction=SETTINGS.friction,kFriction=SETTINGS.kFriction,kCoreRepulsion=SETTINGS.kCoreRepulsion,kCaptureDepth=SETTINGS.kCaptureDepth,field=0,interactions=true,membrane=true,pulsed=true,poreCharge=SETTINGS.poreCharge,pulsePeak=SETTINGS.pulsePeak,naDepth=SETTINGS.naDepth,preload=true,obstacleMask=null}={}){
   Object.assign(this,{temperature,friction,kFriction,kCoreRepulsion,kCaptureDepth,field,interactions,membrane,pulsed,poreCharge,pulsePeak,naDepth,obstacleMask});this.seed=seed>>>0;this.width=GEOMETRY.width;this.height=GEOMETRY.height;this.center=GEOMETRY.center;this.radius=GEOMETRY.radius;this.dt=SETTINGS.dt;this.time=0;this.logoCollisions=0;this.wraps=0;this.pulseTrials=0;this.pulseEscapes=0;this.pulseIndex=-1;

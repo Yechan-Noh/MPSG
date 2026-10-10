@@ -1,7 +1,7 @@
-import {SPECIES,SETTINGS,GEOMETRY} from './core.mjs?v=domain70-20261010';
-import {createLogoArtwork} from './logos.mjs?v=domain70-20261010';
+import {SPECIES,SETTINGS,GEOMETRY} from './core.mjs?v=friction1-20261010';
+import {createLogoArtwork} from './logos.mjs?v=friction1-20261010';
 const artwork=await createLogoArtwork();
-const canvas=document.querySelector('#scene'),ctx=canvas.getContext('2d'),worker=new Worker(new URL('./worker.mjs?v=domain70-20261010',import.meta.url),{type:'module'});
+const canvas=document.querySelector('#scene'),ctx=canvas.getContext('2d'),worker=new Worker(new URL('./worker.mjs?v=friction1-20261010',import.meta.url),{type:'module'});
 let state=null,paused=false,pending=false,timer=0,dpr=1,w=1000,h=238,pulsed=true,visible=true;
 let membraneColor='#182d38';
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');paused=reduced.matches;
