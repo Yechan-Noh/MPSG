@@ -41,8 +41,38 @@
     return {x:500+groundX*perspective,y:145+(field.offsetY||0)+groundY*Math.sin(elevation)*perspective,depth,scale:.86*perspective};
   }
   function projectOrbit(field,a){return projectPoint(field,field.cx-500+field.rx*Math.cos(a),field.rx*Math.sin(a));}
+  // Cast shadows: logos stay on the orbit; a floor lies FLOOR_DROP below the orbit plane, lit by a low
+  // front light from the viewer's side (elevation LIGHT_ELEV, azimuth LIGHT_AZ) so each silhouette falls backward.
+  const FLOOR_DROP=50,LIGHT_ELEV=14*Math.PI/180,LIGHT_AZ=6*Math.PI/180,SHADOW_ALPHA=.6;
+  const lightRun=1/Math.tan(LIGHT_ELEV),lightX=Math.sin(LIGHT_AZ)*lightRun,lightY=-Math.cos(LIGHT_AZ)*lightRun;
+  function project3(field,gx,gy,z){
+    const depth=gy*Math.cos(elevation)+z*Math.sin(elevation),p=cameraDistance/(cameraDistance-depth);
+    return {x:500+gx*p,y:145+(field.offsetY||0)+(gy*Math.sin(elevation)-z*Math.cos(elevation))*p,p};
+  }
+  const silhouettes=new Map();
+  function boxBlur(src,w,h,r){
+    if(r<1)return src.slice();const tmp=new Float32Array(w*h),out=new Float32Array(w*h),n=2*r+1;
+    for(let y=0;y<h;y++){let acc=0;for(let x=-r;x<=r;x++)acc+=src[y*w+Math.min(w-1,Math.max(0,x))];for(let x=0;x<w;x++){tmp[y*w+x]=acc/n;acc+=src[y*w+Math.min(w-1,x+r+1)]-src[y*w+Math.max(0,x-r)]}}
+    for(let x=0;x<w;x++){let acc=0;for(let y=-r;y<=r;y++)acc+=tmp[Math.min(h-1,Math.max(0,y))*w+x];for(let y=0;y<h;y++){out[y*w+x]=acc/n;acc+=tmp[Math.min(h-1,y+r+1)*w+x]-tmp[Math.max(0,y-r)*w+x]}}
+    return out;
+  }
+  function makeSilhouette(source){
+    const done=()=>{try{
+      const nw=source.naturalWidth,nh=source.naturalHeight;if(!nw||!nh)return;
+      const pad=0.06,s=Math.min(1,320/nw),iw=Math.max(1,Math.round(nw*s)),ih=Math.max(1,Math.round(nh*s)),px=Math.round(iw*pad),py=Math.round(ih*pad*2.5);
+      const W=iw+2*px,H=ih+2*py,c=document.createElement('canvas');c.width=W;c.height=H;
+      const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(source,px,py,iw,ih);
+      const d=x.getImageData(0,0,W,H),a=new Float32Array(W*H);
+      for(let i=0;i<W*H;i++){const k=i*4,ink=1-(.299*d.data[k]+.587*d.data[k+1]+.114*d.data[k+2])/255,t=Math.min(1,Math.max(0,(ink-.05)/.3));a[i]=d.data[k+3]/255*t*t*(3-2*t)}
+      // Contact hardening: the bottom of a logo is nearest the floor, so its shadow is sharper and darker.
+      const sharp=boxBlur(boxBlur(a,W,H,Math.round(W*.004)),W,H,Math.round(W*.004)),soft=boxBlur(boxBlur(boxBlur(a,W,H,Math.round(W*.014)),W,H,Math.round(W*.014)),W,H,Math.round(W*.014));
+      for(let yy=0;yy<H;yy++){const v=Math.min(1,Math.max(0,(yy-py)/ih)),mix=Math.pow(1-v,.8),fade=.42+.58*v;for(let xx=0;xx<W;xx++){const i=yy*W+xx,k=i*4;d.data[k]=16;d.data[k+1]=30;d.data[k+2]=38;d.data[k+3]=Math.round(255*fade*(sharp[i]*(1-mix)+soft[i]*mix))}}
+      x.putImageData(d,0,0);silhouettes.set(source.alt,{href:c.toDataURL(),aspect:nw/nh,px:px/iw,py:py/ih});draw();
+    }catch(e){}};
+    if(source.complete&&source.naturalWidth)done();else source.addEventListener('load',done,{once:true});
+  }
   function buildFields(){
-    svg.setAttribute('viewBox','0 8 1000 220');
+    svg.setAttribute('viewBox','0 8 1000 256');
     const fields=[
       {name:'Publication venues',offsetY:-12,cx:500,cy:145,rx:410,ry:41,width:132,speed:1,venues:[
         'Science Advances','Physical Review E','Nano Letters','The Journal of Physical Chemistry B',
@@ -52,16 +82,24 @@
       ]}
     ];
     const defs=node('defs'),gradient=node('linearGradient',{id:'orbital-depth',x1:0,y1:65,x2:0,y2:255,gradientUnits:'userSpaceOnUse'});
-    gradient.append(node('stop',{offset:0,'stop-color':'#e0e9ed'}),node('stop',{offset:1,'stop-color':'#91a8b3'}));defs.append(gradient);svg.append(defs);
+    gradient.append(node('stop',{offset:0,'stop-color':'#e0e9ed'}),node('stop',{offset:1,'stop-color':'#91a8b3'}));defs.append(gradient);
+    // The floor fades out before the stage edges so cast shadows never end in a hard clip.
+    const fadeX=node('linearGradient',{id:'floor-fade-x',x1:0,y1:0,x2:1000,y2:0,gradientUnits:'userSpaceOnUse'}),fadeY=node('linearGradient',{id:'floor-fade-y',x1:0,y1:236,x2:0,y2:264,gradientUnits:'userSpaceOnUse'});
+    [[0,0],[.12,1],[.88,1],[1,0]].forEach(([o,v])=>fadeX.append(node('stop',{offset:o,'stop-color':'#fff','stop-opacity':v})));
+    [[0,1],[1,0]].forEach(([o,v])=>fadeY.append(node('stop',{offset:o,'stop-color':'#fff','stop-opacity':v})));
+    const maskX=node('mask',{id:'floor-mask-x',maskUnits:'userSpaceOnUse',x:-200,y:0,width:1400,height:300}),maskY=node('mask',{id:'floor-mask-y',maskUnits:'userSpaceOnUse',x:-200,y:0,width:1400,height:300});
+    maskX.append(node('rect',{x:-200,y:0,width:1400,height:300,fill:'url(#floor-fade-x)'}));maskY.append(node('rect',{x:-200,y:0,width:1400,height:300,fill:'url(#floor-fade-y)'}));
+    defs.append(fadeX,fadeY,maskX,maskY);svg.append(defs);
     fields.forEach((f,j)=>{
       const points=Array.from({length:181},(_,i)=>projectOrbit(f,i*Math.PI/90));
       const d=points.map((p,i)=>`${i?'L':'M'}${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' ')+' Z';
+      const floor=node('g',{'data-layer':'floor',mask:'url(#floor-mask-x)'}),shadows=node('g',{'data-layer':'floor-shadows',mask:'url(#floor-mask-y)'});floor.append(shadows);svg.append(floor);
       svg.append(node('path',{d,fill:'none',stroke:'url(#orbital-depth)','stroke-width':1.15,'data-orbit':f.name}));
       f.venues.forEach((venue,i)=>{
         const source=original.find(s=>s.alt===venue);if(!source)return;
         const slot=j===2?(Math.floor(i/2)+.5)*(i%2?-1:1):(i===0?0:(i%2===1?(i+1)/2:-i/2));
         const g=node('g',{'data-field':f.name}),img=node('image',{href:source.src,preserveAspectRatio:'xMidYMid meet'});
-        g.append(node('title',{},source.alt),img);svg.append(g);logos.push({g,img,slot,field:f,emphasis:logoEmphasis(source.alt)});
+        g.append(node('title',{},source.alt),img);svg.append(g);const shadow=node('image',{x:0,y:0,width:1,height:1,preserveAspectRatio:'none',visibility:'hidden'});shadows.append(shadow);makeSilhouette(source);logos.push({g,img,slot,field:f,shadow,name:source.alt,emphasis:logoEmphasis(source.alt)});
       });
     });
     const label=(x,y,text,size=18,color='#284451')=>svg.append(node('text',{x,y,'text-anchor':'middle',fill:color,'font-size':size,'font-family':'Inter, Arial, sans-serif','font-weight':500},text));
@@ -69,7 +107,7 @@
   }
   function draw(){
     const ordered=[];
-    logos.forEach(({g,img,ring,slot,cy,field,emphasis=1})=>{
+    logos.forEach(({g,img,ring,slot,cy,field,shadow,name,emphasis=1})=>{
       const [rx,ry,n,baseWidth]=field?[field.rx,field.ry,field.venues.length,field.width]:configs[mode][ring],speed=field?field.speed:[1,-.8,.6][ring];
       const cx=field?field.cx:500;cy=field?field.cy:cy;
       const a=Math.PI/2+slot*2*Math.PI/n+phase*speed;
@@ -77,6 +115,18 @@
       const {x,y,depth,scale}=projected,w=baseWidth*scale*emphasis,h=36*scale*emphasis;
       Object.entries({x:x-w/2,y:y-h/2,width:w,height:h}).forEach(([k,v])=>img.setAttribute(k,v));
       const rear=Math.max(0,-Math.sin(a));
+      const sil=field&&silhouettes.get(name);
+      if(sil){
+        // Drawn image area inside the meet-fitted box, expanded by the silhouette padding.
+        const p=scale/.86,gx=field.cx-500+field.rx*Math.cos(a),gy=field.rx*Math.sin(a);
+        let dw=w,dh=h;if(w/h>sil.aspect)dw=h*sil.aspect;else dh=w/sil.aspect;
+        const left=x-dw/2-sil.px*dw,right=x+dw/2+sil.px*dw,top=y-dh/2-sil.py*dh,bottom=y+dh/2+sil.py*dh;
+        const cast=(sx,sy)=>{const lift=FLOOR_DROP+(y-sy)/(Math.cos(elevation)*p);return project3(field,gx+(sx-x)/p+lightX*lift,gy+lightY*lift,-FLOOR_DROP)};
+        const o=cast(left,top),u=cast(right,top),v=cast(left,bottom);
+        if(shadow.getAttribute('href')!==sil.href){shadow.setAttribute('href',sil.href);shadow.setAttribute('visibility','visible')}
+        shadow.setAttribute('transform',`matrix(${(u.x-o.x).toFixed(3)} ${(u.y-o.y).toFixed(3)} ${(v.x-o.x).toFixed(3)} ${(v.y-o.y).toFixed(3)} ${o.x.toFixed(3)} ${o.y.toFixed(3)})`);
+        shadow.setAttribute('opacity',(SHADOW_ALPHA*(1-.35*rear)).toFixed(3));
+      }
       g.style.opacity=String(1-.28*rear);g.style.filter=rear?`blur(${(.65*rear).toFixed(3)}px)`:'none';g.style.mixBlendMode='multiply';ordered.push({g,depth});
     });
     ordered.sort((a,b)=>a.depth-b.depth).forEach(({g})=>svg.append(g));
