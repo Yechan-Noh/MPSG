@@ -1,9 +1,9 @@
-import {createIonSprites} from './ion-sprites.mjs?v=trapped-glow-20261010';
-import {SPECIES,SETTINGS,GEOMETRY} from './core.mjs?v=trapped-glow-20261010';
-import {createLogoArtwork} from './logos.mjs?v=trapped-glow-20261010';
+import {createIonSprites} from './ion-sprites.mjs?v=coulomb5x-20261010';
+import {SPECIES,SETTINGS,GEOMETRY} from './core.mjs?v=coulomb5x-20261010';
+import {createLogoArtwork} from './logos.mjs?v=coulomb5x-20261010';
 const artwork=await createLogoArtwork();
 const ionSprites=createIonSprites(SPECIES.map(species=>species.color));
-const canvas=document.querySelector('#scene'),ctx=canvas.getContext('2d'),worker=new Worker(new URL('./worker.mjs?v=trapped-glow-20261010',import.meta.url),{type:'module'});
+const canvas=document.querySelector('#scene'),ctx=canvas.getContext('2d'),worker=new Worker(new URL('./worker.mjs?v=coulomb5x-20261010',import.meta.url),{type:'module'});
 let state=null,paused=false,pending=false,timer=0,requestedAt=0,dpr=1,w=1000,h=238,visible=true;
 let membraneColor='#182d38';
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');paused=reduced.matches;
@@ -20,7 +20,7 @@ function draw(){
   // 90% transparent: tint the background only, leaving ions and logo ink clear.
   ctx.fillStyle='rgba(255,210,45,0.10)';ctx.fillRect(0,0,w,h);
  }
- canvas.dataset.pulseBackground=fieldOn?'yellow-10-percent':'off';canvas.dataset.pulsePeak=SETTINGS.pulsePeak;canvas.dataset.poreCharge=SETTINGS.poreCharge;canvas.dataset.naDepth=SETTINGS.naDepth;
+ canvas.dataset.pulseBackground=fieldOn?'yellow-10-percent':'off';canvas.dataset.pulsePeak=SETTINGS.pulsePeak;canvas.dataset.poreCharge=SETTINGS.poreCharge;canvas.dataset.ionCoulomb=SETTINGS.ionCoulomb;canvas.dataset.poreCoulomb=SETTINGS.coulomb;canvas.dataset.naDepth=SETTINGS.naDepth;
  // A single scale on both axes preserves all original logo proportions.
  const artScale=w/artwork.art.width;
  ctx.drawImage(artwork.art,0,0,artwork.art.width*artScale,artwork.art.height*artScale);

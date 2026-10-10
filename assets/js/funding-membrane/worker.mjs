@@ -1,5 +1,5 @@
-import {PoreGlowTracker} from './pore-glow.mjs?v=trapped-glow-20261010';
-import {IonMembrane,GEOMETRY} from './core.mjs?v=trapped-glow-20261010';
+import {PoreGlowTracker} from './pore-glow.mjs?v=coulomb5x-20261010';
+import {IonMembrane,GEOMETRY} from './core.mjs?v=coulomb5x-20261010';
 let sim,obstacleMask,glow;
 self.onmessage=({data})=>{
  if(data.obstacleMask)obstacleMask=data.obstacleMask;

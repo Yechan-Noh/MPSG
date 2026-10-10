@@ -3,7 +3,7 @@ import {insideRoundedWall, hitRoundedWall} from './rounded-walls.mjs?v=fast-cont
 // Reduced-unit visual model. Explicit monovalent ions; implicit dielectric solvent.
 export const SPECIES=[{label:'K⁺',charge:1,color:'#9467ce'},{label:'Na⁺',charge:1,color:'#e3b72e'},{label:'Cl⁻',charge:-1,color:'#429d70'}];
 export const GEOMETRY={width:44.8,height:41.58336,center:20.79168,viewHeight:10.6624,viewY:15.46048,radius:.24,poreWidth:.7744,edgeRadius:.18,poreCount:24,membraneHalf:.315,maskWidth:1000,maskHeight:238};
-export const SETTINGS={dt:.006,friction:6,temperature:1,pulsePeak:8.64,pulseDelay:2,pulseDuration:1.5,pulsePeriod:12,naDepth:5.0,kFriction:6,kCoreRepulsion:-3.0,kCoreShift:.18,kCaptureDepth:.6,kCaptureX:1.265,kCaptureY:2.07,poreCharge:-1.5,coulomb:.5};
+export const SETTINGS={dt:.006,friction:6,temperature:1,pulsePeak:8.64,pulseDelay:2,pulseDuration:1.5,pulsePeriod:12,naDepth:5.0,kFriction:6,kCoreRepulsion:-3.0,kCoreShift:.18,kCaptureDepth:.6,kCaptureX:1.265,kCaptureY:2.07,poreCharge:-1.5,coulomb:.5,ionCoulomb:2.5};
 export class IonMembrane {
  constructor({seed=74321,counts=[200,24,224],temperature=SETTINGS.temperature,friction=SETTINGS.friction,kFriction=SETTINGS.kFriction,kCoreRepulsion=SETTINGS.kCoreRepulsion,kCaptureDepth=SETTINGS.kCaptureDepth,field=0,interactions=true,membrane=true,pulsed=true,poreCharge=SETTINGS.poreCharge,pulsePeak=SETTINGS.pulsePeak,naDepth=SETTINGS.naDepth,preload=true,obstacleMask=null}={}){
   Object.assign(this,{temperature,friction,kFriction,kCoreRepulsion,kCaptureDepth,field,interactions,membrane,pulsed,poreCharge,pulsePeak,naDepth,obstacleMask});this.seed=seed>>>0;this.width=GEOMETRY.width;this.height=GEOMETRY.height;this.center=GEOMETRY.center;this.radius=GEOMETRY.radius;this.dt=SETTINGS.dt;this.time=0;
@@ -71,7 +71,7 @@ export class IonMembrane {
    const dx=this.delta(this.x[i]-this.x[j],this.width),dy=this.delta(this.y[i]-this.y[j],this.height),r2=Math.max(dx*dx+dy*dy,1e-10),r=Math.sqrt(r2);
    const q=SPECIES[this.type[i]].charge*SPECIES[this.type[j]].charge;
    // 3D Coulomb law evaluated in the 2D plane; minimum-image periodic approximation.
-   const f=SETTINGS.coulomb*q/(r2*r)+120*Math.max(0,.56-r)/r;
+   const f=SETTINGS.ionCoulomb*q/(r2*r)+120*Math.max(0,.56-r)/r;
    const fx=f*dx,fy=f*dy;this.fx[i]+=fx;this.fx[j]-=fx;this.fy[i]+=fy;this.fy[j]-=fy;
   }
  }
