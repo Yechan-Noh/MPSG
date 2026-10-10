@@ -1,10 +1,10 @@
-import {insideRoundedWall, hitRoundedWall} from './rounded-walls.mjs?v=field108-k100-20261010';
+import {insideRoundedWall, hitRoundedWall} from './rounded-walls.mjs?v=k200-capture-20261010';
 // Reduced-unit visual model. Explicit monovalent ions; implicit dielectric solvent.
 export const SPECIES=[{label:'K⁺',charge:1,color:'#9467ce'},{label:'Na⁺',charge:1,color:'#e3b72e'},{label:'Cl⁻',charge:-1,color:'#429d70'}];
-export const GEOMETRY={width:44.8,height:31.9872,center:15.9936,viewHeight:10.6624,viewY:10.6624,radius:.24,poreWidth:.7744,edgeRadius:.18,poreCount:24,membraneHalf:.315,maskWidth:1000,maskHeight:238};
-export const SETTINGS={dt:.006,friction:6,temperature:1,pulsePeak:10.8,pulseDelay:2,pulseDuration:1.5,pulsePeriod:12,naDepth:5.0,kFriction:6,kCoreRepulsion:3.0,kCoreShift:.18,kCaptureDepth:.6,kCaptureX:1.1,kCaptureY:1.8,poreCharge:-1.5,coulomb:.5};
+export const GEOMETRY={width:44.8,height:41.58336,center:20.79168,viewHeight:10.6624,viewY:15.46048,radius:.24,poreWidth:.7744,edgeRadius:.18,poreCount:24,membraneHalf:.315,maskWidth:1000,maskHeight:238};
+export const SETTINGS={dt:.006,friction:6,temperature:1,pulsePeak:10.8,pulseDelay:2,pulseDuration:1.5,pulsePeriod:12,naDepth:5.0,kFriction:6,kCoreRepulsion:-3.0,kCoreShift:.18,kCaptureDepth:.6,kCaptureX:1.265,kCaptureY:2.07,poreCharge:-1.5,coulomb:.5};
 export class IonMembrane {
- constructor({seed=74321,counts=[100,24,124],temperature=SETTINGS.temperature,friction=SETTINGS.friction,kFriction=SETTINGS.kFriction,kCoreRepulsion=SETTINGS.kCoreRepulsion,kCaptureDepth=SETTINGS.kCaptureDepth,field=0,interactions=true,membrane=true,pulsed=true,poreCharge=SETTINGS.poreCharge,pulsePeak=SETTINGS.pulsePeak,naDepth=SETTINGS.naDepth,preload=true,obstacleMask=null}={}){
+ constructor({seed=74321,counts=[200,24,224],temperature=SETTINGS.temperature,friction=SETTINGS.friction,kFriction=SETTINGS.kFriction,kCoreRepulsion=SETTINGS.kCoreRepulsion,kCaptureDepth=SETTINGS.kCaptureDepth,field=0,interactions=true,membrane=true,pulsed=true,poreCharge=SETTINGS.poreCharge,pulsePeak=SETTINGS.pulsePeak,naDepth=SETTINGS.naDepth,preload=true,obstacleMask=null}={}){
   Object.assign(this,{temperature,friction,kFriction,kCoreRepulsion,kCaptureDepth,field,interactions,membrane,pulsed,poreCharge,pulsePeak,naDepth,obstacleMask});this.seed=seed>>>0;this.width=GEOMETRY.width;this.height=GEOMETRY.height;this.center=GEOMETRY.center;this.radius=GEOMETRY.radius;this.dt=SETTINGS.dt;this.time=0;
   this.pores=Array.from({length:GEOMETRY.poreCount},(_,i)=>({x:(i+.5)*this.width/GEOMETRY.poreCount,width:GEOMETRY.poreWidth}));this.walls=[];let left=-1;
   for(const p of this.pores){this.walls.push([left,p.x-p.width/2,this.center-GEOMETRY.membraneHalf,this.center+GEOMETRY.membraneHalf]);left=p.x+p.width/2;}this.walls.push([left,this.width+1,this.center-GEOMETRY.membraneHalf,this.center+GEOMETRY.membraneHalf]);
@@ -55,7 +55,8 @@ export class IonMembrane {
     // K-specific broad capture well extends entrance attraction, separate from core residence.
     if(this.type[i]===0){const ax=SETTINGS.kCaptureX**2,ay=SETTINGS.kCaptureY**2;const g=Math.exp(-.5*(dx*dx/ax+dy*dy/ay));this.fx[i]-=this.kCaptureDepth*g*dx/ax;this.fy[i]-=this.kCaptureDepth*g*dy/ay;}
     if(this.type[i]===0||this.type[i]===1){
-     // Field-polarized K–pore core: shift the local repulsive barrier upstream
+     // Signed K core strength: negative repulsion gives a shallow binding well.
+     // Field-polarized K–pore core: shift the local interaction upstream
      // during the pulse. Bulk electric force, drag, and temperature are unchanged.
      const ky=dy+(this.type[i]===0?SETTINGS.kCoreShift*E/SETTINGS.pulsePeak:0);
      const depth=this.type[i]===1?this.naDepth:-this.kCoreRepulsion;
