@@ -4,10 +4,11 @@ title: "Publications"
 permalink: /publications/
 author_profile: false
 ---
+<link rel="stylesheet" href="{{ "/assets/css/mtsg-logo-gallery.css" | relative_url }}">
 <div class="mt-page publications-page">
 <section class="Journals">
-  <div class="logo-section-heading"><h1 class="journal-title">Publications</h1><a class="scholar-link" href="{{ site.author.googlescholar }}">Google Scholar <span aria-hidden="true">↗</span></a></div>
-
+  <div class="journal-exhibition" role="region" aria-label="Publication venues">
+    <p class="exhibition-caption">Publication venues</p>
   <div class="journal-bar" role="list" aria-label="Journals featuring our publications">
     <div class="journal-item size100" role="listitem">
       <img src="{{ '/assets/img/journals/Science_Advances.svg' | relative_url }}" alt="Science Advances">
@@ -56,6 +57,7 @@ author_profile: false
     </div>
 
   </div>
+  </div>
 </section>
 {% assign sorted_pubs = site.publications | sort: 'date' | reverse %}
 {% assign groups = sorted_pubs | group_by_exp: 'post', "post.date | date: '%Y'" %}
@@ -72,3 +74,5 @@ author_profile: false
 <p class="section-note">* Corresponding author. † Equal contribution. Manuscript status is labeled individually.</p>
 </section>
 </div>
+
+<script src="{{ "/assets/js/mtsg-logo-gallery.js" | relative_url }}" defer></script>
