@@ -11,7 +11,7 @@
   const params=new URLSearchParams(location.search);let mode=[1,2,3,4].includes(Number(params.get('orbits')))?Number(params.get('orbits')):4;
   const svg=node('svg',{role:'img','aria-label':'Journal logos rotating at uniform intervals, with subtle fading at the back'});svg.classList.add('elliptical-stage');svg.style.isolation='isolate';
   const configs={1:[[400,120,15,130]],2:[[400,160,9,134],[250,90,6,116]],3:[[400,180,5,142],[265,115,5,116],[135,50,5,90]]};
-  let logos=[],phase=0,last=0,elapsed=0;
+  let logos=[],phase=0,last=0;
   const reduce=matchMedia('(prefers-reduced-motion: reduce)');let paused=reduce.matches;
   const button=document.createElement('button');button.type='button';button.className='orbit-pause';
   function status(){button.textContent=paused?'▶':'Ⅱ';button.setAttribute('aria-label',paused?'Play journal rotation':'Pause journal rotation')}
@@ -19,7 +19,7 @@
   let options;
   if(params.get('study')==='1'){
     options=document.createElement('div');options.className='orbit-options';options.setAttribute('aria-label','Orbit design comparison');
-    [1,2,3,4].forEach(n=>{const b=document.createElement('button');b.type='button';b.textContent=n===4?'분야별 궤도':`${n}개 궤도`;b.dataset.orbits=n;b.onclick=()=>{mode=n;phase=0;elapsed=0;build();const q=new URLSearchParams(location.search);q.set('orbits',n);history.replaceState(null,'',`${location.pathname}?${q}`)};options.append(b)});gallery.append(options);
+    [1,2,3,4].forEach(n=>{const b=document.createElement('button');b.type='button';b.textContent=n===4?'분야별 궤도':`${n}개 궤도`;b.dataset.orbits=n;b.onclick=()=>{mode=n;phase=0;build();const q=new URLSearchParams(location.search);q.set('orbits',n);history.replaceState(null,'',`${location.pathname}?${q}`)};options.append(b)});gallery.append(options);
   }
   gallery.append(svg,button);gallery.classList.add('is-elliptical');
   function build(){
@@ -84,8 +84,7 @@
   function frame(now){
     const dt=last?Math.min((now-last)/1000,.05):0;last=now;
     if(!paused&&!document.hidden){
-      elapsed+=dt;
-      if(elapsed>1.2){phase+=dt*2*Math.PI*.7/45;draw();}
+      phase+=dt*2*Math.PI*.7/45;draw();
     }
     requestAnimationFrame(frame);
   }
