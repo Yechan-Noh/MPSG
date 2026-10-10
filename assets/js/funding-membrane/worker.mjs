@@ -1,4 +1,4 @@
-import {IonMembrane} from './core.mjs?v=lean-reservoir-20261010';
+import {IonMembrane} from './core.mjs?v=field108-k100-20261010';
 let sim,obstacleMask;
 self.onmessage=({data})=>{
  if(data.obstacleMask)obstacleMask=data.obstacleMask;
