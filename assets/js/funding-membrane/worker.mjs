@@ -1,5 +1,5 @@
-import {PoreGlowTracker} from './pore-glow.mjs?v=playback15-20261010';
-import {IonMembrane,GEOMETRY} from './core.mjs?v=playback15-20261010';
+import {PoreGlowTracker} from './pore-glow.mjs?v=field9-period9-20261010';
+import {IonMembrane,GEOMETRY} from './core.mjs?v=field9-period9-20261010';
 const PLAYBACK_RATE=1.5;
 let sim,obstacleMask,glow;
 self.onmessage=({data})=>{
