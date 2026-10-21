@@ -15,6 +15,6 @@ analytics: false
 <link rel="stylesheet" href="{{ '/assets/css/owner/overview.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 </head><body data-owner-mode="dashboard">
 <main data-owner-panel><h1>Owner sign-in</h1><p data-owner-status role="status">Sign in with the authorized Google account.</p><button data-owner-signin type="button">Continue with Google</button><p style="font-size:14px">This browser will remember you. Private reports still require valid Google authorization.</p><button data-owner-forget type="button" hidden style="background:transparent;color:var(--site-ink);padding-left:0;font-size:14px">Forget this browser</button><a class="back" href="{{ '/' | relative_url }}">Return to website</a></main>
-<script defer src="{{ '/assets/js/owner/overview.js' | relative_url }}"></script>
+<script defer src="{{ '/assets/js/owner/overview.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script defer src="{{ '/assets/js/owner/access.js' | relative_url }}" data-base="{{ site.baseurl }}"></script>
 </body></html>
