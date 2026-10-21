@@ -32,7 +32,8 @@ test('all report requests are site-scoped, and country/device affect every repor
   const f=JSON.stringify(q.dimensionFilter);for(const expected of ['yechan-noh.github.io','/MPSG/','/MPSG/dashboard','/MPSG/owner','South Korea','mobile'])assert.ok(f.includes(expected));
   assert.ok(!JSON.stringify(q).includes('userId'));assert.ok(!JSON.stringify(q).includes('ipAddress'));
  }
- assert.ok(JSON.stringify(queries.states).includes('countryId'));
+ assert.equal(queries.states,undefined);
+ assert.ok(JSON.stringify(api.requests(p,{country:'United States'}).states).includes('countryId'));
  assert.deepEqual(queries.previous.dateRanges,[{startDate:'2026-10-12',endDate:'2026-10-14'}]);
 });
 test('days with no reported rows are zero; future days are not zero-valued visits',()=>{

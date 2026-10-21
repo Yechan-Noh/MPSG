@@ -90,7 +90,8 @@
       sources:request(range,['sessionSourceMedium'],['sessions','engagedSessions','userEngagementDuration'],filters,{sort:'sessions'}),
       locations:request(range,['country','region','city'],['sessions','activeUsers','userEngagementDuration'],filters,{sort:'sessions',limit:500}),
       countries:request(range,['countryId','country'],['sessions'],filters,{sort:'sessions',limit:300}),
-      states:request(range,['region'],['sessions'],filters,{sort:'sessions',us:true,limit:100}),
+      // A non-US country selection cannot contain US states. Avoid contradictory geo filters.
+      ...(!filters.country || filters.country==='United States' ? {states:request(range,['region'],['sessions'],filters,{sort:'sessions',us:true,limit:100})} : {}),
       devices:request(range,['deviceCategory'],['sessions'],filters,{sort:'sessions'}),
       hours:request(range,['dateHour'],['screenPageViews'],filters,{limit:3000}),
       events:request(range,['eventName'],['eventCount'],filters,{sort:'eventCount'}),
@@ -218,7 +219,10 @@
       }
       const body=await response.json();
       if(!Array.isArray(body.reports)||body.reports.length!==batch.length)throw new Error('The analytics response is incomplete.');
-      body.reports.forEach((report,j)=> { rows(report); result[batch[j][0]]=report; });
+      body.reports.forEach((report,j)=> {
+        try { rows(report); } catch { throw new Error(`Google returned an incomplete ${batch[j][0]} report. Please refresh to retry.`); }
+        result[batch[j][0]]=report;
+      });
     }
     return result;
   }
