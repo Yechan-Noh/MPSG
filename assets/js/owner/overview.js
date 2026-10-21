@@ -205,6 +205,15 @@
     const selected = type==='daily'?parent.daily:detail[type];
     return rows(selected).map(r=>({report:type,timezone,period_start:type==='daily'?parent.current.dateRanges?.[0]?.startDate||'':range.start,period_end:type==='daily'?parent.current.dateRanges?.[0]?.endDate||'':range.end,...r,...('date' in r?{date:isoDate(r.date)}:{})}));
   }
+  function normalizeReport(report, query) {
+    // GA can omit column headers on a recognized report with no matching rows.
+    // Do not accept a missing/malformed response or discard nonempty rows.
+    const empty=report && (!report.rows || Array.isArray(report.rows)&&report.rows.length===0) && Number(report.rowCount||0)===0;
+    if (!Array.isArray(report?.metricHeaders) && empty && (report.kind==='analyticsData#runReport' || report.metadata?.emptyReason)) {
+      return {...report,dimensionHeaders:query.dimensions||[],metricHeaders:query.metrics||[],rows:[],rowCount:0};
+    }
+    return report;
+  }
   async function fetchReports(specs, {propertyId,session,signal,fetcher=fetch}) {
     const entries=Object.entries(specs), result={};
     for(let i=0;i<entries.length;i+=5) {
@@ -219,7 +228,8 @@
       }
       const body=await response.json();
       if(!Array.isArray(body.reports)||body.reports.length!==batch.length)throw new Error('The analytics response is incomplete.');
-      body.reports.forEach((report,j)=> {
+      body.reports.forEach((rawReport,j)=> {
+        const report=normalizeReport(rawReport,batch[j][1]);
         try { rows(report); } catch { throw new Error(`Google returned an incomplete ${batch[j][0]} report. Please refresh to retry.`); }
         result[batch[j][0]]=report;
       });
@@ -336,5 +346,5 @@
   }
   const api={mount};
   if(typeof window!=='undefined')window.MTSGOverview=api;
-  if(typeof module!=='undefined')module.exports={...api,esc,number,duration,ratio,delta,rows,request,requests,todayInZone,periodFor,focusRange,dailySeries,calendar,heatmap,render,mapGraphic,csv,exportRows,fetchReports};
+  if(typeof module!=='undefined')module.exports={...api,esc,number,duration,ratio,delta,rows,request,requests,todayInZone,periodFor,focusRange,dailySeries,calendar,heatmap,render,mapGraphic,csv,exportRows,normalizeReport,fetchReports};
 })();

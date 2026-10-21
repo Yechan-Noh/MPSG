@@ -67,3 +67,11 @@ test('authorization is still checked by the private Drive document before mounti
  const access=fs.readFileSync('assets/js/owner/access.js','utf8');assert.ok(access.indexOf('await protectedContent(session)')<access.indexOf("if (mode === 'dashboard') mountReport()"));
  const source=fs.readFileSync('assets/js/owner/overview.js','utf8');assert.ok(!/localStorage|sessionStorage/.test(source));assert.ok(source.includes('credentials:\'omit\''));
 });
+
+test('recognized empty GA reports are empty, while malformed/nonempty reports still fail',async()=>{
+ const query={dimensions:[{name:'country'}],metrics:[{name:'sessions'}]};
+ const empty=api.normalizeReport({kind:'analyticsData#runReport',rowCount:0},query);assert.deepEqual(api.rows(empty),[]);assert.equal(empty.metricHeaders[0].name,'sessions');
+ assert.throws(()=>api.rows(api.normalizeReport({},query)));
+ assert.throws(()=>api.rows(api.normalizeReport({kind:'analyticsData#runReport',rowCount:1,rows:[{metricValues:[{value:'2'}]}]},query)));
+ const got=await api.fetchReports({previous:query},{propertyId:'123',session:{token:'test-only'},fetcher:async()=>({ok:true,json:async()=>({reports:[{kind:'analyticsData#runReport',metadata:{emptyReason:'No matching data'}}]})})});assert.deepEqual(api.rows(got.previous),[]);
+});
