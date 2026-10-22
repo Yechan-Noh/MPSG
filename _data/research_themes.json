@@ -11,9 +11,10 @@
     "id": "selective-transport",
     "title": "Selective Ion Transport",
     "intro": "This research examines the molecular basis of selective transport, with the goal of separating valuable elements using fewer resources and generating less waste.",
-    "image": "/assets/img/research/bioinspired-separation.png",
-    "caption": "Ion-channel-inspired membrane concepts for separating rare-earth ions.",
-    "background_html": "In 2024, 91% of the world’s refined magnet rare earths came from a single country. Their chemical similarity makes separation difficult, limiting routes to more resilient supply chains. <span class=\"muted\">(IEA, 2026).</span>"
+    "image": "/assets/img/research/rare-earth-separation-20261021.png",
+    "caption": "Lanmodulin and K⁺ channels illustrate biological ion coordination alongside a conceptual synthetic nanopore for rare-earth separation through entry, binding, and release. The Nd³⁺/Dy³⁺ contrast is illustrative and does not report measured separation performance.",
+    "background_html": "In 2024, 91% of the world’s refined magnet rare earths came from a single country. Their chemical similarity makes separation difficult, limiting routes to more resilient supply chains. <span class=\"muted\">(IEA, 2026).</span>",
+    "alt": "Lanmodulin and a potassium channel with enlarged ion-coordination sites beside a synthetic nanopore showing rare-earth-ion entry, binding, and release."
   },
   {
     "id": "interfacial-recognition",
