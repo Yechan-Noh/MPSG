@@ -91,7 +91,8 @@
 .research-panel-heading{background:var(--site-ink);color:var(--site-on-dark)}.research-panel-heading h2{color:var(--site-on-dark)}
 .pub-card{border-color:var(--site-line);box-shadow:0 3px 10px rgba(24,45,56,.05)}
 .pub-grid .year-tag,.mt-page .pub-card .pub-title,.pub-meta .journal{color:var(--site-ink)}
-.pub-card .badge{background:#d0dcdf;color:var(--site-ink)}.pub-card .badge--submitted{background:#e7edef;color:var(--site-muted)}
+/* Restore the original yellow status and recommendation labels. */
+.pub-card .badge,.pub-card .badge--submitted{background:#ffd966;color:#222}
 .pub-card--submitted{background:var(--site-soft);border-color:#e1e6e7}.pub-card--published-current{border-color:var(--site-ink);box-shadow:0 3px 12px rgba(24,45,56,.1)}
 .mt-page .pub-meta a{color:var(--site-accent)}.pub-card:hover{box-shadow:0 5px 14px rgba(24,45,56,.12)}
 
