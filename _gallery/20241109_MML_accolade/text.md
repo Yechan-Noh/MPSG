@@ -1,6 +1,7 @@
 ---
 title: MML Postdoctoral Accolade
 date: 2024-11-09
-authors: ["Yechan"] # Posted by whom?
+authors: ["Yechan"]
+summary: "MML Postdoctoral Accolade at the National Institute of Standards and Technology."
 ---
-I was honored to receive a competitive postdoctoral award from the NIST Material Measurement Laboratory (MML), selected from an extensive pool of outstanding researchers.
+MML Postdoctoral Accolade at the National Institute of Standards and Technology.

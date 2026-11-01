@@ -197,3 +197,10 @@ body{color:var(--site-ink);background:var(--site-paper)}
 .award-media-grid figcaption{margin-top:7px;font-size:12px;line-height:1.5;color:var(--mt-muted,#596873)}
 .news-card>.award-media-grid{margin:18px 20px 0;gap:12px}
 @media(max-width:420px){.award-media-grid{grid-template-columns:1fr}.award-media-grid .award-media-lead{grid-column:auto}}
+
+/* Gallery: visible photo sets with concise captions and separate credits. */
+.gallery-wrap .gallery-media a{display:block;width:100%}
+.gallery-wrap .gallery-photo-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 20px 20px}
+.gallery-wrap .gallery-photo-pair a{display:block;min-width:0}
+.gallery-wrap .gallery-photo-pair img{display:block;width:100%;height:auto;border-radius:4px}
+.gallery-wrap .gallery-credit{font-size:12px;line-height:1.5;color:var(--mt-muted)}
