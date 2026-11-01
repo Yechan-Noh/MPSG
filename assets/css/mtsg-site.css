@@ -204,3 +204,7 @@ body{color:var(--site-ink);background:var(--site-paper)}
 .gallery-wrap .gallery-photo-pair a{display:block;min-width:0}
 .gallery-wrap .gallery-photo-pair img{display:block;width:100%;height:auto;border-radius:4px}
 .gallery-wrap .gallery-credit{font-size:12px;line-height:1.5;color:var(--mt-muted)}
+
+/* Progressive enhancement: retain the ordinary grid when scripts are unavailable. */
+.gallery-wrap .gallery-grid.gallery-masonry{display:block;position:relative}
+.gallery-wrap .gallery-masonry>.gallery-card{position:absolute;margin:0}
