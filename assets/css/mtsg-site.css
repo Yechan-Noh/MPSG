@@ -186,3 +186,14 @@ body{color:var(--site-ink);background:var(--site-paper)}
 .research-page .support-roster .support-logo-art img{position:absolute;display:block;width:var(--source-width);max-width:none;height:auto;max-height:none;left:var(--source-left);top:var(--source-top);margin:0;object-fit:initial}
 @media(max-width:900px){.research-page .support-roster .support-logos[aria-label^="Previous"]{grid-template-columns:repeat(3,minmax(0,1fr))}.research-page .support-logos[aria-label^="Previous"] .support-logo{border-bottom:1px solid #edf0f1}.research-page .support-logos[aria-label^="Previous"] .support-logo:nth-last-child(-n+3){border-bottom:0}}
 @media(max-width:600px){.research-page .support-roster .funding-title{font-size:26px!important}.research-page .support-roster .support-logos,.research-page .support-roster .support-logos[aria-label^="Previous"]{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:12px}.research-page .support-roster .support-logo{height:58px;border-bottom:1px solid #edf0f1!important}.research-page .support-roster .support-logo:nth-last-child(-n+2){border-bottom:0!important}.research-page .support-logo-art{width:calc(var(--art-width)*.92)}}
+
+/* MUACC award: presentation photograph above two uncropped supporting images. */
+.award-media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:24px 0;align-items:start}
+.award-media-grid figure{margin:0;min-width:0}
+.award-media-grid .award-media-lead{grid-column:1/-1}
+.award-media-grid a{display:block;background:#fff;border:1px solid var(--mt-line,#dbe2e5);border-radius:5px;overflow:hidden}
+.award-media-grid img{display:block;width:100%;height:auto;margin:0}
+.award-media-grid .award-certificate{image-orientation:none}
+.award-media-grid figcaption{margin-top:7px;font-size:12px;line-height:1.5;color:var(--mt-muted,#596873)}
+.news-card>.award-media-grid{margin:18px 20px 0;gap:12px}
+@media(max-width:420px){.award-media-grid{grid-template-columns:1fr}.award-media-grid .award-media-lead{grid-column:auto}}

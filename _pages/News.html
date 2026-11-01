@@ -87,6 +87,7 @@ author_profile: false
             </div>
             {%- endif -%}
 
+            {%- if post.award_media -%}{% include muacc-award-media.html %}{%- endif -%}
             <div class="news-body">
                 <p class="news-summary">
                     {%- if post.summary -%}
@@ -98,7 +99,7 @@ author_profile: false
                     {%- endif -%}
                 </p>
                 <div class="news-full" hidden>
-                    {{ post.content }}
+                    {% if post.award_media %}<p>Presented by <em>Analyst</em> for outstanding research communication and excellence in poster presentation.</p><p><a href="{{ post.url | relative_url }}">Read the award announcement</a></p>{% else %}{{ post.content }}{% endif %}
                 </div>
 
                 <!-- Combined meta + button -->
