@@ -6,6 +6,7 @@ authors: ["Yechan Noh"]
 summary: "Yechan Noh received a Poster Award presented by Analyst at the 2026 Midwestern Universities Analytical Chemistry Conference (MUACC)."
 permalink: "/news/2026-10-25-muacc-poster-award/"
 award_media: true
+photo_credit: "Poster discussion photo by Hongchen"
 ---
 
 Yechan Noh received a Poster Award presented by *Analyst* at the **2026 Midwestern Universities Analytical Chemistry Conference (MUACC)** on October 25, 2026, recognizing outstanding research communication and excellence in poster presentation.

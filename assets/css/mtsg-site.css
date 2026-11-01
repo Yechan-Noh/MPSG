@@ -212,3 +212,11 @@ body{color:var(--site-ink);background:var(--site-paper)}
 /* News cards fill the space beside taller photo stories at their original width. */
 .updates-page .news-grid.gallery-masonry{display:block;position:relative}
 .updates-page .news-grid.gallery-masonry>.news-card{position:absolute;margin:0}
+
+/* News uses the same visible-photo and credit treatment as Gallery. */
+.news-wrap .news-media a{display:block;width:100%}
+.news-wrap .news-photo-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 20px 20px}
+.news-wrap .news-photo-pair img{display:block;width:100%;height:auto;border-radius:4px}
+.news-wrap .news-photo-credit{font-size:12px;line-height:1.5;color:var(--mt-muted)}
+.news-wrap .news-source{margin:0 0 14px;font-size:13px}
+.news-wrap .award-media-grid figcaption{font-family:inherit}

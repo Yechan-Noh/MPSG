@@ -2,6 +2,7 @@
 title: 2D Nanofluidic Memristor Paper Published in Science Advances
 date: 2024-11-06
 authors: ["Yechan"]
+source_url: "https://www.science.org/doi/full/10.1126/sciadv.adr1531"
 ---
 Our computational demonstration of synaptic plasticity in a 2D porous membrane is now available online! We are deeply grateful for this achievement.
 

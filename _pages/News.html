@@ -83,7 +83,7 @@ author_profile: false
             <h2 class="news-header">{{ post.title }}</h2>
             {%- if cover_img != nil and cover_img != '' -%}
             <div class="news-media">
-                <img src="{{ cover_img | relative_url }}" alt="{{ post.title | escape }}" loading="lazy">
+                <a href="{{ cover_img | relative_url }}" target="_blank" rel="noopener"><img src="{{ cover_img | relative_url }}" alt="{{ post.title | escape }}" loading="lazy"></a>
             </div>
             {%- endif -%}
 
@@ -98,26 +98,23 @@ author_profile: false
                     {{ post.content | strip_html | truncate: 180 }}
                     {%- endif -%}
                 </p>
-                <div class="news-full" hidden>
-                    {% if post.award_media %}<p>Presented by <em>Analyst</em> for outstanding research communication and excellence in poster presentation.</p><p><a href="{{ post.url | relative_url }}">Read the award announcement</a></p>{% else %}{{ post.content }}{% endif %}
-                </div>
-
+                {% if post.source_url %}<p class="news-source"><a href="{{ post.source_url }}" target="_blank" rel="noopener">View paper ↗</a></p>{% endif %}
                 <!-- Combined meta + button -->
                 <div class="news-meta">
                     <div class="news-meta-left">
-                        <span class="posted-pill">Posted by {{ posted_by }}</span>
+                        <span class="posted-pill">Posted by {{ posted_by | replace: "Yechan Noh", "Yechan" }}</span>
+                        {% if post.photo_credit %}<span class="news-photo-credit">{{ post.photo_credit }}</span>{% endif %}
                         <span class="news-date">{{ date_str }}</span>
                     </div>
-                    <button class="expand-btn" type="button" aria-expanded="false">Read more</button>
                 </div>
             </div>
 
             {%- if imgs.size > 1 -%}
-            <div class="thumbs" aria-label="More images">
+            <div class="news-photo-pair" aria-label="More images">
                 {%- assign shown = 0 -%}
                 {%- for img in imgs -%}
-                {%- if img != cover_img and shown < 4 -%} <img src="{{ img | relative_url }}"
-                    alt="{{ post.title | escape }} extra image" loading="lazy">
+                {%- if img != cover_img  -%} <a href="{{ img | relative_url }}" target="_blank" rel="noopener"><img src="{{ img | relative_url }}"
+                    alt="{{ post.title | escape }} extra image" loading="lazy"></a>
                     {%- assign shown = shown | plus: 1 -%}
                     {%- endif -%}
                     {%- endfor -%}
@@ -128,28 +125,4 @@ author_profile: false
     </div>
 </div>
 
-<script>
-    (function () {
-        document.addEventListener('click', (e) => {
-            const btn = e.target.closest('.expand-btn');
-            if (!btn) return;
-            const card = btn.closest('.news-card');
-            const full = card.querySelector('.news-full');
-            const summary = card.querySelector('.news-summary');
-            if (!full) return;
-            const open = !full.hasAttribute('hidden');
-            if (open) {
-                full.setAttribute('hidden', '');
-                if (summary) summary.style.display = '';
-                btn.textContent = 'Read more';
-                btn.setAttribute('aria-expanded', 'false');
-            } else {
-                full.removeAttribute('hidden');
-                if (summary) summary.style.display = 'none';
-                btn.textContent = 'Show less';
-                btn.setAttribute('aria-expanded', 'true');
-            }
-        });
-    })();
-</script>
 <script src="{{ '/assets/js/mtsg-gallery-masonry.js' | relative_url }}" defer></script>

@@ -2,6 +2,7 @@
 title: Our recent research is now available in JPCB
 date: 2025-05-06
 authors: ["Yechan"]
+source_url: "https://pubs.acs.org/doi/full/10.1021/acs.jpcb.5c00921"
 ---
 Our comprehensive molecular dynamics research on the transition between diffusion- to barrier-limited transport is published in the Journal of Physical Chemistry B. 
 
