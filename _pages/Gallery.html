@@ -83,7 +83,7 @@ author_profile: false
             <h2 class="gallery-header">{{ post.title }}</h2>
             {%- if cover_img != nil and cover_img != '' -%}
             <div class="gallery-media">
-                <img src="{{ cover_img | relative_url }}" alt="{{ post.title | escape }}" loading="lazy">
+                <a href="{{ cover_img | relative_url }}" target="_blank" rel="noopener"><img src="{{ cover_img | relative_url }}" alt="{{ post.title | escape }}" loading="lazy"></a>
             </div>
             {%- endif -%}
 
@@ -97,29 +97,23 @@ author_profile: false
                     {{ post.content | strip_html | truncate: 180 }}
                     {%- endif -%}
                 </p>
-                <div class="gallery-full" hidden>
-                    {{ post.content }}
-                </div>
-
                 <!-- Combined meta + button -->
                 <div class="gallery-meta">
                     <div class="gallery-meta-left">
                         <span class="posted-pill">Posted by {{ posted_by }}</span>
+                        {% if post.photographer %}<span class="gallery-credit">Photos taken by {{ post.photographer }}</span>{% endif %}
                         <span class="gallery-date">{{ date_str }}</span>
                     </div>
-                    <button class="expand-btn" type="button" aria-expanded="false">Read more</button>
                 </div>
             </div>
 
             {%- if imgs.size > 1 -%}
-            <div class="thumbs" aria-label="More images">
-                {%- assign shown = 0 -%}
+            <div class="gallery-photo-pair" aria-label="More conference photos">
                 {%- for img in imgs -%}
-                {%- if img != cover_img and shown < 4 -%} <img src="{{ img | relative_url }}"
-                    alt="{{ post.title | escape }} extra image" loading="lazy">
-                    {%- assign shown = shown | plus: 1 -%}
-                    {%- endif -%}
-                    {%- endfor -%}
+                {%- if img != cover_img -%}
+                <a href="{{ img | relative_url }}" target="_blank" rel="noopener"><img src="{{ img | relative_url }}" alt="{{ post.title | escape }} — additional photo" loading="lazy"></a>
+                {%- endif -%}
+                {%- endfor -%}
             </div>
             {%- endif -%}
         </article>
@@ -127,27 +121,3 @@ author_profile: false
     </div>
 </div>
 
-<script>
-    (function () {
-        document.addEventListener('click', (e) => {
-            const btn = e.target.closest('.expand-btn');
-            if (!btn) return;
-            const card = btn.closest('.gallery-card');
-            const full = card.querySelector('.gallery-full');
-            const summary = card.querySelector('.gallery-summary');
-            if (!full) return;
-            const open = !full.hasAttribute('hidden');
-            if (open) {
-                full.setAttribute('hidden', '');
-                if (summary) summary.style.display = '';
-                btn.textContent = 'Read more';
-                btn.setAttribute('aria-expanded', 'false');
-            } else {
-                full.removeAttribute('hidden');
-                if (summary) summary.style.display = 'none';
-                btn.textContent = 'Show less';
-                btn.setAttribute('aria-expanded', 'true');
-            }
-        });
-    })();
-</script>
