@@ -108,8 +108,6 @@
         g.append(node('title',{},source.alt),img);svg.append(g);const shadow=node('image',{x:0,y:0,width:1,height:1,preserveAspectRatio:'none',visibility:'hidden'});shadows.append(shadow);makeSilhouette(source);logos.push({g,img,slot,field:f,shadow,name:source.alt,emphasis:logoEmphasis(source.alt)});
       });
     });
-    const label=(x,y,text,size=18,color='#284451')=>svg.append(node('text',{x,y,'text-anchor':'middle',fill:color,'font-size':size,'font-family':'Inter, Arial, sans-serif','font-weight':500},text));
-    label(500,31,'CHEMISTRY · PHYSICS · MATERIALS',14,'#284451');
   }
   function draw(){
     const ordered=[];
