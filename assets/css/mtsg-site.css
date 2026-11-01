@@ -208,3 +208,7 @@ body{color:var(--site-ink);background:var(--site-paper)}
 /* Progressive enhancement: retain the ordinary grid when scripts are unavailable. */
 .gallery-wrap .gallery-grid.gallery-masonry{display:block;position:relative}
 .gallery-wrap .gallery-masonry>.gallery-card{position:absolute;margin:0}
+
+/* News cards fill the space beside taller photo stories at their original width. */
+.updates-page .news-grid.gallery-masonry{display:block;position:relative}
+.updates-page .news-grid.gallery-masonry>.news-card{position:absolute;margin:0}

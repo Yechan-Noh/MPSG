@@ -1,8 +1,8 @@
-/* Pack chronological gallery cards into the shortest available column. */
+/* Pack chronological news and gallery cards into the shortest available column. */
 (() => {
-  const grid = document.querySelector('#gallery-grid');
+  const grid = document.querySelector('#gallery-grid, #news-grid');
   if (!grid) return;
-  const cards = [...grid.querySelectorAll('.gallery-card')];
+  const cards = [...grid.querySelectorAll('.gallery-card, .news-card')];
   let pending = 0;
   function arrange() {
     pending = 0;
