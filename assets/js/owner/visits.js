@@ -112,6 +112,7 @@
     function draw(){list.innerHTML=renderVisits(data,timezone,view.search,view);find('[data-visit-kind]').value=view.kind;find('[data-visit-filter]').textContent=[view.city?'City: '+JSON.parse(view.city).slice().reverse().join(', '):'',view.browser?'Same browser in selected dates':'',loaded?`${filterVisits(data,view).length} matching ${filterVisits(data,view).length===1?'visit':'visits'}`:''].filter(Boolean).join(' · ');}
     async function load(fresh=false) {
       if(disposed||!getSession())return;
+      if(range.end<'2026-11-06'){attempted=true;status.textContent='Individual visit exports begin November 6, 2026. This selection is before collection began. Historical city and page totals are available in Overview.';return;}
       const key=JSON.stringify([range.start,range.end,filters]);
       attempted=true;button.disabled=true;status.textContent='Loading daily visit records…';
       try {
