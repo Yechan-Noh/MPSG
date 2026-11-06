@@ -78,6 +78,9 @@
     const expressions = [match('hostName','yechan-noh.github.io'), match('pagePath',SITE_PATHS,'FULL_REGEXP'), {notExpression:{orGroup:{expressions:['/dashboard','/owner','/MPSG/dashboard','/MPSG/owner'].map(path => match('pagePath',path,'BEGINS_WITH'))}}}];
     if (filters.country) expressions.push(match('country', filters.country));
     if (filters.device) expressions.push(match('deviceCategory', filters.device));
+    if (filters.city) {const [country,region,city]=JSON.parse(filters.city);expressions.push(match('country',country),match('region',region),match('city',city));}
+    if (options.path) expressions.push(match('pagePath',options.path,'FULL_REGEXP'));
+    if (options.returning) expressions.push(match('newVsReturning','returning'));
     if (options.us) expressions.push(match('countryId','US'));
     if (options.event) expressions.push(match('eventName',options.event));
     return {dateRanges:[{startDate:range.start,endDate:range.end}], dimensions:dimensions.map(name=>({name})), metrics:metrics.map(name=>({name})), dimensionFilter:{andGroup:{expressions}}, limit:String(options.limit || 200),
@@ -86,11 +89,14 @@
   function requests(range, filters = {}, daily = true) {
     const previous = {start:range.comparisonStart,end:range.comparisonEnd};
     return {
-      current:request(range,[],TOTALS,filters), previous:request(previous,[],TOTALS,filters),
+      current:request(range,[],TOTALS,filters),
+      returning:request(range,[],['sessions'],filters,{returning:true}),
+      research:request(range,[],['sessions'],filters,{path:'^/(MPSG/)?(research|publications)(/.*)?$'}),
+      links:request(range,['linkUrl'],['eventCount'],filters,{event:'click',sort:'eventCount',limit:1000}), previous:request(previous,[],TOTALS,filters),
       ...(daily ? {daily:request(range,['date'],TOTALS,filters,{limit:100})} : {}),
       pages:request(range,['pagePath'],['screenPageViews','activeUsers','userEngagementDuration'],filters,{sort:'screenPageViews',limit:200}),
       sources:request(range,['sessionSourceMedium'],['sessions','engagedSessions','userEngagementDuration'],filters,{sort:'sessions'}),
-      locations:request(range,['country','region','city'],['sessions','activeUsers','userEngagementDuration'],filters,{sort:'sessions',limit:500}),
+      locations:request(range,['country','region','city'],['sessions','activeUsers','userEngagementDuration'],{...filters,city:''},{sort:'sessions',limit:500}),
       cityPages:request(range,['date','country','region','city','pagePath'],['screenPageViews','userEngagementDuration'],filters,{sort:'screenPageViews',limit:10000}),
       countries:request(range,['countryId','country'],['sessions'],filters,{sort:'sessions',limit:300}),
       // A non-US country selection cannot contain US states. Avoid contradictory geo filters.
@@ -170,46 +176,54 @@
       if (!groups.has(key)) groups.set(key,{...r,views:0,engagement:0,items:[]});
       const group=groups.get(key); group.views+=r.screenPageViews; group.engagement+=r.userEngagementDuration; group.items.push(r);
     }
-    return [...groups.values()].sort((a,b)=>b.views-a.views).slice(0,100).map(g=>`<details class="ov-city"><summary><span><strong>${esc(g.city==='(not set)'?'City unavailable':g.city)}</strong><small>${esc(g.region)} · ${esc(g.country)}</small></span><span>${number(g.views)} ${g.views===1?'view':'views'}<small>${duration(g.engagement)} engagement</small></span></summary>${table(['Day','Page','Views','Engagement'],g.items.sort((a,b)=>b.date.localeCompare(a.date)||b.screenPageViews-a.screenPageViews).map(r=>[esc(isoDate(r.date)),esc(r.pagePath),number(r.screenPageViews),duration(r.userEngagementDuration)]))}</details>`).join('') || '<p class="ov-empty">No city-level page activity reported.</p>';
+    return [...groups.values()].sort((a,b)=>b.views-a.views).slice(0,100).map(g=>`<details class="ov-city"><summary><span><strong>${esc(g.city==='(not set)'?'City unavailable':g.city)}</strong><small>${esc(g.region)} · ${esc(g.country)}</small></span><span>${number(g.views)} ${g.views===1?'view':'views'}<small>${duration(g.engagement)} engagement</small></span></summary>${table(['Day','Page','Views','Engagement'],g.items.sort((a,b)=>b.date.localeCompare(a.date)||b.screenPageViews-a.screenPageViews).map(r=>[esc(isoDate(r.date)),esc(pageName(r.pagePath)),number(r.screenPageViews),duration(r.userEngagementDuration)]))}</details>`).join('') || '<p class="ov-empty">No city-level page activity reported.</p>';
   }
   function layout() {
     return `<header class="ov-header"><div><a href="${BASE}/">MTSG</a><span>PRIVATE ANALYTICS</span></div><nav><span class="ov-readonly">Read-only connection</span><a href="${BASE}/">Website ↗</a><button type="button" data-ov-signout>Sign out</button></nav></header>
-    <main class="ov-main"><div class="ov-title"><div><p class="ov-eyebrow">Molecular Transport Simulation Group</p><h1>Site Overview<span>.</span></h1><p class="ov-subtitle">A closer look at when, where, and how your work is explored.</p></div><button type="button" data-ov-refresh>↻ Refresh data</button></div>
+    <main class="ov-main"><div class="ov-title"><div><p class="ov-eyebrow">Molecular Transport Simulation Group</p><h1>Site overview</h1><p class="ov-subtitle">Visits, locations and interest in your work.</p></div><button type="button" data-ov-refresh>↻ Refresh data</button></div>
     <p class="ov-owner-status" data-ov-owner-status></p>
     <form class="ov-toolbar" data-ov-form><label>Reporting period<select aria-label="Reporting period" data-ov-period><option value="week">This week</option><option value="last-week">Last week</option><option value="7">Last 7 days</option><option value="28">Last 28 days</option><option value="90">Last 90 days</option><option value="custom">Custom dates</option></select></label><div class="ov-custom" data-ov-custom hidden><label>From<input type="date" data-ov-start aria-label="From date" required></label><label>Through<input type="date" data-ov-end aria-label="Through date" required></label><button type="submit">Apply dates</button></div><label>Country<select aria-label="Country" data-ov-country><option value="">All countries</option></select></label><label>Device<select aria-label="Device" data-ov-device><option value="">All devices</option><option>desktop</option><option>mobile</option><option>tablet</option><option>smart tv</option></select></label><button class="ov-reset" type="button" data-ov-reset>Reset filters</button></form>
-    <div class="ov-statusline"><p data-ov-status role="status" aria-live="polite">Connecting to Google Analytics…</p><span data-ov-zone></span></div><button type="button" data-ov-connect hidden>Renew Google connection</button><div data-ov-content hidden></div>
-    <footer class="ov-notes"><p>Your Google Analytics data is fetched directly after owner authorization. No report data is saved to this website or its public source. This dashboard does not record analytics events.</p><details><summary>How to read these reports</summary><p>Visits are GA4 sessions. Active users are deduplicated within each report, not verified individuals; daily or page-level users must not be added to calculate unique people. New users are first_visit / first_open users, not a reliable count of people who have never seen your work.</p><p>Engagement means time the website was in the foreground, not measured reading time. Engagement per visit = total user engagement seconds / sessions. Average session duration is a separate GA metric. Zero seconds can mean no engagement event was reported. An engaged session meets your property’s engagement criteria.</p><p>Weeks run Monday–Sunday in the GA property’s timezone. Today is partial and can change as Google processes events; comparison periods include the corresponding full day. Recent completed days can also change. Missing rows may reflect consent, blockers, thresholds, or processing rather than no visits.</p><p>Locations are approximate and cannot identify a professor, committee, institution, or individual visitor. Sessions can appear in multiple geographic rows, so those counts need not sum to the overall total. Earlier data may include your visits. Future visits from an owner-excluded browser are not sent to Google. Other browsers must be authorized once; clearing site storage removes that exclusion. Country and device filters affect all reports; the page search only filters the page table.</p><p>Traffic from this website’s current pages and historical /MPSG/ addresses is queried; owner routes are excluded. Maps: Natural Earth / US Census via world-atlas / us-atlas; country identifiers by world-countries (ODbL). <a href="https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema" target="_blank" rel="noopener noreferrer">Google’s metric definitions ↗</a></p></details></footer></main>`;
+    <div class="ov-statusline"><p data-ov-status role="status" aria-live="polite">Connecting to Google Analytics…</p><span data-ov-zone></span></div><button type="button" data-ov-connect hidden>Renew Google connection</button><nav class="ov-tabs" aria-label="Analytics views"><button type="button" data-ov-tab="overview" aria-pressed="true">Overview</button><button type="button" data-ov-tab="visits" aria-pressed="false">Visits</button><button type="button" data-ov-tab="content" aria-pressed="false">Content</button></nav><div data-ov-content hidden></div>
+    <footer class="ov-notes"><p>Your Google Analytics data is fetched directly after owner authorization. No report data is saved to this website or its public source. This dashboard does not record analytics events.</p><details><summary>How to read these reports</summary><p>Visits are GA4 sessions. Active users are deduplicated within each report, not verified individuals; daily or page-level users must not be added to calculate unique people. New users are first_visit / first_open users, not a reliable count of people who have never seen your work.</p><p>Engagement means time the website was in the foreground, not measured reading time. Engagement per visit = total user engagement seconds / sessions. Average session duration is a separate GA metric. Zero seconds can mean no engagement event was reported. An engaged session meets your property’s engagement criteria.</p><p>Weeks run Monday–Sunday in the GA property’s timezone. Today is partial and can change as Google processes events; comparison periods include the corresponding full day. Recent completed days can also change. Missing rows may reflect consent, blockers, thresholds, or processing rather than no visits.</p><p>Locations are approximate and cannot identify a professor, committee, institution, or individual visitor. Sessions can appear in multiple geographic rows, so those counts need not sum to the overall total. Earlier data may include your visits. Future visits from an owner-excluded browser are not sent to Google. Other browsers must be authorized once; clearing site storage removes that exclusion. Country and device filters affect all reports; the page search only filters the page table.</p><p>Traffic from this website’s current pages and historical /MPSG/ addresses is queried; owner routes are excluded. Maps: Natural Earth / US Census. City centers: <a href="https://www.geonames.org/" target="_blank" rel="noopener noreferrer">GeoNames (CC BY 4.0)</a>. Unmatched or ambiguous cities stay in the list. <a href="https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema" target="_blank" rel="noopener noreferrer">Google’s metric definitions ↗</a></p></details></footer></main>`;
   }
-  function render(parent, detail, period, state, maps, timezone) {
-    const parsed = Object.fromEntries(Object.entries(detail).map(([key,r])=>[key,rows(r)]));
-    const c = parsed.current[0] || emptyTotals(), p = parsed.previous[0] || emptyTotals();
-    const daily = dailySeries(parent.daily,period), range = focusRange(period,state.day);
-    const {pages=[],sources=[],locations=[],cityPages=[],countries=[],states=[],devices=[],hours=[],events=[],outbound=[]} = parsed;
-    const metric = state.metric || 'sessions';
-    const focused = state.day ? dateLabel(state.day,{weekday:'long',year:'numeric'}) : `${dateLabel(period.start)} – ${dateLabel(period.end,{year:'numeric'})}`;
-    const comparison = `${dateLabel(range.comparisonStart)}${range.comparisonStart!==range.comparisonEnd?' – '+dateLabel(range.comparisonEnd):''}`;
-    const kpis = [['Active users',c.activeUsers,p.activeUsers,number,'Deduplicated in this selection'],['Visits',c.sessions,p.sessions,number,`${number(c.engagedSessions)} engaged sessions`],['Page views',c.screenPageViews,p.screenPageViews,number,'Includes repeated page views'],['Engagement / visit',ratio(c.userEngagementDuration,c.sessions),ratio(p.userEngagementDuration,p.sessions),duration,'Foreground time per session'],['Total engagement',c.userEngagementDuration,p.userEngagementDuration,duration,'Foreground time, all visits'],['Engagement rate',ratio(c.engagedSessions,c.sessions),ratio(p.engagedSessions,p.sessions),percent,`${number(c.newUsers)} new users reported`,true]];
-    const top = pages.find(r=>!/^\/(?:MPSG\/?)?$/.test(r.pagePath));
-    const sortedPages = [...pages].sort((a,b)=>(state.pageSort==='engagement'?b.userEngagementDuration-a.userEngagementDuration:state.pageSort==='users'?b.activeUsers-a.activeUsers:b.screenPageViews-a.screenPageViews));
-    const visiblePages = sortedPages.filter(r=>r.pagePath.toLowerCase().includes((state.search||'').toLowerCase()));
-    const filteredLocations = locations.filter(r=>`${r.country} ${r.region} ${r.city}`.toLowerCase().includes((state.locationSearch||'').toLowerCase()));
-    const warnings = [...new Set([...notices(parent),...notices(detail)])];
-    return `<section class="ov-card ov-calendar"><div class="ov-card-title"><div><p class="ov-eyebrow">${esc(period.label)}</p><h2>${dateLabel(period.start)} – ${dateLabel(period.displayEnd,{year:'numeric'})}</h2><p class="ov-help">Select a day to explore its locations, pages, and engagement.</p></div><div class="ov-calendar-controls">${period.mode==='week'?'<button type="button" data-ov-week="-1" aria-label="Previous week">←</button><button type="button" data-ov-week="1" aria-label="Next week" '+(state.weekOffset>=0?'disabled':'')+'>→</button>':''}<label>Daily chart<select aria-label="Daily chart" data-ov-metric><option value="sessions" ${metric==='sessions'?'selected':''}>Visits</option><option value="screenPageViews" ${metric==='screenPageViews'?'selected':''}>Page views</option><option value="userEngagementDuration" ${metric==='userEngagementDuration'?'selected':''}>Engagement time</option></select></label></div></div>${calendar(daily,period,state.day,metric)}<details><summary>Daily numbers · active users, visits, and time</summary>${dailyTable(daily)}</details></section>
-    <div class="ov-focus"><div><span class="ov-focus-dot"></span><div><p class="ov-eyebrow">${state.day?'Selected day':'Selected period'}</p><h2>${focused}</h2><p>${state.country?esc(state.country):'All countries'} · ${state.device?esc(state.device):'All devices'}${range.end===period.today?' · Today’s data is partial':''}</p></div></div>${state.day?'<button type="button" data-ov-all>← Full period</button>':''}</div>
-    <section class="ov-kpis" aria-label="Metrics for the selected day or period">${kpis.map(([label,now,before,format,help,rate])=>`<article><p>${label}</p><strong>${format(now)}</strong><small><b>${delta(now,before,rate)}</b> vs prior</small><span>${esc(help)}</span></article>`).join('')}</section><p class="ov-comparison">Compared with ${comparison} · ${range.end===period.today?'Current day is partial; comparison day is complete · ':''}Average session duration: ${duration(c.sessions?c.averageSessionDuration:null)}</p>
-    <div class="ov-insights"><p><span>Content receiving attention</span>${top?`<strong>${esc(top.pagePath.replace(BASE,'')||'Homepage')}</strong>${number(top.screenPageViews)} views · ${duration(top.userEngagementDuration)} foreground engagement`:'No content-page activity reported.'}</p><p><span>Leading discovery source</span>${sources[0]?`<strong>${esc(sources[0].sessionSourceMedium)}</strong>${number(sources[0].sessions)} visits · ${duration(ratio(sources[0].userEngagementDuration,sources[0].sessions))} engagement / visit`:'No acquisition data reported.'}</p><p><span>Geographic reach</span><strong>${number(countries.filter(r=>r.sessions>0&&r.country!=='(not set)').length)} countries / territories</strong>Approximate locations · historical data may include your visits</p></div>
-    ${warnings.length?`<p class="ov-warning">${warnings.map(esc).join(' ')}</p>`:''}
-    <section class="ov-card ov-visits" data-ov-visits></section>
-    <section class="ov-card ov-city-pages"><div class="ov-card-title"><div><p class="ov-eyebrow">City → pages</p><h2>What was viewed in each city</h2><p class="ov-help">Open a city to see daily page views and foreground time. These are aggregates, not individual visits. City locations are approximate.</p></div><label>Find city<input type="search" data-ov-city-search aria-label="Find city" placeholder="City, region, country…"></label></div><div data-ov-city-pages>${cityPagesTable(cityPages)}</div></section>
-    <section class="ov-map-grid" aria-label="Locations for the selected day or period"><article class="ov-card"><div class="ov-section-label">01 / Geographic reach</div><h2>Across the world</h2><p class="ov-help">Sessions by country · country centers, not individual visitors</p>${mapGraphic(maps?.world,countries,'countryId','World map of recorded sessions')}</article><article class="ov-card"><div class="ov-section-label">02 / United States</div><h2>Across the United States</h2><p class="ov-help">Sessions by state · Alaska and Hawaii appear as insets</p>${mapGraphic(maps?.us,states,'region','United States sessions by state')}</article></section>
-    <div class="ov-grid"><section class="ov-card ov-full"><div class="ov-card-title"><div><div class="ov-section-label">03 / Time of day</div><h2>When your website is viewed</h2><p class="ov-help">Page views by date and hour · ${esc(timezone)} · Darker means more views</p></div></div>${heatmap(hours,range)}</section>
-    <section class="ov-card ov-full"><div class="ov-card-title"><div><div class="ov-section-label">04 / Content</div><h2>Where attention goes</h2><p class="ov-help">Engagement / user is foreground seconds divided by page-level active users.</p></div><div class="ov-table-controls"><label>Sort by<select aria-label="Sort pages by" data-ov-page-sort><option value="views" ${state.pageSort==='views'?'selected':''}>Page views</option><option value="engagement" ${state.pageSort==='engagement'?'selected':''}>Total engagement</option><option value="users" ${state.pageSort==='users'?'selected':''}>Active users</option></select></label><label>Find page<input type="search" data-ov-search aria-label="Find page" value="${esc(state.search||'')}" placeholder="Research, publications…"></label></div></div><div data-ov-pages>${table(['Page','Views','Active users','Total engagement','Engagement / user'],visiblePages.map(r=>[esc(r.pagePath),number(r.screenPageViews),number(r.activeUsers),duration(r.userEngagementDuration),duration(ratio(r.userEngagementDuration,r.activeUsers))]))}</div></section>
-    <section class="ov-card ov-full"><div class="ov-card-title"><div><div class="ov-section-label">05 / Locations in detail</div><h2>Where visits come from</h2><p class="ov-help">Country, state / region, and city · approximate · first 100 matching rows shown</p></div><label class="ov-search">Find location<input type="search" data-ov-location-search aria-label="Find location" value="${esc(state.locationSearch||'')}" placeholder="City, state, country…"></label></div><div data-ov-locations>${table(['Location','Visits','Active users','Total engagement','Engagement / visit'],filteredLocations.slice(0,100).map(r=>[`<strong>${esc(r.city||'(not set)')}</strong><small class="ov-cell-sub">${esc(r.region)} · ${esc(r.country)}</small>`,number(r.sessions),number(r.activeUsers),duration(r.userEngagementDuration),duration(ratio(r.userEngagementDuration,r.sessions))]))}</div></section>
-    <section class="ov-card ov-wide"><div class="ov-section-label">06 / Discovery</div><h2>How people arrive</h2><p class="ov-help">Source / medium · Direct includes visits without attribution</p>${table(['Source / medium','Visits','Engagement rate','Engagement / visit'],sources.slice(0,20).map(r=>[esc(r.sessionSourceMedium),number(r.sessions),percent(ratio(r.engagedSessions,r.sessions)),duration(ratio(r.userEngagementDuration,r.sessions))]))}</section>
-    <section class="ov-card"><div class="ov-section-label">07 / Devices</div><h2>Device mix</h2><p class="ov-help">Share of recorded sessions</p>${bars(devices,'deviceCategory','sessions',c.sessions)}</section>
-    <section class="ov-card ov-wide"><div class="ov-section-label">08 / Next steps</div><h2>Outbound destinations</h2><p class="ov-help">Recorded outbound clicks by domain · repeated clicks count separately</p>${table(['Destination domain','Clicks'],outbound.filter(r=>r.linkDomain&&r.linkDomain!=='(not set)').slice(0,20).map(r=>[esc(r.linkDomain),number(r.eventCount)]),'No outbound clicks reported. Enhanced Measurement must already be enabled to collect them.')}</section>
-    <section class="ov-card"><div class="ov-section-label">09 / Interactions</div><h2>Recorded actions</h2><p class="ov-help">Event counts · not unique people</p>${table(['Event','Count'],events.filter(r=>!['page_view','session_start','user_engagement','first_visit'].includes(r.eventName)).slice(0,12).map(r=>[esc(r.eventName),number(r.eventCount)]))}</section>
-    </div><section class="ov-export"><div><h2>Keep a snapshot</h2><p>Download the loaded aggregate rows. Daily summaries cover the full period; other exports use the selection above.</p></div><div><label class="ov-sr-only" for="ov-export-type">Export report</label><select id="ov-export-type" data-ov-export-type><option value="daily">Daily summary</option><option value="locations">Locations</option><option value="cityPages">City and pages</option><option value="pages">Pages</option><option value="sources">Traffic sources</option></select><button type="button" data-ov-export>Download CSV ↓</button></div></section>`;
+
+  const canonical=p=>(p||'/').replace(/^\/MPSG(?=\/|$)/,'').replace(/^\/index\.html$/,'/')||'/';
+  const pageName=p=>({'/':'Home','/people/':'People','/research/':'Research','/publications/':'Publications','/news/':'News','/gallery/':'Gallery','/contact/':'Contact'}[canonical(p)]||canonical(p));
+  function mergePages(data) {
+    const grouped=new Map();
+    for(const r of data){const path=canonical(r.pagePath);if(!grouped.has(path))grouped.set(path,{pagePath:path,screenPageViews:0,userEngagementDuration:0});const g=grouped.get(path);g.screenPageViews+=r.screenPageViews;g.userEngagementDuration+=r.userEngagementDuration;}
+    return [...grouped.values()].sort((a,b)=>b.screenPageViews-a.screenPageViews);
+  }
+  const paperLink=url=>/^https?:\/\/(?:[^/]+\.)?(doi\.org|biorxiv\.org|arxiv\.org|pubs\.acs\.org|journals\.aps\.org|science\.org|onlinelibrary\.wiley\.com|nature\.com|sciencedirect\.com)(\/|$)/i.test(url||'')||/\/files\/.*\.pdf(?:[?#]|$)/i.test(url||'')&&!/cv|resume/i.test(url);
+  function pageTable(data,search='') {return table(['Page','Views','Active time'],mergePages(data).filter(r=>pageName(r.pagePath).toLowerCase().includes(search.toLowerCase())).map(r=>[`<strong>${esc(pageName(r.pagePath))}</strong><small class="ov-cell-sub">${esc(r.pagePath)}</small>`,number(r.screenPageViews),duration(r.userEngagementDuration)]));}
+  function geography(locations,maps,state) {
+    const geo=maps?.cities,view=state.mapView||'us', shape=geo?.[view];
+    const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+    const key=r=>JSON.stringify([r.country,r.region,r.city]);
+    const max=Math.max(1,...locations.map(r=>r.sessions));let mapped=0;
+    const points=locations.map(r=>{const k=[r.country,r.region,r.city].map(norm).join('|'), c=geo?.lookup?.[k]||(r.country==='South Korea'?geo?.lookup?.[k.replace(/si$/,'')]:null);if(!c||!c[view])return '';mapped++;const [x,y]=c[view];return `<circle cx="${x}" cy="${y}" r="${4+10*Math.sqrt(r.sessions/max)}" data-city="${esc(key(r))}" data-map-label="${esc(r.city)}: ${number(r.sessions)} visits" role="button" tabindex="0" aria-label="${esc(r.city)}: ${number(r.sessions)} visits" class="${(state.highlightCity||state.city)===key(r)?'selected':''}"><title>${esc(r.city)} · ${number(r.sessions)} visits</title></circle>`;}).join('');
+    return `<div class="ov-map-shell"><div class="ov-card-title"><div><p class="ov-eyebrow">Geography</p><h2>Where visits begin</h2></div><div class="ov-segments">${['us','world'].map(v=>`<button type="button" data-map-view="${v}" aria-pressed="${v===view}">${v==='us'?'United States':'World'}</button>`).join('')}</div></div><button type="button" data-map-collapse aria-expanded="false" class="ov-map-mobile">Show map</button><div class="ov-map">${shape?`<svg viewBox="0 0 ${shape.width} ${shape.height}" role="group" aria-label="City locations"><path d="${shape.path}" fill="#e5ecee" stroke="#fff" stroke-width=".65"/>${points}</svg>`:'<p class="ov-empty">Loading map. City records are listed alongside.</p>'}<p data-map-detail aria-live="polite">Approximate city centers · ${mapped} mapped locations${locations.length>mapped?' · Other locations remain in the list':''}</p></div></div>`;
+  }
+  function cityList(data,state) {return `<div class="ov-location-list">${data.filter(r=>`${r.city} ${r.region} ${r.country}`.toLowerCase().includes((state.locationSearch||'').toLowerCase())).slice(0,100).map(r=>`<button type="button" data-city="${esc(JSON.stringify([r.country,r.region,r.city]))}" aria-pressed="${state.city===JSON.stringify([r.country,r.region,r.city])}"><span><strong>${esc(r.city==='(not set)'?'City unavailable':r.city)}</strong><small>${esc(r.region)} · ${esc(r.country)}</small></span><span><b>${number(r.sessions)}</b><small>${duration(r.userEngagementDuration)} active</small></span></button>`).join('')||'<p class="ov-empty">No matching locations.</p>'}</div>`;}
+  function render(parent,detail,period,state,maps,timezone) {
+    const parsed=Object.fromEntries(Object.entries(detail).map(([k,r])=>[k,rows(r)]));
+    const {pages=[],sources=[],locations=[],cityPages=[],hours=[],events=[],links=[]}=parsed;
+    const c=parsed.current?.[0]||emptyTotals(),p=parsed.previous?.[0]||emptyTotals(),range=focusRange(period,state.day),daily=dailySeries(parent.daily,period);
+    const mapLocations=locations,paperLinks=links.filter(r=>paperLink(r.linkUrl));
+    const kpis=[['Visits',c.sessions,'visits','',`${number(p.sessions)} in the comparison period`],['Returning sessions',parsed.returning?.[0]?.sessions??null,'visits','returning','GA returning-browser classification'],['Research & Publications',parsed.research?.[0]?.sessions??null,'visits','research','Sessions viewing either page'],['Paper link clicks',paperLinks.reduce((n,r)=>n+r.eventCount,0),'content','','Recorded outbound paper links']];
+    const notes=notices(detail);
+    return `<div class="ov-focus"><div><span class="ov-focus-dot"></span><div><p class="ov-eyebrow">${state.day?'Selected day':period.label}</p><h2>${dateLabel(range.start)}${range.end===range.start?'':' – '+dateLabel(range.end)}</h2><p>${state.city?esc(JSON.parse(state.city).slice().reverse().join(', ')):state.country||'All locations'} · ${state.device||'All devices'}</p></div></div><div>${state.day?'<button type="button" data-ov-all>Full period</button>':''}${state.city?'<button type="button" data-clear-city>Clear city</button>':''}</div></div>
+    <section class="ov-kpis">${kpis.map(([label,n,tab,kind,note])=>`<button type="button" data-kpi-tab="${tab}" data-kind="${kind}"><span>${label}</span><strong>${number(n)}</strong><small>${note}</small></button>`).join('')}</section><p class="ov-comparison">${number(p.sessions)} → ${number(c.sessions)} visits · Compared with ${dateLabel(range.comparisonStart)}–${dateLabel(range.comparisonEnd)}${range.end===period.today?' · Today is partial; the comparison day is complete':''}</p>
+    ${notes.length?`<p class="ov-warning">${notes.map(esc).join(' ')}</p>`:''}
+    <section class="ov-card ov-calendar"><div class="ov-card-title"><div><p class="ov-eyebrow">Daily activity · all cities in selected country</p><h2>${dateLabel(period.start)} – ${dateLabel(period.displayEnd)}</h2></div><div class="ov-calendar-controls">${period.mode==='week'?`<button type="button" data-ov-week="-1" aria-label="Previous week">←</button><button type="button" data-ov-week="1" aria-label="Next week" ${state.weekOffset>=0?'disabled':''}>→</button>`:''}<label>Chart<select data-ov-metric aria-label="Daily chart"><option value="sessions" ${state.metric==='sessions'?'selected':''}>Visits</option><option value="screenPageViews" ${state.metric==='screenPageViews'?'selected':''}>Page views</option><option value="userEngagementDuration" ${state.metric==='userEngagementDuration'?'selected':''}>Active time</option></select></label></div></div><div data-daily-chart>${calendar(daily,period,state.day,state.metric||'sessions')}</div></section>
+    <div data-panel="overview"><div class="ov-explore"><section class="ov-card" data-geography>${geography(mapLocations,maps,state)}</section><section class="ov-card"><div class="ov-card-title"><div><p class="ov-eyebrow">Locations</p><h2>Explore a city</h2></div><label>Find location<input data-ov-location-search value="${esc(state.locationSearch||'')}" placeholder="City or region…"></label></div><p class="ov-help">Select a city to filter this period and open its visit records.</p><div data-city-list>${cityList(mapLocations,state)}</div></section></div>
+    <section class="ov-card ov-city-pages"><div class="ov-card-title"><div><p class="ov-eyebrow">Available aggregate data</p><h2>Pages viewed by city</h2><p class="ov-help">Daily totals, including historical records. These rows are not individual visits.</p></div><label>Find city<input data-ov-city-search placeholder="City…"></label></div><div data-ov-city-pages>${cityPagesTable(cityPages)}</div></section>
+    <div class="ov-explore"><section class="ov-card"><p class="ov-eyebrow">Content</p><h2>Pages receiving attention</h2><div data-ov-pages>${pageTable(pages)}</div></section><section class="ov-card"><p class="ov-eyebrow">Discovery</p><h2>How visitors find you</h2>${bars(sources.slice(0,6),'sessionSourceMedium','sessions',c.sessions)}</section></div></div>
+    <div data-panel="visits" hidden><section class="ov-card ov-visits" data-ov-visits></section></div>
+    <div data-panel="content" hidden><div class="ov-explore"><section class="ov-card"><p class="ov-eyebrow">Content performance</p><h2>Pages and active time</h2><label class="ov-inline-search">Find page<input data-ov-search placeholder="Research, publications…"></label><div data-content-pages>${pageTable(pages)}</div><p class="ov-help">Old and new addresses are combined. Active time is foreground engagement, not measured reading time.</p></section><section class="ov-card"><p class="ov-eyebrow">Next steps</p><h2>Paper links selected</h2>${table(['Destination','Clicks'],paperLinks.map(r=>[esc(r.linkUrl),number(r.eventCount)]),'No paper-link clicks were reported for these dates. Unrecorded clicks cannot be recovered.')}</section></div>
+    <section class="ov-card ov-actions"><p class="ov-eyebrow">Research selections</p><h2>Topics, CV and contact</h2><p class="ov-help">Dedicated measurement begins November 6, 2026. Earlier dates were not measured with these events.</p>${table(['Recorded action','Count'],events.filter(r=>/^research_(topic|paper|cv|email)$/.test(r.eventName)).map(r=>[esc(r.eventName.replace('research_','')),number(r.eventCount)]),'No dedicated selections recorded yet. This is not evidence that earlier visitors took no action.')}</section>
+    <section class="ov-card"><p class="ov-eyebrow">Timing</p><h2>Activity by hour</h2>${heatmap(hours,range)}</section></div>
+    <section class="ov-export"><div><h2>Export this selection</h2><p>Only loaded report rows. Individual visits remain private in this browser.</p></div><div><select data-ov-export-type aria-label="Export report"><option value="daily">Daily summary</option><option value="locations">Locations</option><option value="cityPages">City and pages</option><option value="pages">Pages</option><option value="sources">Traffic sources</option></select><button type="button" data-ov-export>Download CSV</button></div></section>`;
   }
   function csv(data) {
     if (!data.length) return '';
@@ -257,12 +271,21 @@
     const find=selector=>root.querySelector(selector), content=find('[data-ov-content]'), status=find('[data-ov-status]'), refresh=find('[data-ov-refresh]'), connect=find('[data-ov-connect]');
     const ownerStatus=window.MTSGAnalytics?.status();
     find('[data-ov-owner-status]').textContent=ownerStatus?.persisted ? 'Your visits from this browser are excluded from now on, even after sign-out. Historical data is unchanged.' : 'Owner exclusion is active for this page. Allow site storage to keep this browser excluded on future visits.';
-    const state={weekOffset:0,day:null,metric:'sessions',country:'',device:'',pageSort:'views',search:'',locationSearch:''};
+    const state={weekOffset:0,day:null,metric:'sessions',country:'',device:'',pageSort:'views',search:'',locationSearch:'',tab:'overview',mapView:'us',city:'',visitKind:''};
     let visits,controller,revision=0,removed=false,timezone,parent,detail,period,maps,loadedAt;
     const cache=new Map();
-    const mapPromise=fetch(BASE+'/assets/js/owner/map-shapes.json',{credentials:'omit'}).then(r=>r.ok?r.json():null).catch(()=>null);
+    const mapPromise=fetch(BASE+'/assets/js/owner/city-map.json',{credentials:'omit'}).then(r=>r.ok?r.json():null).then(cities=>({cities})).catch(()=>null);
     const clearData=()=> {parent=detail=null;cache.clear();content.replaceChildren();content.hidden=true;};
-    function draw() {if(parent&&detail&&!removed){visits?.dispose();content.innerHTML=render(parent,detail,period,state,maps,timezone);content.hidden=false;visits=window.MTSGVisits?.mount({root:find('[data-ov-visits]'),clientId,range:focusRange(period,state.day),filters:{country:state.country,device:state.device},timezone,getSession,onRenew});}}
+    function activate(tab) {
+      state.tab=tab;root.querySelectorAll('[data-panel]').forEach(el=>el.hidden=el.dataset.panel!==tab);
+      root.querySelectorAll('[data-ov-tab]').forEach(el=>el.setAttribute('aria-pressed',el.dataset.ovTab===tab));
+      if(tab==='visits') visits?.load();
+    }
+    function draw() {if(parent&&detail&&!removed){
+      visits?.dispose();content.innerHTML=render(parent,detail,period,state,maps,timezone);content.hidden=false;
+      visits=window.MTSGVisits?.mount({root:find('[data-ov-visits]'),range:focusRange(period,state.day),filters:{country:state.country,device:state.device},timezone,getSession,onRenew,initialCity:state.city,initialKind:state.visitKind,onClearCity:()=>{state.city='';load({focusOnly:true});},onSelectCity:city=>{state.highlightCity=city;find('[data-geography]').innerHTML=geography(rows(detail.locations),maps,state);}});
+      activate(state.tab);
+    }}
     function updateCountries() {
       if(state.country)return;
       const select=find('[data-ov-country]');
@@ -273,11 +296,11 @@
       controller?.abort();controller=new AbortController();
       const signal=AbortSignal.any([controller.signal,AbortSignal.timeout(45000)]);
       connect.hidden=true;refresh.disabled=true;root.setAttribute('aria-busy','true');
-      content.hidden=true;content.replaceChildren();status.textContent='Loading your Google Analytics data…';
+      visits?.dispose();visits=null;content.hidden=true;content.replaceChildren();status.textContent='Loading your Google Analytics data…';
       const session=getSession();
       if(!session){clearData();status.textContent='Renew your Google sign-in to load the report.';connect.hidden=false;refresh.disabled=false;root.removeAttribute('aria-busy');return;}
       try {
-        if(fresh)cache.clear();
+        if(fresh){cache.clear();window.MTSGVisits?.clear();}
         if(!timezone) {
           const bootstrap=await fetchReports({zone:request({start:'yesterday',end:'yesterday'},[],['sessions'])},{propertyId,session,signal});
           timezone=bootstrap.zone.metadata?.timeZone;
@@ -294,19 +317,19 @@
           period=periodFor(find('[data-ov-period]').value,today,{weekOffset:state.weekOffset,start:find('[data-ov-start]').value,end:find('[data-ov-end]').value});
           if(!find('[data-ov-start]').value){find('[data-ov-start]').value=period.start;find('[data-ov-end]').value=period.end;}
         }
-        const range=focusRange(period,state.day), key=JSON.stringify([range.start,range.end,range.comparisonStart,state.country,state.device]);
+        const range=focusRange(period,state.day), key=JSON.stringify([range.start,range.end,range.comparisonStart,state.country,state.device,state.city]);
         const saved=cache.get(key);
         let reports;
         if(saved&&Date.now()-saved.time<180000)reports=saved.reports;
         else {
-          reports=await fetchReports(requests(range,{country:state.country,device:state.device}),{propertyId,session,signal});
+          reports=await fetchReports(requests(range,{country:state.country,device:state.device,city:state.city}),{propertyId,session,signal});
           if(removed||version!==revision||!getSession())return;
           cache.set(key,{time:Date.now(),reports});
           if(cache.size>16)cache.delete(cache.keys().next().value);
         }
-        maps=await mapPromise;
+        maps=maps||await mapPromise;
         if(removed||version!==revision||!getSession())return;
-        if(!state.day)parent=reports;
+        if(!state.day&&!state.city||!parent)parent=reports;
         detail=reports;loadedAt=new Date();updateCountries();draw();
         status.textContent=`Updated ${loadedAt.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})} · Recent data can change as Google processes events.`;
       } catch(error) {
@@ -316,7 +339,7 @@
         connect.hidden=!error.connect;
       } finally {if(!removed&&version===revision){refresh.disabled=false;root.removeAttribute('aria-busy');}}
     }
-    const filterLoad=()=> {state.day=null;state.country=find('[data-ov-country]').value;state.device=find('[data-ov-device]').value;load();};
+    const filterLoad=()=> {state.day=null;state.city='';parent=null;state.country=find('[data-ov-country]').value;state.device=find('[data-ov-device]').value;load();};
     find('[data-ov-period]').addEventListener('change',e=> {
       if(e.target.value==='last-week'){e.target.value='week';state.weekOffset=-1;}else state.weekOffset=0;
       find('[data-ov-custom]').hidden=e.target.value!=='custom';
@@ -328,11 +351,16 @@
     find('[data-ov-reset]').addEventListener('click',()=>{find('[data-ov-country]').value='';find('[data-ov-device]').value='';filterLoad();});
     connect.addEventListener('click',onRenew);find('[data-ov-signout]').addEventListener('click',onSignOut);
     root.addEventListener('click',e=> {
+      const tab=e.target.closest('[data-ov-tab],[data-kpi-tab]');if(tab){if(tab.dataset.kpiTab){state.visitKind=tab.dataset.kind||'';visits?.setKind(state.visitKind);}activate(tab.dataset.ovTab||tab.dataset.kpiTab);return;}
+      const collapse=e.target.closest('[data-map-collapse]');if(collapse){const open=collapse.getAttribute('aria-expanded')!=='true';collapse.setAttribute('aria-expanded',String(open));collapse.textContent=open?'Hide map':'Show map';collapse.closest('.ov-map-shell').classList.toggle('is-open',open);return;}
+      const mv=e.target.closest('[data-map-view]');if(mv){state.mapView=mv.dataset.mapView;find('[data-geography]').innerHTML=geography(rows(detail.locations),maps,state);return;}
+      const city=e.target.closest('[data-city]');if(city){state.highlightCity='';state.city=city.dataset.city;state.tab='visits';load({focusOnly:true});return;}
+      if(e.target.closest('[data-clear-city]')){state.city=state.highlightCity='';load({focusOnly:true});return;}
       const day=e.target.closest('[data-day]');
-      if(day&&!day.disabled){state.day=day.dataset.day;load({focusOnly:true});return;}
+      if(day&&!day.disabled){state.highlightCity='';state.day=day.dataset.day;load({focusOnly:true});return;}
       if(e.target.closest('[data-ov-all]')){state.day=null;load({focusOnly:true});return;}
       const week=e.target.closest('[data-ov-week]');
-      if(week&&!week.disabled){state.weekOffset=Math.min(0,state.weekOffset+Number(week.dataset.ovWeek));load();return;}
+      if(week&&!week.disabled){state.city='';parent=null;state.weekOffset=Math.min(0,state.weekOffset+Number(week.dataset.ovWeek));load();return;}
       const point=e.target.closest('[data-map-label]');if(point)point.closest('.ov-map').querySelector('[data-map-detail]').textContent=point.dataset.mapLabel;
       const hour=e.target.closest('[data-hour]');if(hour)find('[data-hour-detail]').textContent=hour.dataset.hour;
       if(e.target.closest('[data-ov-export]')&&parent&&detail) {
@@ -342,28 +370,21 @@
         const url=URL.createObjectURL(new Blob([csv(data)],{type:'text/csv;charset=utf-8'})), link=document.createElement('a');link.href=url;link.download=`MTSG-${type}-${type==='daily'?period.start:range.start}-${type==='daily'?period.end:range.end}.csv`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
       }
     });
-    root.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('svg [data-day],svg [data-map-label]')){e.preventDefault();e.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));}});
+    root.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('svg [data-day],svg [data-map-label],svg [data-city]')){e.preventDefault();e.target.dispatchEvent(new MouseEvent('click',{bubbles:true}));}});
     root.addEventListener('focusin',e=>{if(e.target.matches('[data-map-label]'))e.target.closest('.ov-map').querySelector('[data-map-detail]').textContent=e.target.dataset.mapLabel;});
     root.addEventListener('mouseover',e=>{const point=e.target.closest('[data-map-label]');if(point)point.closest('.ov-map').querySelector('[data-map-detail]').textContent=point.dataset.mapLabel;});
-    root.addEventListener('change',e=>{if(e.target.matches('[data-ov-metric]')){state.metric=e.target.value;draw();}if(e.target.matches('[data-ov-page-sort]')){state.pageSort=e.target.value;draw();}});
+    root.addEventListener('change',e=>{if(e.target.matches('[data-ov-metric]')){state.metric=e.target.value;find('[data-daily-chart]').innerHTML=calendar(dailySeries(parent.daily,period),period,state.day,state.metric);}if(e.target.matches('[data-ov-page-sort]')){state.pageSort=e.target.value;draw();}});
     root.addEventListener('input',e=> {
       if(e.target.matches('[data-ov-city-search]')){find('[data-ov-city-pages]').innerHTML=cityPagesTable(rows(detail.cityPages),e.target.value);return;}
       if(!e.target.matches('[data-ov-search],[data-ov-location-search]'))return;
-      const location=e.target.matches('[data-ov-location-search]');state[location?'locationSearch':'search']=e.target.value;
-      const target=find(location?'[data-ov-locations]':'[data-ov-pages]');
-      // Update just the table; maps and the hourly chart stay untouched.
-      if(location) {
-        const filtered=rows(detail.locations).filter(r=>`${r.country} ${r.region} ${r.city}`.toLowerCase().includes(state.locationSearch.toLowerCase()));
-        target.innerHTML=table(['Location','Visits','Active users','Total engagement','Engagement / visit'],filtered.slice(0,100).map(r=>[`<strong>${esc(r.city||'(not set)')}</strong><small class="ov-cell-sub">${esc(r.region)} · ${esc(r.country)}</small>`,number(r.sessions),number(r.activeUsers),duration(r.userEngagementDuration),duration(ratio(r.userEngagementDuration,r.sessions))]));
-      } else {
-        const filtered=rows(detail.pages).filter(r=>r.pagePath.toLowerCase().includes(state.search.toLowerCase())).sort((a,b)=>state.pageSort==='engagement'?b.userEngagementDuration-a.userEngagementDuration:state.pageSort==='users'?b.activeUsers-a.activeUsers:b.screenPageViews-a.screenPageViews);
-        target.innerHTML=table(['Page','Views','Active users','Total engagement','Engagement / user'],filtered.map(r=>[esc(r.pagePath),number(r.screenPageViews),number(r.activeUsers),duration(r.userEngagementDuration),duration(ratio(r.userEngagementDuration,r.activeUsers))]));
-      }
+      if(e.target.matches('[data-ov-location-search]')){state.locationSearch=e.target.value;find('[data-city-list]').innerHTML=cityList(rows(detail.locations),state);}
+      else {state.search=e.target.value;find('[data-content-pages]').innerHTML=pageTable(rows(detail.pages),state.search);}
+
     });
     load();
     return {reload:()=>load({fresh:true}),dispose(){visits?.dispose();window.MTSGVisits?.clear();removed=true;revision++;controller?.abort();clearData();root.replaceChildren();}};
   }
   const api={mount};
   if(typeof window!=='undefined')window.MTSGOverview=api;
-  if(typeof module!=='undefined')module.exports={...api,cityPagesTable,esc,number,duration,ratio,delta,rows,request,requests,todayInZone,periodFor,focusRange,dailySeries,calendar,heatmap,render,mapGraphic,csv,exportRows,normalizeReport,fetchReports};
+  if(typeof module!=='undefined')module.exports={...api,cityPagesTable,mergePages,pageName,paperLink,geography,filterRequest:request,esc,number,duration,ratio,delta,rows,request,requests,todayInZone,periodFor,focusRange,dailySeries,calendar,heatmap,render,mapGraphic,csv,exportRows,normalizeReport,fetchReports};
 })();

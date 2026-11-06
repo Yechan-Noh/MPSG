@@ -28,4 +28,16 @@
   script.async = true;
   script.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
   document.head.appendChild(script);
+  // Record explicit public-site selections only; never form values or URL queries.
+  document.addEventListener?.('click', event => {
+    if(excluded)return;
+    const link=event.target.closest?.('a[href]');if(!link)return;
+    let url;try{url=new URL(link.href,location.href);}catch{return;}
+    let kind='',label='';
+    if(url.protocol==='mailto:'){kind='email';label='Contact email';}
+    else if(url.origin===location.origin&&/\/research\/$/.test(url.pathname)&&url.hash){kind='topic';label=url.hash.slice(1);}
+    else if(/(?:cv|curriculum|resume)/i.test(url.pathname)&&/\.pdf$/i.test(url.pathname)){kind='cv';label='CV';}
+    else if(/^(?:[^.]+\.)*(?:doi\.org|biorxiv\.org|arxiv\.org|pubs\.acs\.org|journals\.aps\.org|science\.org|onlinelibrary\.wiley\.com|nature\.com|sciencedirect\.com)$/.test(url.hostname)||/\/files\/.*\.pdf$/i.test(url.pathname)){kind='paper';label=(link.closest('article')?.querySelector('h2,h3')?.textContent||link.textContent||url.pathname).trim().slice(0,100);}
+    if(kind)window.gtag('event','research_'+kind,{content_label:label,link_url:kind==='email'?'mailto:':url.origin+url.pathname+(kind==='topic'?url.hash:'')});
+  },{passive:true});
 })();

@@ -3,13 +3,18 @@
   const PROJECT='river-autumn-403814', DATASET='analytics_499333574';
   const ENDPOINT=`https://bigquery.googleapis.com/bigquery/v2/projects/${PROJECT}`;
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const clear=()=>{};
+  const cache=new Map();
+  const clear=()=>cache.clear();
   function querySpec(range, filters={}) {
     if(!/^\d{4}-\d{2}-\d{2}$/.test(range.start)||!/^\d{4}-\d{2}-\d{2}$/.test(range.end))throw new Error('Invalid date range.');
     // Group by the real browser + session key, never by city or time proximity.
     const query=`WITH events AS (
       SELECT event_timestamp, event_name, user_pseudo_id,
         (SELECT value.int_value FROM UNNEST(event_params) WHERE key='ga_session_id') AS sid,
+        (SELECT value.int_value FROM UNNEST(event_params) WHERE key='ga_session_number') AS session_number,
+        COALESCE(session_traffic_source_last_click.cross_channel_campaign.source, collected_traffic_source.manual_source) AS source,
+        (SELECT value.string_value FROM UNNEST(event_params) WHERE key='link_url') AS link_url,
+        (SELECT value.string_value FROM UNNEST(event_params) WHERE key='content_label') AS content_label,
         (SELECT value.string_value FROM UNNEST(event_params) WHERE key='page_location') AS url,
         COALESCE((SELECT value.int_value FROM UNNEST(event_params) WHERE key='engagement_time_msec'),0) AS engagement,
         geo.city AS city, geo.region AS region, geo.country AS country, device.category AS device
@@ -20,6 +25,10 @@
       WHERE NET.HOST(url)='yechan-noh.github.io' AND user_pseudo_id IS NOT NULL AND sid IS NOT NULL
     ), visits AS (
       SELECT TO_HEX(SHA256(CONCAT(user_pseudo_id,':',CAST(sid AS STRING)))) AS id,
+        TO_HEX(SHA256(user_pseudo_id)) AS browser_id,
+        MAX(session_number)>1 AS returning,
+        ARRAY_AGG(source IGNORE NULLS ORDER BY event_timestamp LIMIT 1)[SAFE_OFFSET(0)] AS source,
+        ARRAY_AGG(IF(event_name IN ('research_topic','research_paper','research_cv','research_email'),STRUCT(CAST(event_timestamp/1000 AS INT64) AS time_ms,content_label AS label,link_url AS url),NULL) IGNORE NULLS ORDER BY event_timestamp LIMIT 100) AS actions,
         CAST(MIN(event_timestamp)/1000 AS INT64) AS first_ms,
         CAST(MAX(event_timestamp)/1000 AS INT64) AS last_ms,
         SUM(engagement)/1000.0 AS engagement_seconds,
@@ -70,34 +79,60 @@
     }
     return {visits:all.slice(0,500),limited:all.length>500||Boolean(body.pageToken),total:Number(body.totalRows||all.length)};
   }
-  function renderVisits(data,timezone,search='') {
-    const fmt=new Intl.DateTimeFormat('en-US',{timeZone:timezone,month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    const time=ms=>fmt.format(new Date(Number(ms)));
-    const mins=s=>`${Math.floor(Number(s)/60)}m ${Math.round(Number(s)%60)}s`;
-    const visible=data.filter(v=>`${v.location.city} ${v.location.region} ${v.location.country} ${(v.pages||[]).map(p=>p.path).join(' ')}`.toLowerCase().includes(search.toLowerCase()));
-    return visible.map(v=>`<details class="ov-city"><summary><span><strong>${esc(v.location.city||'City unavailable')}</strong><small>${esc(v.location.region)} · ${esc(v.location.country)} · ${esc(time(v.first_ms))}</small></span><span>${Number(v.page_views)} ${Number(v.page_views)===1?'view':'views'}<small>${esc(mins(v.engagement_seconds))} engagement</small></span></summary><p class="ov-visit-meta"><span>${esc(v.location.device)}</span><span>Observed interval: ${esc(mins((v.last_ms-v.first_ms)/1000))}</span><span>Visit ${esc(v.id.slice(0,8))}</span></p><ol class="ov-visit-path">${(v.pages||[]).map(p=>`<li><time>${esc(time(p.time_ms))}</time>${esc(p.path||'/')}</li>`).join('')}</ol>${v.page_views>200?'<p class="ov-help">First 200 page views shown.</p>':''}</details>`).join('')||'<p class="ov-empty">No exported visits match this selection.</p>';
+
+  function canonical(path) {return (path||'/').replace(/^\/MPSG(?=\/|$)/,'').replace(/^\/index\.html$/,'/')||'/';}
+  function pageName(path) {
+    const p=canonical(path), names={'/':'Home','/people/':'People','/research/':'Research','/publications/':'Publications','/news/':'News','/gallery/':'Gallery','/contact/':'Contact'};
+    return names[p.endsWith('/')?p:p+'/']||p;
   }
-  function mount({root,clientId,range,filters,timezone,getSession,onRenew}) {
+  function compactPages(pages=[]) {
+    const list=[];
+    for(const p of pages){const last=list.at(-1);if(last&&canonical(last.path)===canonical(p.path))last.repeat++;else list.push({...p,repeat:1});}
+    return list;
+  }
+  function researchToPapers(v) {const paths=(v.pages||[]).map(p=>canonical(p.path));const start=paths.findIndex(p=>/^\/research(\/|$)/.test(p));return start>=0&&paths.slice(start+1).some(p=>/^\/publications(\/|$)/.test(p));}
+  function journeySummary(data) {const research=data.filter(v=>(v.pages||[]).some(p=>/^\/research(\/|$)/.test(canonical(p.path)))).length;return {research,continued:data.filter(researchToPapers).length,returning:data.filter(v=>v.returning).length,scholar:data.filter(v=>/scholar\.google/i.test(v.source||'')).length};}
+  function filterVisits(data,{search='',city='',kind='',browser=''}={}) {
+    return data.filter(v=>(!city||JSON.stringify([v.location.country,v.location.region,v.location.city])===city)&&(!browser||v.browser_id===browser)&&
+      (!kind||kind==='returning'&&v.returning||kind==='research'&&(v.pages||[]).some(p=>/^\/(research|publications)(\/|$)/.test(canonical(p.path)))||kind==='actions'&&(v.actions||[]).length||kind==='sequence'&&researchToPapers(v))&&
+      `${v.location.city} ${v.location.region} ${v.source||''} ${(v.pages||[]).map(p=>pageName(p.path)).join(' ')}`.toLowerCase().includes(search.toLowerCase()));
+  }
+  function renderVisits(data,timezone,search='',options={}) {
+    const time=ms=>new Intl.DateTimeFormat('en-US',{timeZone:timezone,month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(Number(ms)));
+    const mins=s=>{const n=Math.round(Number(s)||0);return n>=60?`${Math.floor(n/60)}m ${n%60}s`:`${n}s`;};
+    const visible=filterVisits(data,{...options,search});
+    return visible.map(v=>`<details class="ov-city ov-session" data-session="${esc(v.id)}"><summary><span><strong>${esc(v.location.city||'City unavailable')} <em class="ov-badge">${v.returning?'Returning browser':v.returning===false?'First session':'History unavailable'}</em></strong><small>${esc(time(v.first_ms))} · ${esc(v.location.region)} · ${esc(v.location.device)}</small><span class="ov-route">${compactPages(v.pages).slice(0,5).map(p=>esc(pageName(p.path))+(p.repeat>1?` ×${p.repeat}`:'')).join(' → ')}${compactPages(v.pages).length>5?' → …':''}</span></span><span><b>${Number(v.page_views)} ${Number(v.page_views)===1?'view':'views'}</b><small>${esc(mins(v.engagement_seconds))} active</small></span></summary><div class="ov-session-detail"><p class="ov-visit-meta"><span>Source: ${esc(v.source||'Unattributed')}</span><span>Observed interval: ${esc(mins((v.last_ms-v.first_ms)/1000))}</span><span>Visit ${esc(v.id.slice(0,8))}</span></p>${v.browser_id?`<button type="button" data-visit-browser="${esc(v.browser_id)}">Other visits from this browser</button>`:''}<ol class="ov-visit-path">${compactPages(v.pages).map(p=>`<li><time>${esc(time(p.time_ms))}</time><strong>${esc(pageName(p.path))}</strong>${p.repeat>1?` · ${p.repeat} consecutive views`:''}<small>${esc(p.path)}</small></li>`).join('')}</ol>${(v.actions||[]).length?`<h3>Recorded selections</h3><ul>${v.actions.map(a=>`<li>${esc(time(a.time_ms))} · ${esc(a.label||a.url||'Link selected')}</li>`).join('')}</ul>`:''}${v.page_views>200?'<p class="ov-help">First 200 page views shown.</p>':''}</div></details>`).join('')||'<p class="ov-empty">No exported visits match this selection.</p>';
+  }
+  function mount({root,range,filters,timezone,getSession,onRenew,onSelectCity,onClearCity,onSummary,initialCity='',initialKind=''}) {
     if(!root)return;
-    let controller=new AbortController(),disposed=false,data=[],needsPermission=false;
-    root.innerHTML=`<div class="ov-card-title"><div><p class="ov-eyebrow">Individual visits</p><h2>City and pages for each visit</h2><p class="ov-help">A separate record for each GA session, with page views in time order. Daily exports begin November 6, 2026; today’s visits appear after the next export.</p></div><button type="button" data-visit-load>Load visit records</button></div><p class="ov-help">Read-only Google connection · Approximate city, not a person’s identity · Times in ${esc(timezone)}</p><p data-visit-status role="status">Visit records require Google BigQuery read-only permission. No records are stored in this website.</p><div class="ov-visit-controls" hidden data-visit-controls><label>Find city or page<input type="search" data-visit-search aria-label="Find city or page" placeholder="City or page name…"></label></div><div class="ov-visit-list" data-visit-list></div>`;
-    const button=root.querySelector('[data-visit-load]'),status=root.querySelector('[data-visit-status]'),list=root.querySelector('[data-visit-list]');
-    async function load() {
+    let controller=new AbortController(),disposed=false,data=[],needsPermission=false,loaded=false,attempted=false;
+    const view={city:initialCity,kind:initialKind,browser:'',search:''};
+    root.innerHTML=`<div class="ov-card-title"><div><p class="ov-eyebrow">Visit explorer</p><h2>One visit. Every recorded step.</h2><p class="ov-help">Daily event exports · November 6, 2026 onward · ${esc(timezone)}</p></div><button type="button" data-visit-load>Load visit records</button></div><p data-visit-status role="status">Open Visits to load records. Aggregate reports remain available in Overview.</p><div class="ov-visit-controls"><label>Find city, page or source<input type="search" data-visit-search placeholder="Research, Chicago, scholar…"></label><label>Show<select data-visit-kind><option value="">All visits</option><option value="returning">Returning browsers</option><option value="research">Research or Publications</option><option value="actions">Recorded selections</option><option value="sequence">Research → Publications</option></select></label><button type="button" data-visit-clear>Clear visit filters</button></div><p class="ov-help" data-visit-filter></p><div data-visit-insights></div><div class="ov-visit-list" data-visit-list></div><p class="ov-help">Locations are approximate. A browser identifier is not a person's identity. Active time is foreground engagement, not measured reading time. Sessions crossing the selected dates may be partial.</p>`;
+    const find=q=>root.querySelector(q),button=find('[data-visit-load]'),status=find('[data-visit-status]'),list=find('[data-visit-list]');
+    function draw(){list.innerHTML=renderVisits(data,timezone,view.search,view);find('[data-visit-kind]').value=view.kind;find('[data-visit-filter]').textContent=[view.city?'City: '+JSON.parse(view.city).slice().reverse().join(', '):'',view.browser?'Same browser in selected dates':'',loaded?`${filterVisits(data,view).length} matching ${filterVisits(data,view).length===1?'visit':'visits'}`:''].filter(Boolean).join(' · ');}
+    async function load(fresh=false) {
       if(disposed||!getSession())return;
-      button.disabled=true;status.textContent='Loading daily visit records…';
+      const key=JSON.stringify([range.start,range.end,filters]);
+      attempted=true;button.disabled=true;status.textContent='Loading daily visit records…';
       try {
-        const result=await loadVisits({range,filters,token:getSession().token,signal:AbortSignal.any([controller.signal,AbortSignal.timeout(65000)])});
+        const saved=cache.get(key),result=!fresh&&saved&&Date.now()-saved.at<180000?saved.result:await loadVisits({range,filters,token:getSession().token,signal:AbortSignal.any([controller.signal,AbortSignal.timeout(65000)])});
         if(disposed||!getSession())return;
-        data=result.visits;list.innerHTML=renderVisits(data,timezone);root.querySelector('[data-visit-controls]').hidden=!data.length;
-        status.textContent=`${data.length} exported visits${result.limited?' · Latest 500 shown; narrow the dates for the rest':''}. Only events inside the selected date range are shown. Foreground engagement and elapsed time are different measures.`;
-      } catch(e) {if(disposed||e.name==='AbortError')return;list.replaceChildren();status.textContent=e.message;if(e.connect){needsPermission=true;button.textContent='Allow read-only visit access';}}
+        cache.set(key,{at:Date.now(),result});if(cache.size>12)cache.delete(cache.keys().next().value);
+        data=result.visits;loaded=true;draw();const insight=journeySummary(data);find('[data-visit-insights]').innerHTML=`<div class="ov-journey"><div><strong>${insight.continued} / ${insight.research}</strong><span>Research visits continued to Publications</span></div><div><strong>${insight.returning}</strong><span>Returning-browser sessions</span></div><div><strong>${insight.scholar}</strong><span>Google Scholar sessions</span></div></div><p class="ov-help">Within the loaded exports${result.limited?' (latest 500 only)':''}. Missing earlier exports can limit these counts.</p>`;
+        status.textContent=`${data.length} exported ${data.length===1?'visit':'visits'}${result.limited?' · Latest 500 shown; narrow the dates for the rest':''}. ${data.length?'Latest recorded visit: '+new Date(Math.max(...data.map(v=>v.first_ms))).toLocaleString('en-US',{timeZone:timezone}):'No visits in the exported selection.'}`;
+        onSummary?.({returning:data.filter(v=>v.returning).length,research:data.filter(v=>(v.pages||[]).some(p=>/^\/(research|publications)(\/|$)/.test(canonical(p.path)))).length,limited:result.limited});
+      } catch(e) {if(disposed||e.name==='AbortError')return;list.replaceChildren();status.textContent=e.message;if(e.connect){needsPermission=true;button.textContent='Renew read-only access';}}
       finally{if(!disposed)button.disabled=false;}
     }
-    button.addEventListener('click',()=>{if(needsPermission){onRenew();return;}load();});
-    root.querySelector('[data-visit-search]').addEventListener('input',e=>list.innerHTML=renderVisits(data,timezone,e.target.value));
-    return {dispose(){disposed=true;controller.abort();data=[];root.replaceChildren();}};
+    button.addEventListener('click',()=>needsPermission?onRenew():load(true));
+    find('[data-visit-search]').addEventListener('input',e=>{view.search=e.target.value;draw();});
+    find('[data-visit-kind]').addEventListener('change',e=>{view.kind=e.target.value;draw();});
+    find('[data-visit-clear]').addEventListener('click',()=>{view.city=view.kind=view.browser=view.search='';find('[data-visit-search]').value='';onClearCity?.();draw();});
+    list.addEventListener('click',e=>{const b=e.target.closest('[data-visit-browser]');if(b){view.browser=b.dataset.visitBrowser;draw();}});
+    list.addEventListener('toggle',e=>{if(e.target.open){const v=data.find(v=>v.id===e.target.dataset.session);if(v)onSelectCity?.(JSON.stringify([v.location.country,v.location.region,v.location.city]));}},true);
+    return {load:()=>loaded?draw():attempted?undefined:load(),setCity(city){view.city=city;draw();},setKind(kind){view.kind=kind;draw();},dispose(){disposed=true;controller.abort();data=[];root.replaceChildren();}};
   }
-  const api={mount,clear};
+  const api={mount,clear,canonical,pageName};
   if(typeof window!=='undefined')window.MTSGVisits=api;
-  if(typeof module!=='undefined')module.exports={...api,querySpec,messageFor,loadVisits,renderVisits};
+  if(typeof module!=='undefined')module.exports={...api,querySpec,messageFor,loadVisits,renderVisits,compactPages,filterVisits,journeySummary,researchToPapers};
 })();
