@@ -256,12 +256,21 @@
         <hr class="mtsg-footer__divider" />
 
         <p class="mtsg-footer__fine">
-            © 2026 <strong>Molecular Transport Simulation Group (MTSG)</strong>.
-            <a data-owner-link hidden style="margin-left:12px" href="{{ '/dashboard/' | relative_url }}">Site Overview</a>
+            <button type="button" class="mtsg-footer__quiet" data-overview-arm aria-label="Copyright">©</button> 2026 <strong>Molecular Transport Simulation Group (<button type="button" class="mtsg-footer__quiet" data-overview-open>MTSG</button>)</strong>.
         </p>
     </div>
 </footer>
 <!-- ===== /MTSG Footer ===== -->
 
-<style>[data-owner-link][hidden]{display:none!important}</style>
-<script defer src="{{ '/assets/js/owner/access.js' | relative_url }}" data-base="{{ site.baseurl }}"></script>
+<style>
+#mtsg-footer .mtsg-footer__quiet,
+#mtsg-footer .mtsg-footer__quiet:hover,
+#mtsg-footer .mtsg-footer__quiet:active {
+    appearance: none; display: inline; margin: 0; padding: 0; border: 0;
+    border-radius: 0; background: transparent; color: inherit; font: inherit;
+    line-height: inherit; letter-spacing: inherit; text-decoration: none;
+    box-shadow: none; transform: none; cursor: default;
+}
+#mtsg-footer .mtsg-footer__quiet:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
+</style>
+<script defer src="{{ '/assets/js/owner/footer-entry.js' | relative_url }}" data-dashboard="{{ '/dashboard/' | relative_url }}"></script>

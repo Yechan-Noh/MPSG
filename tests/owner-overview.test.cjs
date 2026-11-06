@@ -29,7 +29,7 @@ test('invalid and excessive custom dates cannot become API queries',()=>{
 test('all report requests are site-scoped, and country/device affect every report',()=>{
  const p=api.periodFor('week','2026-10-21'), queries=api.requests(p,{country:'South Korea',device:'mobile'});
  for(const q of Object.values(queries)){
-  const f=JSON.stringify(q.dimensionFilter);for(const expected of ['yechan-noh.github.io','/MPSG/','/MPSG/dashboard','/MPSG/owner','South Korea','mobile'])assert.ok(f.includes(expected));
+  const f=JSON.stringify(q.dimensionFilter);for(const expected of ['yechan-noh.github.io','/MPSG','/MPSG/dashboard','/MPSG/owner','/dashboard','/owner','South Korea','mobile'])assert.ok(f.includes(expected));
   assert.ok(!JSON.stringify(q).includes('userId'));assert.ok(!JSON.stringify(q).includes('ipAddress'));
  }
  assert.equal(queries.states,undefined);
@@ -74,4 +74,18 @@ test('recognized empty GA reports are empty, while malformed/nonempty reports st
  assert.throws(()=>api.rows(api.normalizeReport({},query)));
  assert.throws(()=>api.rows(api.normalizeReport({kind:'analyticsData#runReport',rowCount:1,rows:[{metricValues:[{value:'2'}]}]},query)));
  const got=await api.fetchReports({previous:query},{propertyId:'123',session:{token:'test-only'},fetcher:async()=>({ok:true,json:async()=>({reports:[{kind:'analyticsData#runReport',metadata:{emptyReason:'No matching data'}}]})})});assert.deepEqual(api.rows(got.previous),[]);
+});
+
+test('migration includes old and new site URLs while excluding owner and unrelated project routes',()=>{
+ const q=api.requests(api.periodFor('week','2026-11-06')).current;
+ function matches(x,path){
+  if(x.andGroup)return x.andGroup.expressions.every(y=>matches(y,path));
+  if(x.orGroup)return x.orGroup.expressions.some(y=>matches(y,path));
+  if(x.notExpression)return !matches(x.notExpression,path);
+  const f=x.filter;if(f.fieldName==='hostName')return true;
+  const s=f.stringFilter;
+  return s.matchType==='FULL_REGEXP'?new RegExp(s.value,'i').test(path):s.matchType==='BEGINS_WITH'?path.startsWith(s.value):path===s.value;
+ }
+ for(const p of ['/','/index.html','/research/','/people/','/news/2026-10-25-muacc-poster-award/','/publication/paper.html','/MPSG','/MPSG/','/MPSG/publications/'])assert.ok(matches(q.dimensionFilter,p),p);
+ for(const p of ['/dashboard/','/owner/','/MPSG/dashboard/','/MPSG/owner/','/unrelated-project/'])assert.ok(!matches(q.dimensionFilter,p),p);
 });

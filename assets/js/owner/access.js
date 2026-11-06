@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const script = document.currentScript;
-  const base = script.dataset.base || '/MPSG';
+  const base = script.dataset.base ?? '';
   const mode = document.body.dataset.ownerMode;
   const storageKey = 'mtsg-owner-session-v2';
   const legacyKey = 'mtsg-owner-session-v1';
