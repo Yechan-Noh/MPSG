@@ -6,7 +6,7 @@
   const storageKey = 'mtsg-owner-session-v2';
   const legacyKey = 'mtsg-owner-session-v1';
   const rememberedKey = 'mtsg-owner-remembered-v1';
-  const scope = 'https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/analytics.readonly';
+  const scope = 'https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/bigquery.readonly';
   const status = document.querySelector('[data-owner-status]');
   const signIn = document.querySelector('[data-owner-signin]');
   const panel = document.querySelector('[data-owner-panel]');
@@ -79,7 +79,7 @@
     document.body.append(view);
     if (panel) panel.hidden = true;
     document.title = 'Site Overview · MTSG';
-    overview = window.MTSGOverview.mount({root: view, propertyId: config.propertyId,
+    overview = window.MTSGOverview.mount({root: view, propertyId: config.propertyId, clientId: config.clientId,
       getSession: readSession, onRenew: () => signIn?.click(), onSignOut: signOut});
   }
   async function check(session = readSession(), persist = false) {
@@ -98,6 +98,7 @@
       } catch {
         sessionStorage.setItem(legacyKey, JSON.stringify(session));
       }
+      window.MTSGAnalytics?.excludeOwner();
       authorized = true; lastCheck = Date.now();
       document.querySelectorAll('[data-owner-link]').forEach(e => e.hidden = false);
       clearTimeout(expiryTimer);

@@ -101,7 +101,7 @@ og_description   : "MTSG · Molecular transport, interfacial dynamics, and biomi
 analytics:
   provider        : google-analytics-4
   google:
-    tracking_id   : "G-XXXXXXX"            # ⚑ replace with your GA4 ID
+    tracking_id   : "G-ZM8MTZDBL3"
 
 # ────────────────────────────────────────────────
 #  SASS
